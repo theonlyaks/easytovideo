@@ -3,6 +3,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -12,6 +13,21 @@ export default function Home() {
           height={38}
           priority
         />
+        <div className="bg-background text-foreground">
+          <p className="font-inter font-light">Light Inter text (300)</p>
+          <p className="font-inter font-normal">Regular Inter text (400)</p>
+          <p className="font-inter font-medium">Medium Inter text (500)</p>
+          <p className="font-inter font-semibold">Semibold Inter text (600)</p>
+          <p className="font-inter font-bold">Bold Inter text (700)</p>
+
+          <p className="font-dm-sans font-light">Light DM Sans text (300)</p>
+          <p className="font-dm-sans font-normal">Regular DM Sans text (400)</p>
+          <p className="font-dm-sans font-medium">Medium DM Sans text (500)</p>
+          <p className="font-dm-sans font-semibold">
+            Semibold DM Sans text (600)
+          </p>
+          <p className="font-dm-sans font-bold">Bold DM Sans text (700)</p>
+        </div>
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}
@@ -96,6 +112,7 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
+    
     </div>
   );
 }
