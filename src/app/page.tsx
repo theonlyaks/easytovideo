@@ -1,10 +1,62 @@
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import Image from "next/image";
+import Button from '@/components/common/Button';
+import { FiPlus, FiTrash2, FiEdit, FiDownload, FiHeart } from 'react-icons/fi';
 
 export default function Home() {
+  const colorPalette = [
+    {
+      name: "Background",
+      color: "bg-background",
+      text: "text-background-text",
+    },
+    { name: "Primary", color: "bg-primary", text: "text-primary-text" },
+    { name: "Secondary", color: "bg-secondary", text: "text-secondary-text" },
+    { name: "Accent", color: "bg-accent", text: "text-accent-text" },
+    { name: "Neutral", color: "bg-neutral", text: "text-neutral-text" },
+    { name: "Muted", color: "bg-muted", text: "text-muted-text" },
+    {
+      name: "Background Text",
+      color: "bg-background-text",
+      text: "text-background",
+    },
+    { name: "Primary Text", color: "bg-primary-text", text: "text-primary" },
+    {
+      name: "Secondary Text",
+      color: "bg-secondary-text",
+      text: "text-secondary",
+    },
+    { name: "Accent Text", color: "bg-accent-text", text: "text-accent" },
+    { name: "Neutral Text", color: "bg-neutral-text", text: "text-neutral" },
+    { name: "Muted Text", color: "bg-muted-text", text: "text-muted" },
+  ];
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <div className="p-8 bg-background">
+          <h1 className="text-2xl font-bold mb-6 text-background-text">
+            Color Palette
+          </h1>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {colorPalette.map((item, index) => (
+              <div key={index} className="flex flex-col">
+                <div
+                  className={`${item.color} ${item.text} h-32 w-full rounded-lg shadow-md flex flex-col items-center justify-center p-4 transition-transform hover:scale-105`}
+                >
+                  <span className="text-center font-medium">{item.name}</span>
+                  <span className="text-center text-sm opacity-80 mt-2">
+                    Sample Text
+                  </span>
+                </div>
+                <div className="mt-2 text-sm text-muted-text">
+                  <p className="font-mono">{item.color}</p>
+                  <p className="font-mono">{item.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -13,6 +65,104 @@ export default function Home() {
           height={38}
           priority
         />
+        <div>
+          <Button
+            size="lg"
+            isLoading={true}
+          >
+            Click me
+          </Button>
+
+          <Button
+            variant="secondary"
+          >
+            Secondary Button
+          </Button>
+
+          {/* Outline button */}
+          <Button variant="outline" size="sm">
+            Outline Button
+          </Button>
+
+          {/* Danger button with loading state */}
+          <Button
+            isLoading={true}
+          >
+            Delete Item
+          </Button>
+
+          {/* Disabled button */}
+          <Button disabled>Disabled Button</Button>
+
+          {/* Button with custom className */}
+          <Button className="shadow-lg">Custom Class Button</Button>
+
+          <div className="space-x-4 space-y-4">
+      {/* Button with left icon */}
+      <Button 
+        icon={FiPlus}
+        // onClick={() => console.log('Add clicked')}
+      >
+        Add Item
+      </Button>
+
+      {/* Button with right icon */}
+      <Button 
+        icon={FiDownload}
+        iconPosition="right"
+        variant="secondary"
+      >
+        Download
+      </Button>
+
+      {/* Icon only buttons */}
+      <Button 
+        icon={FiEdit}
+        iconOnly
+        variant="outline"
+        aria-label="Edit"
+      />
+
+      <Button 
+        icon={FiTrash2}
+        iconOnly
+        size="sm"
+        aria-label="Delete"
+      />
+
+      {/* Icon only with different sizes */}
+      <div className="space-x-2">
+        <Button 
+          icon={FiHeart}
+          iconOnly
+          size="sm"
+          aria-label="Like small"
+        />
+        <Button 
+          icon={FiHeart}
+          iconOnly
+          size="md"
+          aria-label="Like medium"
+        />
+        <Button 
+          icon={FiHeart}
+          iconOnly
+          size="lg"
+          isLoading={true}
+          aria-label="Like large"
+        />
+      </div>
+
+      {/* Loading state with icon */}
+      <Button 
+        icon={FiDownload}
+        isLoading={true}
+      >
+        Downloading
+      </Button>
+    </div>
+        </div>
+        <LoadingSpinner size="md" iconOnly />
         <div className="bg-background text-foreground">
           <p className="font-inter font-light">Light Inter text (300)</p>
           <p className="font-inter font-normal">Regular Inter text (400)</p>
@@ -112,7 +262,6 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
-    
     </div>
   );
 }

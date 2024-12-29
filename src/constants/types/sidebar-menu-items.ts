@@ -12,15 +12,15 @@ import {
   FaVideo,
   FaHeadphones,
   FaWaveSquare,
-  FaBrain
+  FaBrain,
+  FaBook
 } from 'react-icons/fa';
 
 export const menuItems: MenuItems = {
-  CREATE: [
-    { icon: FaVolumeUp, label: 'Text to Speech', path: '/studio/text-to-speech' },
-    { icon: FaMicrophone, label: 'Voice Changer', path: '/studio/voice-changer' },
-    { icon: FaUserAlt, label: 'Voices', path: '/studio/voices' },
-    { icon: FaMusic, label: 'Sound Effects', path: '/studio/sound-effects' },
+  Audio: [
+    { icon: FaMusic, label: 'Sound Effects', path: '/studio/text-to-sfx' },
+    { icon: FaMicrophone, label: 'Text to Speech', path: '/studio/text-to-speech' },
+    { icon: FaBook, label: 'Saved', path: '/studio/library' },
   ],
   CONVERSATIONAL: [
     { icon: FaRobot, label: 'Agents', path: '/studio/agents' },

@@ -1,0 +1,134 @@
+"use client";
+import { useTextToSfx } from "@/store/hooks/useTextToSfx";
+import { useAudioManagement } from "@/store";
+import Button from "@/components/common/Button";
+import { FiPlayCircle, FiClock, FiCopy, FiZap } from "react-icons/fi";
+import { AudioPlayer } from "@/components/common/AudioPlayer";
+import { Switch } from "@/components/common/Switch";
+import { Tooltip } from "@/components/common/Tooltip";
+
+export function TextToSfx() {
+  const {
+    text,
+    setText,
+    duration,
+    setDuration,
+    isAutoDuration,
+    setIsAutoDuration,
+    isLoading,
+    audioUrls,
+    error,
+    handleGenerateSpeech,
+    totalVariations,
+    setTotalVariations,
+  } = useTextToSfx();
+
+  const { isUploading, isAdded, handleToggleUpload } = useAudioManagement(
+    audioUrls.filter((url): url is string => url !== null)
+  );
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleGenerateSpeech();
+    }
+  };
+
+  return (
+    <main className="hidden md:block max-w-4xl mx-auto py-12">
+      <h1 className="text-2xl font-semibold mb-8">Sound Effects</h1>
+
+      <section className="space-y-6">
+        <div className="bg-white rounded-lg border p-4 space-y-4">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyPress}
+            className="w-full h-32 outline-none resize-none border-none p-0 bg-transparent"
+            placeholder="Describe the sound you want to generate... (Press Enter to generate)"
+          />
+
+          <div className="flex items-center gap-6 pt-4 border-t">
+            <Tooltip content="Automatically determine the optimal duration for your audio">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <FiZap className="text-gray-500 w-4 h-4" />
+                  <Switch
+                    checked={isAutoDuration}
+                    onChange={setIsAutoDuration}
+                    size="md"
+                  />
+                </div>
+                <span className="text-gray-600">Auto</span>
+              </div>
+            </Tooltip>
+
+            {!isAutoDuration && (
+              <Tooltip content="Choose duration between 0.5 and 22 seconds">
+                <div className="flex items-center gap-2">
+                  <FiClock className="text-gray-500 w-4 h-4" />
+                  <input
+                    type="number"
+                    min="0.5"
+                    max="22"
+                    value={duration}
+                    onChange={(e) => setDuration(Number(e.target.value))}
+                    className="w-14 p-1 rounded-md border bg-gray-50"
+                  />
+                  <span className="text-gray-600">seconds</span>
+                </div>
+              </Tooltip>
+            )}
+
+            <Tooltip content="Number of variations to generate">
+              <div className="flex items-center gap-2">
+                <FiCopy className="text-gray-500 w-4 h-4" />
+                <input
+                  type="number"
+                  min="1"
+                  max="4"
+                  value={totalVariations}
+                  onChange={(e) =>
+                    setTotalVariations(
+                      Math.min(4, Math.max(1, Number(e.target.value)))
+                    )
+                  }
+                  className="w-14 p-1 rounded-md border bg-gray-50"
+                />
+                <span className="text-gray-600">variations</span>
+              </div>
+            </Tooltip>
+
+            <Button
+              onClick={handleGenerateSpeech}
+              isLoading={isLoading}
+              size="lg"
+              icon={FiPlayCircle}
+              className="ml-auto"
+            >
+              Generate
+            </Button>
+          </div>
+        </div>
+
+        {error && <div className="text-red-500 text-sm">{error}</div>}
+
+        <div className="space-y-3">
+          {audioUrls.map(
+            (audioUrl, index) =>
+              audioUrl && (
+                <AudioPlayer
+                  key={index}
+                  onAdd={() => handleToggleUpload(index)}
+                  title={`Audio ${index + 1}`}
+                  audioUrl={audioUrl}
+                  isUploading={isUploading[index]}
+                  isAdded={isAdded[index]}
+                />
+              )
+          )}
+        </div>
+      </section>
+    </main>
+  );
+}
