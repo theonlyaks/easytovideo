@@ -1,7 +1,7 @@
 'use client';
 
-import { useLanguageVoiceSelection } from '@/store/hooks/useLanguageVoiceSelection';
-import { useTextToSpeech } from '@/store/hooks/useTextToSpeech';
+import { useLanguageVoiceSelection } from '@/store';
+import { useTextToSpeech } from '@/store';
 import { Select } from '@/components/common/Select';
 import { SelectWithPlay } from '@/components/common/SelectWithPlay';
 import Button from '@/components/common/Button';

@@ -9,6 +9,10 @@ export * from './hooks/useAudioVoice';
 export * from './hooks/useAudioLanguage';
 export * from './hooks/useTextToSpeech';
 export * from './hooks/useLanguageVoiceSelection';
+export * from './hooks/useProjects';
+export * from './hooks/useProjectUpdates';
+export * from './hooks/useFilesList';
+
 
 
 

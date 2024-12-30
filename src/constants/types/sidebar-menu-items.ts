@@ -13,7 +13,8 @@ import {
   FaHeadphones,
   FaWaveSquare,
   FaBrain,
-  FaBook
+  FaBook,
+  FaProductHunt
 } from 'react-icons/fa';
 
 export const menuItems: MenuItems = {
@@ -21,6 +22,8 @@ export const menuItems: MenuItems = {
     { icon: FaMusic, label: 'Sound Effects', path: '/studio/text-to-sfx' },
     { icon: FaMicrophone, label: 'Text to Speech', path: '/studio/text-to-speech' },
     { icon: FaBook, label: 'Saved', path: '/studio/library' },
+    { icon: FaProductHunt, label: 'Projects', path: '/studio/projects' },
+
   ],
   CONVERSATIONAL: [
     { icon: FaRobot, label: 'Agents', path: '/studio/agents' },

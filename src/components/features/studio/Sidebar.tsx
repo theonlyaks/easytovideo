@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useScrollLock } from "@/store/hooks/useScrollLock";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { handleLogout } from "@/services/auth/logout";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -77,7 +78,7 @@ export function Sidebar() {
         <div className="sticky bottom-0 bg-white border-t p-4">
           <button
             className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-50 border bg-white w-full"
-            onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+            onClick={handleLogout}
           >
             <div className="min-w-8 w-8 h-8 relative flex-shrink-0">
               <Image

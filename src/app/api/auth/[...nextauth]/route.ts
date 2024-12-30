@@ -6,8 +6,14 @@ import { signInWithCredential, GoogleAuthProvider } from "firebase/auth"
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id: string
+      id: string;
+      uid: string;
     } & DefaultSession["user"]
+  }
+
+  interface User {
+    id: string;
+    uid: string;
   }
 }
 
@@ -24,9 +30,11 @@ const authOptions: AuthOptions = {
         try {
           const credential = GoogleAuthProvider.credential(null, credentials.idToken);
           const { user } = await signInWithCredential(auth, credential);
+          console.log('Firebase auth user:', user);
 
           return {
             id: user.uid,
+            uid: user.uid,
             name: user.displayName,
             email: user.email,
             image: user.photoURL,
@@ -44,6 +52,7 @@ const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        token.uid = user.uid
         token.name = user.name
         token.email = user.email
         token.picture = user.image
@@ -51,8 +60,9 @@ const authOptions: AuthOptions = {
       return token
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.id as string
+        session.user.uid = token.uid as string
       }
       return session
     }

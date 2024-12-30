@@ -6,4 +6,6 @@ export * from './interfaces/button';
 export * from './interfaces/switch';
 export * from './interfaces/audio';
 export * from './interfaces/common';
+export * from './interfaces/projects';
+export * from './interfaces/upload';
 

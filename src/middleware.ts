@@ -7,8 +7,8 @@ export function middleware(request: NextRequest) {
  const userAgent = request.headers.get('user-agent') || ''
  const isMobile = MOBILE_REGEX.test(userAgent)
  
- console.log('User Agent:', userAgent)
- console.log('Device Type:', isMobile ? 'mobile' : 'desktop')
+//  console.log('User Agent:', userAgent)
+//  console.log('Device Type:', isMobile ? 'mobile' : 'desktop')
 
  const requestHeaders = new Headers(request.headers)
  requestHeaders.set('x-device-type', isMobile ? 'mobile' : 'desktop')
