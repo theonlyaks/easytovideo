@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { uploadAudio, removeAudio } from '@/services/studio/audio-upload';
+import { uploadAudio, removeAudio } from '@/services/studio/audio';
 
 export function useAudioManagement(audioUrls: string[]) {
   const [isUploading, setIsUploading] = useState<boolean[]>([]);

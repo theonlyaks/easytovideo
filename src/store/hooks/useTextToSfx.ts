@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generateSpeech } from '@/services/studio/text-to-sfx';
+import { generateTextToSfx } from '@/services/studio/audio';
 import { TOTAL_TEXT_TO_SFX_PARALLEL_REQUEST_COUNT } from '@/constants';
 
 export function useTextToSfx() {
@@ -11,7 +11,7 @@ export function useTextToSfx() {
     const [error, setError] = useState<string | null>(null);
     const [totalVariations, setTotalVariations] = useState(TOTAL_TEXT_TO_SFX_PARALLEL_REQUEST_COUNT);
   
-    const handleGenerateSpeech = async () => {
+    const handleGenerateTextToSfx = async () => {
       if (!text.trim()) return;
   
       setIsLoading(true);
@@ -31,7 +31,7 @@ export function useTextToSfx() {
 
         // Generate versions based on totalVariations
         const audioPromises = Array(totalVariations).fill(null).map((_, index) => 
-          generateSpeech(text, { ...options, version: index + 1 })
+          generateTextToSfx(text, { ...options, version: index + 1 })
         );
 
         const audioBlobs = await Promise.all(audioPromises);
@@ -63,7 +63,7 @@ export function useTextToSfx() {
       isLoading,
       audioUrls,
       error,
-      handleGenerateSpeech,
+      handleGenerateTextToSfx,
       totalVariations,
       setTotalVariations
     };

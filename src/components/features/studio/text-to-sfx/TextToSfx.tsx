@@ -6,6 +6,8 @@ import { FiPlayCircle, FiClock, FiCopy, FiZap } from "react-icons/fi";
 import { AudioPlayer } from "@/components/common/AudioPlayer";
 import { Switch } from "@/components/common/Switch";
 import { Tooltip } from "@/components/common/Tooltip";
+import { SuggestionGroup } from "@/components/common/SuggestionGroup";
+import { SPECIAL_EFFECT_SUGGESTIONS_LIST } from "@/constants/types/common";
 
 export function TextToSfx() {
   const {
@@ -18,7 +20,7 @@ export function TextToSfx() {
     isLoading,
     audioUrls,
     error,
-    handleGenerateSpeech,
+    handleGenerateTextToSfx,
     totalVariations,
     setTotalVariations,
   } = useTextToSfx();
@@ -30,8 +32,12 @@ export function TextToSfx() {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleGenerateSpeech();
+      handleGenerateTextToSfx();
     }
+  };
+
+  const handleSuggestionSelect = (suggestionText: string) => {
+    setText(suggestionText);
   };
 
   return (
@@ -39,6 +45,7 @@ export function TextToSfx() {
       <h1 className="text-2xl font-semibold mb-8">Sound Effects</h1>
 
       <section className="space-y-6">
+    
         <div className="bg-white rounded-lg border p-4 space-y-4">
           <textarea
             value={text}
@@ -100,7 +107,7 @@ export function TextToSfx() {
             </Tooltip>
 
             <Button
-              onClick={handleGenerateSpeech}
+              onClick={handleGenerateTextToSfx}
               isLoading={isLoading}
               size="lg"
               icon={FiPlayCircle}
@@ -112,7 +119,14 @@ export function TextToSfx() {
         </div>
 
         {error && <div className="text-red-500 text-sm">{error}</div>}
-
+        
+        {!audioUrls.some(url => url !== null) && (
+          <SuggestionGroup
+            suggestions={SPECIAL_EFFECT_SUGGESTIONS_LIST}
+            onSelect={handleSuggestionSelect}
+          />
+        )}
+        
         <div className="space-y-3">
           {audioUrls.map(
             (audioUrl, index) =>

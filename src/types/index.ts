@@ -4,5 +4,6 @@ export * from './interfaces/loading-spinner';
 export * from './interfaces/sidebar';
 export * from './interfaces/button';
 export * from './interfaces/switch';
-export * from './interfaces/text-to-sfx';
+export * from './interfaces/audio';
+export * from './interfaces/common';
 
