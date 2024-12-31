@@ -1,12 +1,12 @@
 import { useState, useCallback, useRef } from 'react';
-import { UploadState, UploadConfig } from '@/types/interfaces/upload';
+import { UploadState, MediaType } from '@/types';
 import { uploadVideo } from '@/services/studio/upload';
 import { validateFile } from '@/lib/common/upload';
-import { UPLOAD_ERROR_MESSAGES, getUploadConfig } from '@/constants/types/upload';
+import { UPLOAD_ERROR_MESSAGES, getUploadConfig } from '@/constants';
 import { useSetAtom } from 'jotai';
-import { fileListRefreshAtom } from '../atoms/fileAtoms';
+import { fileListRefreshAtom } from '@/store';
 
-export const useUpload = (userId: string) => {
+export const useUpload = (userId: string, mediaType: MediaType = 'video') => {
   const [state, setState] = useState<UploadState>({
     file: null,
     progress: 0,
@@ -41,11 +41,9 @@ export const useUpload = (userId: string) => {
       return;
     }
 
-    console.log('Starting upload process for user:', userId);
-    const config = getUploadConfig(userId);
+    const config = getUploadConfig(userId, mediaType);
     const error = validateFile(file, config);
     if (error) {
-      console.log('Validation error:', error);
       setState(prev => ({ ...prev, error }));
       return;
     }
@@ -53,7 +51,6 @@ export const useUpload = (userId: string) => {
     setState(prev => ({ ...prev, file, error: null, state: 'running' }));
 
     try {
-      console.log('Initiating upload to Firebase with config:', config);
       const url = await uploadVideo(
         file, 
         config, 
@@ -65,18 +62,17 @@ export const useUpload = (userId: string) => {
           uploadTaskRef.current = uploadTask;
         }
       );
-      console.log('Upload completed, URL:', url);
       setState(prev => ({ ...prev, url, state: 'success' }));
-      setFileListRefresh(prev => prev + 1); // Trigger refresh after successful upload
+      setFileListRefresh(prev => prev + 1); 
+      return { url }; 
     } catch (error) {
-      console.error('Upload error:', error);
       setState(prev => ({ 
         ...prev, 
         error: UPLOAD_ERROR_MESSAGES.UPLOAD_FAILED,
         state: 'error'
       }));
     }
-  }, [userId, setFileListRefresh]);
+  }, [userId, mediaType, setFileListRefresh]);
 
   return { ...state, startUpload, cancelUpload };
 };

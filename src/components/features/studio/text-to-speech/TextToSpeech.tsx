@@ -9,6 +9,7 @@ import { FiPlayCircle } from 'react-icons/fi';
 import { AudioPlayer } from '@/components/common/AudioPlayer';
 
 export function TextToSpeech() {
+
   const {
     selectedLanguage,
     setSelectedLanguage,
@@ -38,6 +39,10 @@ export function TextToSpeech() {
     }
   };
 
+  const handleLanguageChange = (value: string) => {
+    setSelectedLanguage(value);
+  };
+
   return (
     <main className="hidden md:block max-w-4xl mx-auto py-12">
       <h1 className="text-2xl font-semibold mb-8">Text to Speech</h1>
@@ -57,7 +62,7 @@ export function TextToSpeech() {
               <Select
                 options={languageOptions}
                 value={selectedLanguage}
-                onChange={setSelectedLanguage}
+                onChange={handleLanguageChange}
                 placeholder="Select language..."
                 className="min-w-[200px]"
               />

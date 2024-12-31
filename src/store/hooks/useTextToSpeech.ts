@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAudioManagement } from '@/store';
+import { auth } from '@/lib/common/firebase';
 import { 
   generateTextToSpeech, 
   revokeAudioUrl, 
@@ -11,9 +12,12 @@ export const useTextToSpeech = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioFile, setAudioFile] = useState<{ url: string; fileName: string } | null>(null);
+  const userId = auth.currentUser?.uid || '';
 
   const { isUploading, isAdded, handleToggleUpload } = useAudioManagement(
-    audioUrl ? [audioUrl] : []
+    audioFile ? [audioFile] : [],
+    userId
   );
 
   useEffect(() => {
@@ -22,6 +26,17 @@ export const useTextToSpeech = () => {
         revokeAudioUrl(audioUrl);
       }
     };
+  }, [audioUrl]);
+
+  useEffect(() => {
+    if (audioUrl) {
+      setAudioFile({
+        url: audioUrl,
+        fileName: `speech_${Date.now()}.mp3`
+      });
+    } else {
+      setAudioFile(null);
+    }
   }, [audioUrl]);
 
   const handleGenerate = async (voiceId: string) => {

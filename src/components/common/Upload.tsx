@@ -1,14 +1,13 @@
-import React, { useCallback, useRef, useEffect } from 'react';
-import { useUpload } from '@/store/hooks/useUpload';
+import React, { useCallback, useRef } from 'react';
+import { useUpload } from '@/store';
 import { MdCloudUpload, MdCancel } from 'react-icons/md';
+import { UploadProps } from '@/types';
 
-interface UploadProps {
-  userId: string;
-}
 
-export const Upload: React.FC<UploadProps> = ({ userId }) => {
+
+export const Upload: React.FC<UploadProps> = ({ userId, mediaType = 'video' }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { progress, state, error, startUpload, cancelUpload } = useUpload(userId);
+  const { progress, state, error, startUpload, cancelUpload } = useUpload(userId, mediaType);
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -26,7 +25,7 @@ export const Upload: React.FC<UploadProps> = ({ userId }) => {
       <input
         ref={fileInputRef}
         type="file"
-        accept="video/*"
+        accept={mediaType === 'video' ? 'video/*' : 'audio/*'}
         onChange={handleFileChange}
         className="hidden"
         disabled={state === 'running'}
@@ -39,7 +38,9 @@ export const Upload: React.FC<UploadProps> = ({ userId }) => {
         >
           <MdCloudUpload className="mx-auto h-12 w-12 text-gray-400" />
           <p className="mt-2 text-sm text-gray-600">Click to upload or drag and drop</p>
-          <p className="text-xs text-gray-500">MP4, MOV, AVI (max. 100MB)</p>
+          <p className="text-xs text-gray-500">
+            {mediaType === 'video' ? 'MP4, MOV, AVI (max. 100MB)' : 'MP3, WAV, OGG (max. 50MB)'}
+          </p>
         </div>
       )}
       

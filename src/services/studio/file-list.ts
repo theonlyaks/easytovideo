@@ -1,10 +1,10 @@
 import { ref, listAll, getMetadata, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/lib/common/firebase';
-import { FileItem } from '@/types/interfaces/common';
+import { FileItem } from '@/types';
 
 export const getUserFiles = async (userId: string): Promise<FileItem[]> => {
   try {
-    const storageRef = ref(storage, `uploads/${userId}`);
+    const storageRef = ref(storage, `user_video_uploads/${userId}`);
     const result = await listAll(storageRef);
     
     const filesPromises = result.items.map(async (item) => {
