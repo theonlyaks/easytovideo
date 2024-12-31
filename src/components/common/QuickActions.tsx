@@ -14,8 +14,8 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <QuickActionButton
           icon={<MdAdd className="h-6 w-6" />}
-          label="Find Viral Clips"
-          description="Start from scratch"
+          label="Get Viral Clips"
+          description="Extract clips from videos that can go viral"
           onClick={onCreateNew}
         />
         <QuickActionButton

@@ -66,9 +66,9 @@ export function ProjectListComponent({ user }: ProjectsProps) {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <QuickActions 
-          onCreateNew={handleCreateNew}
+          onCreateNew={handleDuplicate}
           onImport={handleImport}
-          onDuplicate={handleDuplicate}
+          onDuplicate={handleCreateNew}
           onTemplate={() => router.push('/project/templates')}
         />
 
