@@ -10,3 +10,7 @@ export interface User {
   name?: string;
   image?: string;
 }
+
+export interface AuthState {
+  user: User | null;
+}

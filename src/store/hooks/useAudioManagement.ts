@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useDeleteUpload, useUpload} from '@/store';
 import { AudioFile} from '@/types';
 
-
 export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
   const [isUploading, setIsUploading] = useState<boolean[]>([]);
   const [isAdded, setIsAdded] = useState<boolean[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<Array<AudioFile | null>>([]);
+  const [generatedFileNames, setGeneratedFileNames] = useState<Array<string | null>>([]);
   
-  const { startUpload } = useUpload(userId, 'audio');
+  const { startUpload } = useUpload(userId, 'audio', 'export');
   const { deleteUpload } = useDeleteUpload(userId, 'audio');
 
   const handleUpload = async (index: number) => {
@@ -26,7 +26,7 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
 
       const result = await startUpload(file);
       
-      if (!result?.url) {
+      if (!result?.url || !result?.fileName) {
         throw new Error('Upload failed');
       }
 
@@ -40,6 +40,11 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
         fileName: audioFile.fileName 
       };
       setUploadedFiles(newUploadedFiles);
+
+      const newGeneratedFileNames = [...generatedFileNames];
+      newGeneratedFileNames[index] = result.fileName;
+      setGeneratedFileNames(newGeneratedFileNames);
+
     } catch (error) {
       console.error("Error uploading audio:", error);
     } finally {
@@ -55,8 +60,8 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
     setIsUploading(newIsUploading);
 
     try {
-      if (isAdded[index] && uploadedFiles[index]) {
-        const deleteSuccess = await deleteUpload(uploadedFiles[index]!.fileName);
+      if (isAdded[index] && generatedFileNames[index]) {
+        const deleteSuccess = await deleteUpload(generatedFileNames[index]!);
         
         if (deleteSuccess) {
           const newIsAdded = [...isAdded];
@@ -66,6 +71,10 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
           const newUploadedFiles = [...uploadedFiles];
           newUploadedFiles[index] = null;
           setUploadedFiles(newUploadedFiles);
+
+          const newGeneratedFileNames = [...generatedFileNames];
+          newGeneratedFileNames[index] = null;
+          setGeneratedFileNames(newGeneratedFileNames);
         }
       } else {
         await handleUpload(index);
@@ -82,6 +91,7 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
   return {
     isUploading,
     isAdded,
-    handleToggleUpload
+    handleToggleUpload,
+    generatedFileNames  // Added to return value
   };
 }

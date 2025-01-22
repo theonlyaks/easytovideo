@@ -14,6 +14,8 @@ import { useState, useEffect } from "react";
 export function TextToSfx() {
   const userId = auth.currentUser?.uid;
   const [audioFiles, setAudioFiles] = useState<Array<{ url: string, fileName: string }>>([]);
+  // Add new state for generated filenames
+  const [generatedFileNames, setGeneratedFileNames] = useState<Array<string | null>>([]);
 
   const {
     text,
@@ -33,17 +35,26 @@ export function TextToSfx() {
   useEffect(() => {
     const newAudioFiles = audioUrls
       .filter((url): url is string => url !== null)
-      .map((url, index) => ({
+      .map((url) => ({
         url,
-        fileName: `audio_${index}_${Date.now()}.mp3`
+        fileName: `${text.replace(/[^a-zA-Z]/g, '').slice(0, 25)}.mp3`
       }));
     setAudioFiles(newAudioFiles);
-  }, [audioUrls]);
+  }, [audioUrls, text]);
 
-  const { isUploading, isAdded, handleToggleUpload } = useAudioManagement(
-    audioFiles,
-    userId || ''
-  );
+  const { 
+    isUploading, 
+    isAdded, 
+    handleToggleUpload, 
+    generatedFileNames: uploadGeneratedFileNames 
+  } = useAudioManagement(audioFiles, userId || '');
+
+  // Add effect to update generated filenames
+  useEffect(() => {
+    if (uploadGeneratedFileNames) {
+      setGeneratedFileNames(uploadGeneratedFileNames);
+    }
+  }, [uploadGeneratedFileNames]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -153,6 +164,7 @@ export function TextToSfx() {
                 audioUrl={audio.url}
                 isUploading={isUploading[index]}
                 isAdded={isAdded[index]}
+                fileName={audio.fileName} // Use original filename as fallback
               />
             )
           )}

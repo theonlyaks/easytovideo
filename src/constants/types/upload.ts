@@ -5,12 +5,12 @@ export const getUploadConfig = (userId: string, type: MediaType): UploadConfig =
     video: {
       allowedTypes: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
       maxSizeInMB: 100,
-      path: `user_video_uploads/${userId}`
+      path: `user_files/${userId}`
     },
     audio: {
       allowedTypes: ['audio/mpeg', 'audio/wav', 'audio/ogg'],
       maxSizeInMB: 50,
-      path: `user_audio_exports/${userId}`
+      path: `user_files/${userId}`
     }
   };
 

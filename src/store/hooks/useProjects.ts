@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ProjectService } from '@/services/studio/projects';
 import { ProjectState, User } from '@/types';
-import { calculateRemainingTime } from '@/lib/common/time';
 
 export const useProjects = (user: User | null): ProjectState => {
   const [state, setState] = useState<ProjectState>({
@@ -10,36 +9,28 @@ export const useProjects = (user: User | null): ProjectState => {
   });
 
   useEffect(() => {
-    if (!user?.email) {
+    if (!user?.id) {
+      console.log('No user or userId found:', user);
       setState({ projects: [], loading: false });
       return;
     }
 
+    console.log('Subscribing to projects for user:', user.id);
+
     const unsubscribe = ProjectService.subscribeToProjects(
-      user.email,
-      (projects) => setState({ projects, loading: false }),
-      (error) => setState((prev) => ({ ...prev, loading: false, error: error.message }))
+      user.id,
+      (projects) => {
+        console.log('Projects response:', projects);
+        setState({ projects, loading: false });
+      },
+      (error) => {
+        console.error('Error subscribing to projects:', error);
+        setState((prev) => ({ ...prev, loading: false, error: error.message }));
+      }
     );
 
     return () => unsubscribe();
   }, [user]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setState((prev) => ({
-        ...prev,
-        projects: prev.projects.map((project) => ({
-          ...project,
-          remainingTime:
-            project.status === 'processing'
-              ? calculateRemainingTime(project.updation_time, project.duration || 0)
-              : '',
-        })),
-      }));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   return state;
 };

@@ -1,3 +1,4 @@
+import { FilenamePart } from '@/types';
 import { IconType, IconBaseProps } from 'react-icons';
 import { MdAudioFile, MdVideoFile, MdInsertDriveFile } from 'react-icons/md';
 
@@ -28,4 +29,25 @@ export const getFileTypeLabel = (fileType: string) => {
     return 'Audio';
   }
   return 'File';
+};
+
+export const getFilenamePartByIndex = (formattedName: string, part: FilenamePart): string | null => {
+  const parts = formattedName.split('_@1_');
+  if (parts.length !== 4) return null;
+
+  const [original, timestamp, type, sourceWithExtension] = parts;
+  const [source] = sourceWithExtension.split('.');
+
+  switch (part) {
+    case 'original':
+      return original;
+    case 'timestamp':
+      return timestamp;
+    case 'type':
+      return type;
+    case 'source':
+      return source;
+    default:
+      return null;
+  }
 };

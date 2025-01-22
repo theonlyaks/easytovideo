@@ -6,8 +6,12 @@ import { PropsWithChildren } from "react";
 export default function StudioLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1 py-4 md:p-8">{children}</main>
+      <div className="fixed inset-y-0 left-0">
+        <Sidebar />
+      </div>
+      <main className="flex-1 pl-[280px] py-4 md:p-8 md:pl-[280px] overflow-auto">
+        {children}
+      </main>
     </div>
   );
 }

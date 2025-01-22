@@ -4,21 +4,18 @@ import { QuickActionsProps } from '@/types';
 import { QuickActionButton } from '@/components/common/QuickActionButton';
 
 export const QuickActions: React.FC<QuickActionsProps> = ({
-  onCreateNew,
-  onImport,
-  onDuplicate,
-  onTemplate
+  onCreateAiEffect
 }) => {
   return (
     <div className="mb-8">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <QuickActionButton
           icon={<MdAdd className="h-6 w-6" />}
-          label="Get Viral Clips"
-          description="Extract clips from videos that can go viral"
-          onClick={onCreateNew}
+          label="Add AI effects"
+          description="One click to add AI effects"
+          onClick={onCreateAiEffect}
         />
-        <QuickActionButton
+        {/* <QuickActionButton
           icon={<MdImportExport className="h-6 w-6" />}
           label="Import"
           description="Import from YouTube"
@@ -35,7 +32,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           label="Templates"
           description="Start from template"
           onClick={onTemplate}
-        />
+        /> */}
       </div>
     </div>
   );

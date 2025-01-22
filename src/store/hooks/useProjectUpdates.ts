@@ -6,20 +6,14 @@ export const useProjectUpdates = (projects: Project[]) => {
   // Initialize with the projects passed in
   const [updatedProjects, setUpdatedProjects] = useState<Project[]>(() => 
     projects.map(project => ({
-      ...project,
-      remainingTime: project.status === 'processing'
-        ? calculateRemainingTime(project.updation_time, project.duration || 0)
-        : ''
+      ...project
     }))
   );
 
   // Update when projects change
   useEffect(() => {
     setUpdatedProjects(projects.map(project => ({
-      ...project,
-      remainingTime: project.status === 'processing'
-        ? calculateRemainingTime(project.updation_time, project.duration || 0)
-        : ''
+      ...project
     })));
   }, [projects]);
 
@@ -29,10 +23,7 @@ export const useProjectUpdates = (projects: Project[]) => {
 
     const timer = setInterval(() => {
       setUpdatedProjects(prev => prev.map(project => ({
-        ...project,
-        remainingTime: project.status === 'processing'
-          ? calculateRemainingTime(project.updation_time, project.duration || 0)
-          : project.remainingTime
+        ...project
       })));
     }, 1000);
 

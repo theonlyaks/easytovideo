@@ -1,85 +1,53 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { MdAdd, MdMovie } from 'react-icons/md';
-import { useProjectUpdates, useProjects } from '@/store';
-import { ProjectSingle } from '@/components/common/ProjectSingle';
-import { SkeletonLoader } from '@/components/common/SkeletonProjectLoader';
-import { SectionHeader } from '@/components/common/SectionHeader';
-import { QuickActions } from '@/components/common/QuickActions';
-import { User } from '@/types';
-import { Modal } from '@/components/common/Modal';
-import { Upload } from '@/components/common/Upload';
-import { FileManager } from '@/components/common/FileManager';
-import { FileItem } from '@/types/interfaces/common';
-
-interface ProjectsProps {
-  user: User | null;
-}
-
-export function ProjectListComponent({ user }: ProjectsProps) {
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [isFileManagerOpen, setIsFileManagerOpen] = useState(false);
-  const [fileManagerMode, setFileManagerMode] = useState<'import' | 'duplicate'>('import');
+import React, { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { MdAdd, MdMovie } from "react-icons/md";
+import { useProjectUpdates, useProjects } from "@/store";
+import ProjectSingle from "@/components/common/ProjectSingle"; // Import default
+import { SkeletonLoader } from "@/components/common/SkeletonProjectLoader";
+import { SectionHeader } from "@/components/common/SectionHeader";
+import { QuickActions } from "@/components/common/QuickActions";
+import { AuthState } from "@/types";
+export function ProjectListComponent({ user }: AuthState) {
+  const [filter, setFilter] = useState<"all" | "effects">("all");
+    
   const { projects, loading } = useProjects(user);
   const updatedProjects = useProjectUpdates(projects);
   const router = useRouter();
 
   const handleProjectClick = (projectId: string, status: string) => {
-    if (status !== 'processing') {
-      router.push(`/project/video/${projectId}`);
+    if (status !== "processing") {
+      router.push(`/studio/effects/${projectId}/output`);
     }
   };
 
-  const handleCreateNew = () => {
-    setIsUploadModalOpen(true);
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilter(event.target.value as "all" | "effects");
   };
 
-  const handleModalClose = useCallback(() => {
-    setIsUploadModalOpen(false);
-    setIsFileManagerOpen(false);
-  }, []);
-
-  const handleFileSelect = (file: FileItem) => {
-
-    console.log("asdsadas",file)
-    if (fileManagerMode === 'import') {
-      // Handle import logic
-    } else if (fileManagerMode === 'duplicate') {
-      // Handle duplicate logic
-    }
-    handleModalClose();
-  };
-
-  const handleImport = () => {
-    setFileManagerMode('import');
-    setIsFileManagerOpen(true);
-  };
-
-  const handleDuplicate = () => {
-    setFileManagerMode('duplicate');
-    setIsFileManagerOpen(true);
-  };
+  const filteredProjects = updatedProjects.filter(project => 
+    filter === "all" || project.type === filter
+  );
 
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <QuickActions 
-          onCreateNew={handleDuplicate}
-          onImport={handleImport}
-          onDuplicate={handleCreateNew}
-          onTemplate={() => router.push('/project/templates')}
+        <QuickActions
+          onCreateAiEffect={() => router.push("/studio/effects")}
         />
 
-        <SectionHeader 
+        <SectionHeader
           title="Recent Projects"
           subtitle="Transform your content into engaging videos with AI-powered editing tools"
+          filter={filter}
+          onFilterChange={handleFilterChange}
         />
 
         {loading ? (
           <SkeletonLoader />
-        ) : (!updatedProjects || updatedProjects.length === 0) ? (
+        ) : !filteredProjects || filteredProjects.length === 0 ? (
           <div className="text-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-center mb-4">
               <MdMovie className="h-24 w-24 text-gray-400" />
@@ -98,7 +66,7 @@ export function ProjectListComponent({ user }: ProjectsProps) {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {updatedProjects.map((project) => (
+            {filteredProjects.map((project) => (
               <ProjectSingle
                 key={project.id}
                 project={project}
@@ -107,43 +75,6 @@ export function ProjectListComponent({ user }: ProjectsProps) {
             ))}
           </div>
         )}
-
-        <Modal 
-          isOpen={isUploadModalOpen} 
-          onClose={handleModalClose}
-        >
-          <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Upload Video</h2>
-            {user?.id ? (
-              <Upload userId={user.id} />
-            ) : (
-              <div className="text-red-500 text-center">
-                Please sign in to upload files
-              </div>
-            )}
-          </div>
-        </Modal>
-
-        <Modal 
-          isOpen={isFileManagerOpen} 
-          onClose={handleModalClose}
-        >
-          <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">
-              {fileManagerMode === 'import' ? 'Import from Files' : 'Select Video file to work on'}
-            </h2>
-            {user ? (
-              <FileManager 
-                user={user} 
-                onSelect={handleFileSelect}
-              />
-            ) : (
-              <div className="text-red-500 text-center">
-                Please sign in to manage files
-              </div>
-            )}
-          </div>
-        </Modal>
       </div>
     </div>
   );

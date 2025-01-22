@@ -28,6 +28,7 @@ export function TextToSpeech() {
     audioUrl,
     isUploading,
     isAdded,
+    generatedFileName,
     handleToggleUpload,
     handleGenerate,
   } = useTextToSpeech();
@@ -93,11 +94,12 @@ export function TextToSpeech() {
         <div className="space-y-3">
           {audioUrl && (
             <AudioPlayer
-              onAdd={() => handleToggleUpload(0)}
-              title="Generated Speech"
+              onAdd={handleToggleUpload}
+              title={`Generated Speech`}
               audioUrl={audioUrl}
-              isUploading={isUploading[0]}
-              isAdded={isAdded[0]}
+              isUploading={isUploading}
+              isAdded={isAdded}
+              fileName={`${text.replace(/[^a-zA-Z]/g, '').slice(0, 25)}.mp3`} // Use formatted text as fallback
             />
           )}
         </div>

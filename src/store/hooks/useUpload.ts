@@ -6,7 +6,7 @@ import { UPLOAD_ERROR_MESSAGES, getUploadConfig } from '@/constants';
 import { useSetAtom } from 'jotai';
 import { fileListRefreshAtom } from '@/store';
 
-export const useUpload = (userId: string, mediaType: MediaType = 'video') => {
+export const useUpload = (userId: string, mediaType: MediaType = 'video', source: string = 'upload') => {
   const [state, setState] = useState<UploadState>({
     file: null,
     progress: 0,
@@ -48,11 +48,14 @@ export const useUpload = (userId: string, mediaType: MediaType = 'video') => {
       return;
     }
 
-    setState(prev => ({ ...prev, file, error: null, state: 'running' }));
+    const timestamp = Date.now();
+    const fileName = `${file.name.split('.')[0]}_@1_${timestamp}_@1_${mediaType}_@1_${source}.${file.name.split('.').pop()}`;
+
+    setState(prev => ({ ...prev, file: { ...file, name: fileName }, error: null, state: 'running' }));
 
     try {
       const url = await uploadVideo(
-        file, 
+        new File([file], fileName, { type: file.type }), 
         config, 
         (progress) => {
           console.log('Upload progress:', progress);
@@ -64,7 +67,7 @@ export const useUpload = (userId: string, mediaType: MediaType = 'video') => {
       );
       setState(prev => ({ ...prev, url, state: 'success' }));
       setFileListRefresh(prev => prev + 1); 
-      return { url }; 
+      return { url, fileName }; // Modified to return fileName as well
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
@@ -72,7 +75,7 @@ export const useUpload = (userId: string, mediaType: MediaType = 'video') => {
         state: 'error'
       }));
     }
-  }, [userId, mediaType, setFileListRefresh]);
+  }, [userId, mediaType, source, setFileListRefresh]);
 
   return { ...state, startUpload, cancelUpload };
 };

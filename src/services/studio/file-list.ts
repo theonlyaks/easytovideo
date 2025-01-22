@@ -4,7 +4,7 @@ import { FileItem } from '@/types';
 
 export const getUserFiles = async (userId: string): Promise<FileItem[]> => {
   try {
-    const storageRef = ref(storage, `user_video_uploads/${userId}`);
+    const storageRef = ref(storage, `user_files/${userId}`);
     const result = await listAll(storageRef);
     
     const filesPromises = result.items.map(async (item) => {

@@ -1,13 +1,14 @@
-import {FileListProps } from '@/types';
-import { getFileTypeIcon, getFileTypeLabel } from '@/lib/common/file';
+import { FileListProps } from '@/types';
+import { getFileTypeIcon, getFileTypeLabel, getFilenamePartByIndex } from '@/lib/common/file';
 import { useFilesList } from '@/store';
 import { LoadingSpinner } from './LoadingSpinner';
+import { FaFileAlt } from 'react-icons/fa'; // Add this import
 
 export const FileList = ({ user, onSelect }: FileListProps) => {
   const { files, loading, error } = useFilesList(user);
 
   if (loading) {
-    return <LoadingSpinner text='Fetching files...'/>;
+    return <LoadingSpinner color='primary' text='Fetching files...'/>;
   }
 
   if (error) {
@@ -15,7 +16,12 @@ export const FileList = ({ user, onSelect }: FileListProps) => {
   }
 
   if (files.length === 0) {
-    return <div className="text-muted-text">No files found</div>;
+    return (
+      <div className="flex items-center mt-4 justify-center text-muted-text">
+        <FaFileAlt className="mr-2" size={24} /> {/* Use FontAwesome icon */}
+        <div>No files found</div>
+      </div>
+    );
   }
 
   return (
@@ -31,13 +37,15 @@ export const FileList = ({ user, onSelect }: FileListProps) => {
                   return <Icon {...props} />;
                 })()}
                 <div>
-                  <h3 className="font-medium text-background-text">{file.fileName}</h3>
+                  <h3 className="font-medium text-background-text">{getFilenamePartByIndex(file.fileName,'original')}</h3>
                   <div className="flex space-x-3 text-sm text-muted-text">
                     <span>{getFileTypeLabel(file.fileType)}</span>
                     <span>•</span>
                     <span>{(file.fileSize / 1024 / 1024).toFixed(2)} MB</span>
                     <span>•</span>
                     <span>{file.createdAt.toLocaleDateString()}</span>
+                    <span>•</span>
+                    <span>{getFilenamePartByIndex(file.fileName, 'source')}</span>
                   </div>
                 </div>
               </div>

@@ -8,4 +8,6 @@ export * from './interfaces/audio';
 export * from './interfaces/common';
 export * from './interfaces/projects';
 export * from './interfaces/upload';
+export * from './interfaces/video';
+export * from './interfaces/plan';
 

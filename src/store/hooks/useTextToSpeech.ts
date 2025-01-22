@@ -13,12 +13,25 @@ export const useTextToSpeech = () => {
   const [error, setError] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioFile, setAudioFile] = useState<{ url: string; fileName: string } | null>(null);
+  const [generatedFileName, setGeneratedFileName] = useState<string | null>(null);
   const userId = auth.currentUser?.uid || '';
 
-  const { isUploading, isAdded, handleToggleUpload } = useAudioManagement(
+  const { 
+    isUploading, 
+    isAdded, 
+    handleToggleUpload,
+    generatedFileNames 
+  } = useAudioManagement(
     audioFile ? [audioFile] : [],
     userId
   );
+
+  // Update generated filename when received from useAudioManagement
+  useEffect(() => {
+    if (generatedFileNames?.[0]) {
+      setGeneratedFileName(generatedFileNames[0]);
+    }
+  }, [generatedFileNames]);
 
   useEffect(() => {
     return () => {
@@ -32,7 +45,7 @@ export const useTextToSpeech = () => {
     if (audioUrl) {
       setAudioFile({
         url: audioUrl,
-        fileName: `speech_${Date.now()}.mp3`
+        fileName: `${text.replace(/[^a-zA-Z]/g, '').slice(0, 25)}.mp3`
       });
     } else {
       setAudioFile(null);
@@ -70,9 +83,10 @@ export const useTextToSpeech = () => {
     isLoading,
     error,
     audioUrl,
-    isUploading,
-    isAdded,
-    handleToggleUpload,
+    isUploading: isUploading[0],
+    isAdded: isAdded[0],
+    generatedFileName,
+    handleToggleUpload: () => handleToggleUpload(0),
     handleGenerate,
   };
 };
