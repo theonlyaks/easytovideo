@@ -16,7 +16,7 @@ export const PaymentModal = ({ isOpen, onClose, subscriptionId }: PaymentModalPr
 
   const renderContent = () => {
     // Keep showing loading until we have a definitive status
-    if (loading || status === 'created' || status === 'authenticated') {
+    if (status === 'created') {
       return (
         <div className="text-center space-y-4">
           <LoadingSpinner 
@@ -30,7 +30,7 @@ export const PaymentModal = ({ isOpen, onClose, subscriptionId }: PaymentModalPr
     }
 
     // Show success state
-    if (status === 'active') {
+    if (status === 'active' || status === 'authenticated') {
       return (
         <div className="text-center space-y-4">
           <FiCheckCircle className="w-16 h-16 text-accent mx-auto" />

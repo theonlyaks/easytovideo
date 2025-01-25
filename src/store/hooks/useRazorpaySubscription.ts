@@ -5,7 +5,7 @@ export const useRazorpaySubscription = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createSubscription = async (userId: string, customerId: string, planId: string) => {
+  const createSubscription = async (userId: string, customerId: string, planId: string,subscriptionId:string | null,nextStart:number | null,amount:number) => {
     try {
       setLoading(true);
       setError(null);
@@ -13,7 +13,7 @@ export const useRazorpaySubscription = () => {
       const response = await fetch('/api/razorpay/create-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerId, planId })
+        body: JSON.stringify({ customerId, planId,subscriptionId,nextStart,amount})
       });
 
       const data = await response.json();

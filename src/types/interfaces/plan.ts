@@ -12,6 +12,7 @@ export interface PlanPrice {
   currency: string;
   interval: 'month' | 'year';
   pgPlanId: string;
+  dayPrice: number;
 }
 
 export interface PlanLimits {

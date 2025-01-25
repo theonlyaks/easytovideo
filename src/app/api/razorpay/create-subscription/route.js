@@ -17,13 +17,26 @@ export async function POST(request) {
             }, { status: 401 });
         }
 
-        const { customerId, planId } = await request.json();
-        const subscription = await razorpay.subscriptions.create({
+        const { customerId, planId, nextStart,subscriptionId ,amount} = await request.json();
+        const subscriptionData = {
             plan_id: planId,
             customer_id: customerId,
             quantity: 1,
-            total_count: 360
-        });
+            total_count: 360,
+            notes : {
+                amount:amount
+            }
+        };
+
+        if (nextStart) {
+            subscriptionData.start_at = nextStart;
+            subscriptionData.notes['previousSubscriptionId']=  subscriptionId;
+        }
+        
+
+        console.log('subscriptionData:', subscriptionData);
+
+        const subscription = await razorpay.subscriptions.create(subscriptionData);
 
         return NextResponse.json({
             subscription,

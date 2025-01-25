@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { subscriptionAtom } from '../atoms/subscriptionAtom';
+import { subscriptionAtom, SubscriptionState } from '../atoms/subscriptionAtom';
 import { PlansService } from '@/services/firebase/plans';
 import { useSession } from 'next-auth/react';
 
@@ -11,19 +11,27 @@ export const useSubscriptionListener = () => {
   useEffect(() => {
     if (!session?.user?.id) return;
 
-    // Initial fetch
     const fetchSubscription = async () => {
       try {
         const activeSub = await PlansService.getActiveSubscription(session.user.id);
         setSubscription(activeSub || {
           status: 'inactive',
-          planId: null
+          planId: null,
+          currentStart: null,
+          currentEnd: null,
+          amount: null,
+          subscriptionId:null
+
         });
       } catch (error) {
         console.error('Failed to fetch subscription:', error);
         setSubscription({
           status: 'error',
           planId: null,
+          currentStart: null,
+          currentEnd: null,
+          amount: null,
+          subscriptionId:null,
           error: 'Failed to fetch subscription'
         });
       }
@@ -31,10 +39,9 @@ export const useSubscriptionListener = () => {
 
     fetchSubscription();
 
-    // Set up real-time listener for active subscription
     const unsubscribe = PlansService.listenToActiveSubscription(
       session.user.id,
-      (data) => {
+      (data: SubscriptionState) => {
         console.log("Active subscription update:", data);
         setSubscription(data);
       },
@@ -43,6 +50,10 @@ export const useSubscriptionListener = () => {
         setSubscription({
           status: 'error',
           planId: null,
+          currentStart: null,
+          currentEnd: null,
+          amount: null,
+          subscriptionId:null,
           error: error.message
         });
       }

@@ -86,3 +86,18 @@ export const formatRelativeTime = (formattedDate: string): string => {
     return `${time}, ${month}/${day}/${year}`;
   }
 };
+
+export const unixToLocalTime = (unixTimestamp: number | null): string => {
+  if (!unixTimestamp) return 'Not available';
+  
+  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
+  
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+};

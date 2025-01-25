@@ -1,12 +1,20 @@
 import { atom } from 'jotai';
 
 export interface SubscriptionState {
-  status: 'loading' | 'active' | 'inactive' | 'error';
+  status: string | null;
   planId: string | null;
+  currentStart: number | null;  // Remove undefined
+  currentEnd: number | null; 
+  amount: number | null;
+  subscriptionId:string | null;
   error?: string;
 }
 
 export const subscriptionAtom = atom<SubscriptionState>({
   status: 'loading',
-  planId: null
+  planId: null,
+  currentStart: null,
+  amount: null,
+  currentEnd: null,
+  subscriptionId:null
 });

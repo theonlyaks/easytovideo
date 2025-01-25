@@ -19,7 +19,7 @@ export const useRazorpayConfirmation = (subscriptionId: string | null) => {
       (data) => {
         console.log("Subscription update received:", data);
         setStatus(data.status);
-        setLoading(data.status === 'created' || data.status === 'authenticated');
+        setLoading(data.status === 'created');
       },
       (error) => {
         console.error("Subscription listening failed:", error);

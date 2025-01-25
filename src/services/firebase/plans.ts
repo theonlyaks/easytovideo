@@ -172,7 +172,7 @@ export class PlansService {
       const q = query(
         subscriptionsRef, 
         where("userId", "==", userId),
-        where("status", "==", "active"),
+        where("status", "in", ["active", "authenticated"]),
         orderBy("createdAt", "desc"),
         limit(1)
       );
@@ -182,9 +182,12 @@ export class PlansService {
         const doc = querySnapshot.docs[0];
         const data = doc.data();
         return {
-          status: data.status as 'active' | 'inactive',
+          status: data.status,
           planId: data.planId || null,
-          // Include any additional fields from SubscriptionState
+          currentEnd: data.currentEnd || null,
+          currentStart: data.currentStart || null,
+          amount: data.amount || null,
+          subscriptionId:data.subscriptionId || null
         };
       }
       return null;
@@ -200,7 +203,7 @@ export class PlansService {
       const q = query(
         subscriptionsRef, 
         where("userId", "==", userId),
-        where("status", "==", "active"),
+        where("status", "in", ["active", "authenticated"]),
         orderBy("createdAt", "desc"),
         limit(1)
       );
@@ -212,8 +215,12 @@ export class PlansService {
               const doc = snapshot.docs[0];
               const data = doc.data();
               callback({
-                status: data.status as 'active' | 'inactive',
-                planId: data.planId || null
+                status: data.status,
+                planId: data.planId || null,
+                currentEnd: data.currentEnd || null,
+                currentStart: data.currentStart || null,
+                amount: data.amount || null,
+                subscriptionId:data.subscriptionId || null
               });
             } else {
               callback({
