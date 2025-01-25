@@ -10,4 +10,4 @@ export * from './interfaces/projects';
 export * from './interfaces/upload';
 export * from './interfaces/video';
 export * from './interfaces/plan';
-
+export * from './interfaces/subscription';
