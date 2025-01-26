@@ -152,6 +152,7 @@ export const PlanCard: React.FC<PlanProps> = ({
     }
 
     try {
+      console.log("subscription new", subscription);
       // If user has an active subscription, show plan change modal
       if (subscription.status === "active" || subscription.status === "authenticated") {
         const details = calculatePlanSwitch({
@@ -183,7 +184,8 @@ export const PlanCard: React.FC<PlanProps> = ({
         price.pgPlanId,
         subscription.subscriptionId,
         switchDate || null,
-        price.amount
+        price.amount,
+        displayName
       );
       handlePayment(data);
     } catch (error) {

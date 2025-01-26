@@ -20,8 +20,8 @@ export const useSubscriptionListener = () => {
           currentStart: null,
           currentEnd: null,
           amount: null,
+          planName:null,
           subscriptionId:null
-
         });
       } catch (error) {
         console.error('Failed to fetch subscription:', error);
@@ -32,6 +32,7 @@ export const useSubscriptionListener = () => {
           currentEnd: null,
           amount: null,
           subscriptionId:null,
+          planName:null,
           error: 'Failed to fetch subscription'
         });
       }
@@ -54,6 +55,7 @@ export const useSubscriptionListener = () => {
           currentEnd: null,
           amount: null,
           subscriptionId:null,
+          planName:null,
           error: error.message
         });
       }

@@ -45,7 +45,7 @@ export const menuItems: MenuItems = {
   //   { icon: FaHeadphones, label: 'Audio Native', path: '/studio/audio-native' },
   // ],
   TOOLS: [
-    { icon: FaCreditCard, label: 'Billing', path: '/studio/billing' },
+    { icon: FaCreditCard, label: 'Account', path: '/studio/account' },
     { icon: FaStar, label: 'Plans', path: '/studio/plans' }
   ],
 };

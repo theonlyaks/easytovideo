@@ -17,14 +17,15 @@ export async function POST(request) {
             }, { status: 401 });
         }
 
-        const { customerId, planId, nextStart,subscriptionId ,amount} = await request.json();
+        const { customerId, planId, nextStart,subscriptionId ,amount,planName} = await request.json();
         const subscriptionData = {
             plan_id: planId,
             customer_id: customerId,
             quantity: 1,
             total_count: 360,
             notes : {
-                amount:amount
+                amount:amount,
+                planName:planName
             }
         };
 

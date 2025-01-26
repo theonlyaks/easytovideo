@@ -172,7 +172,7 @@ export class PlansService {
       const q = query(
         subscriptionsRef, 
         where("userId", "==", userId),
-        where("status", "in", ["active", "authenticated"]),
+        where("status", "in", ["active", "authenticated","cancelled"]),
         orderBy("createdAt", "desc"),
         limit(1)
       );
@@ -184,9 +184,10 @@ export class PlansService {
         return {
           status: data.status,
           planId: data.planId || null,
-          currentEnd: data.currentEnd || null,
+          currentEnd: data.chargeAt || null,
           currentStart: data.currentStart || null,
           amount: data.amount || null,
+          planName:data.planName || null,
           subscriptionId:data.subscriptionId || null
         };
       }
@@ -203,7 +204,7 @@ export class PlansService {
       const q = query(
         subscriptionsRef, 
         where("userId", "==", userId),
-        where("status", "in", ["active", "authenticated"]),
+        where("status", "in", ["active", "authenticated","cancelled"]),
         orderBy("createdAt", "desc"),
         limit(1)
       );
@@ -217,9 +218,10 @@ export class PlansService {
               callback({
                 status: data.status,
                 planId: data.planId || null,
-                currentEnd: data.currentEnd || null,
+                currentEnd: data.chargeAt || null,
                 currentStart: data.currentStart || null,
                 amount: data.amount || null,
+                planName:data.planName || null,
                 subscriptionId:data.subscriptionId || null
               });
             } else {
@@ -241,6 +243,25 @@ export class PlansService {
       console.error("Error setting up subscription listener:", error);
       onError(error);
       return () => {};
+    }
+  }
+
+  static async updateSubscriptionStatus(subscriptionId: string, status: string): Promise<void> {
+    try {
+        const subscriptionsRef = collection(db, "razorpay_subscriptions");
+        const q = query(subscriptionsRef, where("subscriptionId", "==", subscriptionId));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            const doc = querySnapshot.docs[0];
+            await setDoc(doc.ref, {
+                // status,
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+        }
+    } catch (error) {
+        console.error('Error updating subscription status:', error);
+        throw error;
     }
   }
 }

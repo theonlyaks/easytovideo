@@ -7,6 +7,7 @@ export interface SubscriptionState {
   currentEnd: number | null; 
   amount: number | null;
   subscriptionId:string | null;
+  planName: string | null;
   error?: string;
 }
 
@@ -16,5 +17,6 @@ export const subscriptionAtom = atom<SubscriptionState>({
   currentStart: null,
   amount: null,
   currentEnd: null,
+  planName:null,
   subscriptionId:null
 });
