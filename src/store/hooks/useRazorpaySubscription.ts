@@ -60,9 +60,43 @@ export const useRazorpaySubscription = () => {
     }
   };
 
+  const verifySubscription = async (subscriptionId: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/razorpay/verify-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscriptionId })
+      });
+
+      const { subscription } = await response.json();
+      console.log('Raw subscription data:', subscription);
+
+      if (subscription.status === 'active' || subscription.status === 'authenticated') {
+        // Add null checks and default values for all fields
+        const subscriptionData = {
+          status: subscription.status || 'active',
+          planId: subscription.plan_id || null,
+          currentStart: subscription.current_start || Date.now(),
+          chargeAt: subscription.charge_at || null,
+          amount: subscription.notes?.amount || 0,  // Ensure amount is never undefined
+          subscriptionId: subscription.id || subscriptionId,
+          planName: subscription.notes?.planName || 'Default Plan'
+        };
+        console.log('Processed subscription data:', subscriptionData);
+        await PlansService.updateSubscriptionAfterPayment(subscriptionId, subscriptionData);
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error('Verification failed:', err);
+      return false;
+    }
+  };
+
   return {
     createSubscription,
     cancelSubscription,
+    verifySubscription,  // Make sure this is included
     loading,
     error
   };

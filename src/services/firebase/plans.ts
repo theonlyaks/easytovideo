@@ -264,4 +264,40 @@ export class PlansService {
         throw error;
     }
   }
+
+  static async updateSubscriptionAfterPayment(subscriptionId: string, data: {
+    status: string;
+    planId: string | null;
+    currentStart: number;
+    chargeAt: number | null;
+    amount: number;
+    subscriptionId: string;
+    planName: string;
+  }): Promise<void> {
+    try {
+      // Validate data before saving
+      const validatedData = {
+        status: data.status,
+        planId: data.planId || null,
+        currentStart: data.currentStart || Date.now(),
+        chargeAt: data.chargeAt || null,
+        amount: data.amount || 0,  // Ensure amount has a default value
+        subscriptionId: data.subscriptionId,
+        planName: data.planName || 'Default Plan',
+        updatedAt: serverTimestamp()
+      };
+
+      const subscriptionsRef = collection(db, "razorpay_subscriptions");
+      const q = query(subscriptionsRef, where("subscriptionId", "==", subscriptionId));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        await setDoc(doc.ref, validatedData, { merge: true });
+      }
+    } catch (error) {
+      console.error('Error updating subscription after payment:', error);
+      throw error;
+    }
+  }
 }

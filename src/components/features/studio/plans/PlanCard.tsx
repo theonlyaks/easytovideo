@@ -99,8 +99,11 @@ export const PlanCard: React.FC<PlanProps> = ({
   const scriptLoaded = useRazorpayScript();
   const { getOrCreateCustomer, loading: customerLoading } =
     useRazorpayCustomer();
-  const { createSubscription, loading: subscriptionLoading } =
-    useRazorpaySubscription();
+  const { 
+    createSubscription, 
+    verifySubscription,  // Add this
+    loading: subscriptionLoading 
+  } = useRazorpaySubscription();
   const subscription = useAtomValue(subscriptionAtom);
   const isCurrentPlan =
     (subscription.status === "active" ||   subscription.status === "authenticated")  && subscription.planId === price.pgPlanId;
@@ -125,7 +128,28 @@ export const PlanCard: React.FC<PlanProps> = ({
       key: data.razorpayKeyId,
       subscription_id: data.subscription.id,
       name: "EasytoVideo",
-      handler: () => {},
+      handler: async () => {
+        let attempts = 0;
+        const maxAttempts = 12; // 1 minute (12 * 5 seconds)
+        
+        const checkSubscription = async () => {
+          if (attempts >= maxAttempts) {
+            alert("Payment verification timed out. Please contact support.");
+            return;
+          }
+
+          const verified = await verifySubscription(data.subscription.id);
+          if (verified) {
+            // setIsPaymentModalOpen(false);
+            return;
+          }
+
+          attempts++;
+          setTimeout(checkSubscription, 5000);
+        };
+
+        checkSubscription();
+      },
       prefill: {
         email: session?.user?.email,
         name: session?.user?.name,
