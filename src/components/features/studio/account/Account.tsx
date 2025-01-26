@@ -9,6 +9,7 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { useRazorpaySubscription } from "@/store/hooks/useRazorpaySubscription";
 import { useState } from "react";
 import { CancelSubscriptionModal } from "./CancelSubscriptionModal";
+import { handleLogout } from "@/services/auth/logout";
 
 export function Account() {
     const user = auth.currentUser;
@@ -23,14 +24,7 @@ export function Account() {
     const isCancelled = subscription.status === "cancelled";
     const endDate = subscription.currentEnd ? unixToLocalTime(subscription.currentEnd) : null;
     const currentPlanAmount = subscription.amount ? (subscription.amount / 100).toFixed(2) : null;
-    console.log("ASdsa",subscription)
-    const handleLogout = async (): Promise<void> => {
-        try {
-            await auth.signOut();
-        } catch (error) {
-            console.error("Error signing out:", error);
-        }
-    };
+    
 
     const handlePlanNav = () => {
         router.push('/studio/plans');

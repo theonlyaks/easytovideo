@@ -1,13 +1,11 @@
 "use client";
 import { useSession } from 'next-auth/react';
 import { User } from '@/types';
-import { useState, useEffect } from 'react';
 import { Plans } from "@/components/features/studio/plans/Plans";
 import { useSubscriptionListener } from '@/store/hooks/useSubscriptionListener';
 
 export default function EffectsPage() {
   const { data: session, status } = useSession();
-  const [loading, setLoading] = useState(true);
   
   const user: User | null = session?.user ? {
     email: session.user.email || '',
@@ -15,15 +13,9 @@ export default function EffectsPage() {
     uid: session.user.uid || ''
   } : null;
 
-  useSubscriptionListener(); // Initialize subscription listener
+  useSubscriptionListener(); 
 
-  useEffect(() => {
-    if (status !== "loading") {
-      setLoading(false);
-    }
-  }, [status]);
-
-  if (loading) {
+  if (status === "loading") {
     return null; 
   }
   

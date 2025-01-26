@@ -1,26 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRazorpayCustomer } from './useRazorapyCustomer';
 import { useSession } from 'next-auth/react';
+import { Invoice } from '@/types';
 
-interface Invoice {
-    id: string;
-    invoice_number: string | null;
-    subscription_id: string;
-    amount: number;
-    amount_paid: number;
-    amount_due: number;
-    status: string;
-    date: number;  // unix timestamp
-    issued_at: number;
-    paid_at: number | null;
-    payment_id: string | null;
-    short_url: string;
-    line_items: Array<{
-        name: string;
-        description: string;
-        amount: number;
-    }>;
-}
 
 export const useRazorpayInvoices = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);

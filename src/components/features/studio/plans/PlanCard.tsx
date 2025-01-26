@@ -1,9 +1,4 @@
-import {
-  PlanProps,
-  PlanPrice,
-  PlanLimits,
-  SubscriptionRazorpay,
-} from "@/types";
+import { PlanProps, SubscriptionRazorpay } from "@/types";
 import { FeatureList } from "@/components/features/studio/plans/FeatureList";
 import { useRazorpayCustomer } from "@/store/hooks/useRazorapyCustomer";
 import { useSession } from "next-auth/react";
@@ -11,68 +6,16 @@ import { useRazorpaySubscription } from "@/store/hooks/useRazorpaySubscription";
 import { useRouter } from "next/navigation";
 import { useRazorpayScript } from "@/store/hooks/useRazorpayScript";
 import { useState } from "react";
-import { PaymentModal } from "./PaymentModal";
+import { PaymentModal } from "@/components/features/studio/plans/PaymentModal";
 import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { unixToLocalTime } from "@/lib/common/time";
 import { calculatePlanSwitch } from "@/lib/common/plan";
-import { PlanChangeModal } from "./PlanChangeModal";
-
-const PopularBadge = () => (
-  <span
-    className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-text 
-    px-4 py-1.5 rounded-full text-sm font-medium shadow-sm"
-  >
-    Most Popular
-  </span>
-);
-
-const PlanHeader = ({
-  displayName,
-  description,
-}: {
-  displayName: string;
-  description: string;
-}) => (
-  <div>
-    <h3 className="text-2xl font-bold text-background-text">{displayName}</h3>
-    <p className="text-muted-text mt-2 text-sm">{description}</p>
-  </div>
-);
-
-const PricingSection = ({
-  price,
-  limits,
-  isSubscribed,
-  isPopular,
-}: {
-  price: PlanPrice;
-  limits: PlanLimits;
-  isSubscribed?: boolean;
-  isPopular?: boolean;
-}) => (
-  <div className="mt-6 mb-8">
-    <div className="flex items-baseline gap-1">
-      <span className="text-4xl font-bold text-background-text">
-        ${(price.amount / 100).toFixed(2)}
-      </span>
-      <span className="text-neutral">/{price.interval}</span>
-    </div>
-    <button
-      disabled={isSubscribed}
-      className={`w-full mt-6 py-3 px-4 rounded-xl font-medium text-sm transition-all
-        ${
-          isSubscribed
-            ? "bg-neutral cursor-not-allowed text-white"
-            : isPopular
-            ? "bg-primary hover:bg-primary/90 text-primary-text shadow-sm hover:shadow-md"
-            : "bg-background hover:bg-background/90 text-background-text border border-neutral/20"
-        }`}
-    >
-      {isSubscribed ? "Current Plan" : "Subscribe Now"}
-    </button>
-  </div>
-);
+import { PlanChangeModal } from "@/components/features/studio/plans/PlanChangeModal";
+import {
+  PopularBadge,
+  PlanHeader,
+} from "@/components/features/studio/plans/PlanUtils";
 
 export const PlanCard: React.FC<PlanProps> = ({
   id,
@@ -99,14 +42,16 @@ export const PlanCard: React.FC<PlanProps> = ({
   const scriptLoaded = useRazorpayScript();
   const { getOrCreateCustomer, loading: customerLoading } =
     useRazorpayCustomer();
-  const { 
-    createSubscription, 
-    verifySubscription,  // Add this
-    loading: subscriptionLoading 
+  const {
+    createSubscription,
+    verifySubscription, // Add this
+    loading: subscriptionLoading,
   } = useRazorpaySubscription();
   const subscription = useAtomValue(subscriptionAtom);
   const isCurrentPlan =
-    (subscription.status === "active" ||   subscription.status === "authenticated")  && subscription.planId === price.pgPlanId;
+    (subscription.status === "active" ||
+      subscription.status === "authenticated") &&
+    subscription.planId === price.pgPlanId;
   const isProcessing = subscription.status === "loading";
   const loading = customerLoading || subscriptionLoading;
   console.log("Subscription details:", {
@@ -131,7 +76,7 @@ export const PlanCard: React.FC<PlanProps> = ({
       handler: async () => {
         let attempts = 0;
         const maxAttempts = 12; // 1 minute (12 * 5 seconds)
-        
+
         const checkSubscription = async () => {
           if (attempts >= maxAttempts) {
             alert("Payment verification timed out. Please contact support.");
@@ -178,7 +123,10 @@ export const PlanCard: React.FC<PlanProps> = ({
     try {
       console.log("subscription new", subscription);
       // If user has an active subscription, show plan change modal
-      if (subscription.status === "active" || subscription.status === "authenticated") {
+      if (
+        subscription.status === "active" ||
+        subscription.status === "authenticated"
+      ) {
         const details = calculatePlanSwitch({
           currentPrice: subscription.amount || 0,
           newPrice: price.amount || 0,

@@ -44,8 +44,8 @@ export const menuItems: MenuItems = {
   //   { icon: FaVideo, label: 'Dubbing Studio', path: '/studio/dubbing' },
   //   { icon: FaHeadphones, label: 'Audio Native', path: '/studio/audio-native' },
   // ],
-  TOOLS: [
-    { icon: FaCreditCard, label: 'Account', path: '/studio/account' },
-    { icon: FaStar, label: 'Plans', path: '/studio/plans' }
-  ],
+  // TOOLS: [
+  //   { icon: FaCreditCard, label: 'Account', path: '/studio/account' },
+  //   { icon: FaStar, label: 'Plans', path: '/studio/plans' }
+  // ],
 };
