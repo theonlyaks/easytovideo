@@ -16,6 +16,7 @@ import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { unixToLocalTime } from "@/lib/common/time";
 import { calculatePlanSwitch } from "@/lib/common/plan";
+import { PlanChangeModal } from "./PlanChangeModal";
 
 const PopularBadge = () => (
   <span
@@ -84,6 +85,12 @@ export const PlanCard: React.FC<PlanProps> = ({
   isSubscribed,
 }) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false);
+  const [switchDetails, setSwitchDetails] = useState<{
+    nextPlanStartDate: number;
+    remainingDays: number;
+    amountDue: number;
+  } | null>(null);
   const [currentSubscriptionId, setCurrentSubscriptionId] = useState<
     string | null
   >(null);
@@ -145,47 +152,50 @@ export const PlanCard: React.FC<PlanProps> = ({
     }
 
     try {
-      let switchDetails: {
-        nextPlanStartDate: number;
-        remainingDays: number;
-        amountDue: number;
-      } = {
-        nextPlanStartDate: 0,
-        remainingDays: 0,
-        amountDue: 0,
-      };
-      //   If user has an active subscription, calculate plan switch details
-      if (subscription.status === "active") {
-        switchDetails = calculatePlanSwitch({
+      // If user has an active subscription, show plan change modal
+      if (subscription.status === "active" || subscription.status === "authenticated") {
+        const details = calculatePlanSwitch({
           currentPrice: subscription.amount || 0,
           newPrice: price.amount || 0,
-          billingCycleDays: 30, // Assuming monthly billing
+          billingCycleDays: 30,
           currentStartDate: subscription.currentStart || 0,
           currentEndDate: subscription.currentEnd || 0,
         });
-
-        console.log("Plan switch details:", {
-          nextStart: unixToLocalTime(switchDetails.nextPlanStartDate),
-          remainingDays: switchDetails.remainingDays,
-          amountDue: switchDetails.amountDue,
-        });
+        setSwitchDetails(details);
+        setIsPlanChangeModalOpen(true);
+        return;
       }
-      const customerId = await getOrCreateCustomer(session.user.id);
-      console.log("sadsad", customerId);
-      const data = await createSubscription(
-        session.user.id,
-        customerId,
-        price.pgPlanId,
-        subscription.subscriptionId,
-        switchDetails?.nextPlanStartDate,
-        price.amount
-      );
-      console.log("1sadsad", data);
 
-      handlePayment(data);
+      // For new subscriptions, proceed directly
+      await processSubscription();
     } catch (error) {
       console.error("Subscription failed:", error);
       alert("Failed to initialize subscription process");
+    }
+  };
+
+  const processSubscription = async (switchDate?: number) => {
+    try {
+      const customerId = await getOrCreateCustomer(session!.user.id);
+      const data = await createSubscription(
+        session!.user.id,
+        customerId,
+        price.pgPlanId,
+        subscription.subscriptionId,
+        switchDate || null,
+        price.amount
+      );
+      handlePayment(data);
+    } catch (error) {
+      console.error("Subscription processing failed:", error);
+      alert("Failed to process subscription");
+    }
+  };
+
+  const handlePlanChangeConfirm = async () => {
+    setIsPlanChangeModalOpen(false);
+    if (switchDetails) {
+      await processSubscription(switchDetails.nextPlanStartDate);
     }
   };
 
@@ -253,6 +263,27 @@ export const PlanCard: React.FC<PlanProps> = ({
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
         subscriptionId={currentSubscriptionId}
+      />
+      <PlanChangeModal
+        isOpen={isPlanChangeModalOpen}
+        onClose={() => setIsPlanChangeModalOpen(false)}
+        onConfirm={handlePlanChangeConfirm}
+        currentPlan={{
+          displayName: "Current Plan",
+          price: {
+            amount: subscription.amount || 0,
+            interval: "month",
+            currency: "USD",
+            pgPlanId: subscription.planId || "",
+            dayPrice: (subscription.amount || 0) / 30,
+          },
+        }}
+        newPlan={{
+          displayName,
+          price,
+        }}
+        nextBillingDate={switchDetails?.nextPlanStartDate || 0}
+        amountDue={switchDetails?.amountDue || 0}
       />
     </>
   );
