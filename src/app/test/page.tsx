@@ -1,9 +1,28 @@
+'use client';
+import { useState } from 'react';
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import Image from "next/image";
 import Button from '@/components/common/Button';
 import { FiPlus, FiTrash2, FiEdit, FiDownload, FiHeart } from 'react-icons/fi';
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiResponse, setApiResponse] = useState<any>(null);
+
+  const testViralApi = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/viral/create');
+      const data = await response.json();
+      setApiResponse(data);
+    } catch (error) {
+      console.error('API Error:', error);
+      setApiResponse({ error: 'Failed to fetch' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const colorPalette = [
     {
       name: "Background",
@@ -31,9 +50,28 @@ export default function Home() {
     { name: "Muted Text", color: "bg-muted-text", text: "text-muted" },
   ];
 
+  const apiTestSection = (
+    <div className="w-full max-w-md p-4 bg-background rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-4 text-background-text">API Test Section</h2>
+      <Button
+        onClick={testViralApi}
+        isLoading={isLoading}
+        className="w-full mb-4"
+      >
+        Test Viral API
+      </Button>
+      {apiResponse && (
+        <pre className="bg-black/[.05] p-4 rounded text-sm overflow-auto">
+          {JSON.stringify(apiResponse, null, 2)}
+        </pre>
+      )}
+    </div>
+  );
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        {apiTestSection}
         <div className="p-8 bg-background">
           <h1 className="text-2xl font-bold mb-6 text-background-text">
             Color Palette

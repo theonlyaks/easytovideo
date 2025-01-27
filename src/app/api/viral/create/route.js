@@ -1,27 +1,14 @@
-export async function POST(request) {
+export async function GET() {
   try {
-    const data = await request.json();
-    
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Simulate success (90% of the time)
-    if (Math.random() > 0.1) {
-      return Response.json({
-        success: true,
-        message: 'Project created successfully!',
-        data: {
-          projectId: 'viral_' + Date.now(),
-          ...data
-        }
-      });
-    }
-    
-    throw new Error('Random failure');
+    return Response.json({
+      success: true,
+      message: 'Test route working successfully!',
+      timestamp: new Date().toISOString()
+    });
   } catch (error) {
     return Response.json({
       success: false,
-      message: 'Failed to create project',
+      message: 'Test route failed',
       error: error.message
     }, { status: 500 });
   }
