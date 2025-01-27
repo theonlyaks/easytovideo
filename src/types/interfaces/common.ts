@@ -52,10 +52,7 @@ export interface QuickActionButtonProps {
 }
 
 export interface QuickActionsProps {
-  onCreateNew: () => void;
-  onImport: () => void;
-  onDuplicate: () => void;
-  onTemplate: () => void;
+  onCreateAiEffect: () => void;
 }
 
 export interface FileItem {
@@ -72,4 +69,20 @@ export interface FileListProps {
   user: User | null;
   onSelect?: (file: FileItem) => void;
 }
+
+export interface SyncTaskConfig {
+  serviceFunction: (...args: any[]) => Promise<any>;
+  args?: any[];
+  loadingMessage?: string;
+  successMessage?: string;
+  errorMessage?: string;
+}
+
+export interface SyncTaskResult {
+  state: 'loading' | 'success' | 'error';
+  text: string;
+  isOpen: boolean;
+}
+
+export type FilenamePart = 'original' | 'timestamp' | 'type' | 'source';
 

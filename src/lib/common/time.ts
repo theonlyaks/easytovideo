@@ -44,3 +44,60 @@ export const getTimeAgo = (date: Date): string => {
     hour12: true,
   });
 };
+
+export const convertToLocalTime = (timestamp: Timestamp | string): string => {
+  let date: Date;
+  if (timestamp instanceof Timestamp) {
+    date = timestamp.toDate();
+  } else {
+    date = new Date(timestamp);
+  }
+  
+  const time = date.toLocaleString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  
+  const datePart = date.toLocaleString('en-US', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit'
+  });
+  
+  return `${time}, ${datePart}`;
+};
+
+export const formatRelativeTime = (formattedDate: string): string => {
+  const [time, date] = formattedDate.split(', ');
+  const [month, day, year] = date.split('/');
+  
+  const inputDate = new Date(2000 + parseInt(year), parseInt(month) - 1, parseInt(day));
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (inputDate.getTime() === today.getTime()) {
+    return ` ${time}, Today`;
+  } else if (inputDate.getTime() === yesterday.getTime()) {
+    return ` ${time}, Yesterday`;
+  } else {
+    return `${time}, ${month}/${day}/${year}`;
+  }
+};
+
+export const unixToLocalTime = (unixTimestamp: number | null): string => {
+  if (!unixTimestamp) return 'Not available';
+  
+  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
+  
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+};

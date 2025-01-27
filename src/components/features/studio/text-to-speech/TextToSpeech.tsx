@@ -9,6 +9,7 @@ import { FiPlayCircle } from 'react-icons/fi';
 import { AudioPlayer } from '@/components/common/AudioPlayer';
 
 export function TextToSpeech() {
+
   const {
     selectedLanguage,
     setSelectedLanguage,
@@ -27,6 +28,7 @@ export function TextToSpeech() {
     audioUrl,
     isUploading,
     isAdded,
+    generatedFileName,
     handleToggleUpload,
     handleGenerate,
   } = useTextToSpeech();
@@ -36,6 +38,10 @@ export function TextToSpeech() {
       e.preventDefault();
       handleGenerate(selectedVoice);
     }
+  };
+
+  const handleLanguageChange = (value: string) => {
+    setSelectedLanguage(value);
   };
 
   return (
@@ -57,7 +63,7 @@ export function TextToSpeech() {
               <Select
                 options={languageOptions}
                 value={selectedLanguage}
-                onChange={setSelectedLanguage}
+                onChange={handleLanguageChange}
                 placeholder="Select language..."
                 className="min-w-[200px]"
               />
@@ -88,11 +94,12 @@ export function TextToSpeech() {
         <div className="space-y-3">
           {audioUrl && (
             <AudioPlayer
-              onAdd={() => handleToggleUpload(0)}
-              title="Generated Speech"
+              onAdd={handleToggleUpload}
+              title={`Generated Speech`}
               audioUrl={audioUrl}
-              isUploading={isUploading[0]}
-              isAdded={isAdded[0]}
+              isUploading={isUploading}
+              isAdded={isAdded}
+              fileName={`${text.replace(/[^a-zA-Z]/g, '').slice(0, 25)}.mp3`} // Use formatted text as fallback
             />
           )}
         </div>

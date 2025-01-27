@@ -4,5 +4,5 @@
 import { redirect } from 'next/navigation';
 
 export default function Studio() {
-  redirect('/studio/text-to-sfx');
+  redirect('/studio/effects');
 }

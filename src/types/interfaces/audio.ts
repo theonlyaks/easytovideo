@@ -9,3 +9,7 @@ export interface GenerateTextToSpeechOptions {
   voiceId?: string;
 }
 
+export interface AudioFile {
+  url: string;
+  fileName: string;
+}

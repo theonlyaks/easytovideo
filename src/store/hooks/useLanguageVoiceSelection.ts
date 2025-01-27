@@ -18,7 +18,6 @@ export const useLanguageVoiceSelection = () => {
 
   useEffect(() => {
     if (audioLanguages.length > 0 && audioVoices.length > 0) {
-        console.log("Asdada",audioVoices)
       if (!selectedLanguage) {
         const initialLang = audioLanguages[0];
         setSelectedLanguage(initialLang.code);
@@ -34,24 +33,25 @@ export const useLanguageVoiceSelection = () => {
     }
   }, [audioLanguages, audioVoices, selectedLanguage]);
 
-  const languageOptions = useMemo(() => 
-    audioLanguages.map((lang: AudioLanguageData) => ({
+  const languageOptions = useMemo(() => {
+    const options = audioLanguages.map((lang: AudioLanguageData) => ({
       value: lang.code,
       label: `${lang.name}`,
-    }))
-  , [audioLanguages]);
+    }));
+    return options;
+  }, [audioLanguages]);
 
-  const voiceOptions = useMemo(() => 
-    audioVoices
+  const voiceOptions = useMemo(() => {
+    const options = audioVoices
       .filter((voice: AudioVoice) => voice.language_code === selectedLanguage)
       .map((voice: AudioVoice) => ({
         ...voice,
         value: voice.voice_id,
         label: voice.name,
-      }))
-  , [audioVoices, selectedLanguage]);
+      }));
+    return options;
+  }, [audioVoices, selectedLanguage]);
 
-  // New effect to set first voice option when options change
   useEffect(() => {
     if (voiceOptions.length > 0 && !voiceOptions.some(v => v.value === selectedVoice)) {
       const firstVoice = voiceOptions[0];

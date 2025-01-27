@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
     try {
       const requestData = await request.json();
       
-      const response = await fetch(`${API_ENDPOINTS.BACKEND_URL}/generate-sfx`, {
+      const response = await fetch(`${API_ENDPOINTS.BACKEND_URL}api/v1/audio_ai/generate-sfx`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

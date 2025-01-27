@@ -16,7 +16,7 @@ export const PROTECTED_ROUTE_PREFIXES = [
 ] as const
 
 export const AUTH_ROUTES = {
-  SIGNIN: '/auth/signin',
-  SIGNUP: '/auth/signup',
-  ERROR: '/auth/error',
+  SIGNIN: '/auth/',
+  SIGNUP: '/auth/',
+  ERROR: '/auth/',
 } as const

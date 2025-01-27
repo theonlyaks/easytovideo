@@ -1,19 +1,18 @@
-import { collection, query, where, orderBy, onSnapshot, Query, Unsubscribe } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot, addDoc, Unsubscribe, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/common/firebase';
 import { Project } from '@/types';
 
 export class ProjectService {
   static subscribeToProjects(
-    email: string,
+    userId: string,
     onSuccess: (projects: Project[]) => void,
     onError: (error: Error) => void
   ): Unsubscribe {
     const projectsCollection = collection(db, 'projects');
     const q = query(
       projectsCollection,
-      where('email', '==', email),
-      where('is_active', '==', true),
-      orderBy('updation_time', 'desc')
+      where('userId', '==', userId),
+      orderBy('updatedAt', 'desc')
     );
 
     return onSnapshot(
@@ -21,12 +20,22 @@ export class ProjectService {
       (snapshot) => {
         const projectList = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data(),
-          remainingTime: '',
+          ...doc.data()
         })) as Project[];
         onSuccess(projectList);
       },
       onError
     );
+  }
+
+  static async createProject(project: Project) {
+    console.log(project)
+    const projectRef = await addDoc(collection(db, 'projects'), {
+      ...project,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+
+    return projectRef.id;
   }
 }

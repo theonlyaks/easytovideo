@@ -1,5 +1,5 @@
 "use client";
-import { useTextToSfx } from "@/store/hooks/useTextToSfx";
+import { useTextToSfx } from "@/store";
 import { useAudioManagement } from "@/store";
 import Button from "@/components/common/Button";
 import { FiPlayCircle, FiClock, FiCopy, FiZap } from "react-icons/fi";
@@ -7,9 +7,16 @@ import { AudioPlayer } from "@/components/common/AudioPlayer";
 import { Switch } from "@/components/common/Switch";
 import { Tooltip } from "@/components/common/Tooltip";
 import { SuggestionGroup } from "@/components/common/SuggestionGroup";
-import { SPECIAL_EFFECT_SUGGESTIONS_LIST } from "@/constants/types/common";
+import { SPECIAL_EFFECT_SUGGESTIONS_LIST } from "@/constants";
+import { auth } from "@/lib/common/firebase";
+import { useState, useEffect } from "react";
 
 export function TextToSfx() {
+  const userId = auth.currentUser?.uid;
+  const [audioFiles, setAudioFiles] = useState<Array<{ url: string, fileName: string }>>([]);
+  // Add new state for generated filenames
+  const [generatedFileNames, setGeneratedFileNames] = useState<Array<string | null>>([]);
+
   const {
     text,
     setText,
@@ -25,9 +32,29 @@ export function TextToSfx() {
     setTotalVariations,
   } = useTextToSfx();
 
-  const { isUploading, isAdded, handleToggleUpload } = useAudioManagement(
-    audioUrls.filter((url): url is string => url !== null)
-  );
+  useEffect(() => {
+    const newAudioFiles = audioUrls
+      .filter((url): url is string => url !== null)
+      .map((url) => ({
+        url,
+        fileName: `${text.replace(/[^a-zA-Z]/g, '').slice(0, 25)}.mp3`
+      }));
+    setAudioFiles(newAudioFiles);
+  }, [audioUrls, text]);
+
+  const { 
+    isUploading, 
+    isAdded, 
+    handleToggleUpload, 
+    generatedFileNames: uploadGeneratedFileNames 
+  } = useAudioManagement(audioFiles, userId || '');
+
+  // Add effect to update generated filenames
+  useEffect(() => {
+    if (uploadGeneratedFileNames) {
+      setGeneratedFileNames(uploadGeneratedFileNames);
+    }
+  }, [uploadGeneratedFileNames]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -128,18 +155,18 @@ export function TextToSfx() {
         )}
         
         <div className="space-y-3">
-          {audioUrls.map(
-            (audioUrl, index) =>
-              audioUrl && (
-                <AudioPlayer
-                  key={index}
-                  onAdd={() => handleToggleUpload(index)}
-                  title={`Audio ${index + 1}`}
-                  audioUrl={audioUrl}
-                  isUploading={isUploading[index]}
-                  isAdded={isAdded[index]}
-                />
-              )
+          {audioFiles.map(
+            (audio, index) => (
+              <AudioPlayer
+                key={index}
+                onAdd={() => handleToggleUpload(index)}
+                title={`Audio ${index + 1}`}
+                audioUrl={audio.url}
+                isUploading={isUploading[index]}
+                isAdded={isAdded[index]}
+                fileName={audio.fileName} // Use original filename as fallback
+              />
+            )
           )}
         </div>
       </section>

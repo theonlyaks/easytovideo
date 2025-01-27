@@ -1,10 +1,24 @@
-import { UploadConfig } from '@/types/interfaces/upload';
+import { UploadConfig, MediaType } from '@/types';
 
-export const getUploadConfig = (userId: string): UploadConfig => ({
-  allowedTypes: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
-  maxSizeInMB: 100,
-  path: `uploads/${userId}`
-});
+export const getUploadConfig = (userId: string, type: MediaType): UploadConfig => {
+  const configs: Record<MediaType, Omit<UploadConfig, 'type'>> = {
+    video: {
+      allowedTypes: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
+      maxSizeInMB: 100,
+      path: `user_files/${userId}`
+    },
+    audio: {
+      allowedTypes: ['audio/mpeg', 'audio/wav', 'audio/ogg'],
+      maxSizeInMB: 50,
+      path: `user_files/${userId}`
+    }
+  };
+
+  return {
+    ...configs[type],
+    type
+  };
+};
 
 export const UPLOAD_ERROR_MESSAGES = {
   INVALID_TYPE: 'Invalid file type. Please upload a valid video file.',

@@ -16,7 +16,7 @@ export default {
         
         // Primary colors
         primary: "#e07a5f",
-        "primary-text": "#fffff",
+        "primary-text": "#ffffff",
         
         // Secondary colors
         secondary: "#3d405b",

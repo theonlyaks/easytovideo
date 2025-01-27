@@ -1,15 +1,24 @@
 import { Timestamp } from 'firebase/firestore';
 
 export interface Project {
-  id: string;
-  email: string;
+  id?: string;
+  email?: string;
   title?: string;
-  status: 'processing' | 'completed' | 'failed';
+  status?: string;
   duration?: number;
-  updation_time: Timestamp;
-  is_active: boolean;
+  updation_time?: Timestamp;
+  is_active?: boolean;
   signed_url_image?: string;
   remainingTime?: string;
+  startTime?: number;
+  endTime?: number;
+  userId?: string;
+  type?: string;
+  fileName?: string;
+  updatedAt?: Timestamp;
+  statusMessage?:string;
+  progress?: number;
+  outputFileName?: string;
 }
 
 export interface ProjectState {
