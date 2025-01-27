@@ -52,40 +52,44 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto py-12 flex flex-col items-center space-y-4">
+      <div className="max-w-4xl mx-auto py-6 md:py-12 px-4 md:px-0 flex flex-col items-center space-y-4">
         <LoadingSpinner size="lg" color="primary" />
-        <span className="text-background-text">Loading project data...</span>
+        <span className="text-sm md:text-base text-background-text">Loading project data...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto py-12">
-        <p className="text-red-500">Error: {error.message}</p>
+      <div className="max-w-4xl mx-auto py-6 md:py-12 px-4 md:px-0">
+        <p className="text-sm md:text-base text-red-500">Error: {error.message}</p>
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div className="max-w-4xl mx-auto py-12">
-        <p>Project not found</p>
+      <div className="max-w-4xl mx-auto py-6 md:py-12 px-4 md:px-0">
+        <p className="text-sm md:text-base">Project not found</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-12">
+    <div className="max-w-4xl mx-auto py-12 md:py-12 px-2  md:px-0">
       {videoUrl && (
-        <div className="bg-accent/10 border border-accent rounded-lg p-4 mb-8 flex items-center">
-          <FiCheckCircle className="text-accent w-6 h-6 mr-3" />
-          <span className="text-background-text font-medium">Your video is ready! You can preview or download it below.</span>
+        <div className="bg-accent/10 border border-accent rounded-lg p-3 md:p-4 mb-6 md:mb-8">
+          <div className="flex items-center gap-2 md:gap-3">
+            <FiCheckCircle className="text-accent w-5 h-5 md:w-6 md:h-6 flex-shrink-0" />
+            <span className="text-sm md:text-base text-background-text font-medium">
+              Your video is ready! You can preview or download it below.
+            </span>
+          </div>
         </div>
       )}
 
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 md:mb-8">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
           {isEditing ? (
             <input
               type="text"
@@ -93,22 +97,26 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
               onChange={(e) => setTitle(e.target.value)}
               onBlur={handleTitleUpdate}
               onKeyDown={(e) => e.key === 'Enter' && handleTitleUpdate()}
-              className="px-3 py-2 text-xl border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="px-3 py-2 text-lg md:text-xl border border-accent rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-accent w-full"
               autoFocus
               placeholder="Enter title..."
             />
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-semibold text-background-text">{title || 'Untitled'}</span>
+            <div className="flex items-center gap-2 w-full">
+              <h1 className="text-xl md:text-2xl font-semibold text-background-text truncate">
+                {title || 'Untitled'}
+              </h1>
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-1 hover:text-accent transition-colors"
+                className="p-1 hover:text-accent transition-colors flex-shrink-0"
               >
                 <FiEdit2 className="w-4 h-4" />
               </button>
             </div>
           )}
         </div>
+
         {videoUrl && (
           <Button
             onClick={handleDownload}
@@ -116,23 +124,29 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
             variant="primary"
             isLoading={isDownloading}
             disabled={isDownloading}
+            className="w-full md:w-auto"
           >
             {isDownloading ? 'Downloading...' : 'Download Video'}
           </Button>
         )}
       </div>
-      <div className="p-4 border rounded-lg space-y-4">        
+
+      <div className="border rounded-lg overflow-hidden">
         {urlLoading ? (
-          <p>Loading video URL...</p>
+          <div className="aspect-video bg-gray-100 flex items-center justify-center">
+            <LoadingSpinner size="md" color="primary" />
+          </div>
         ) : videoUrl ? (
-          <div className="space-y-4">
+          <div className="bg-black">
             <VideoPlayer
               source={videoUrl}
               onDuration={() => {}}
             />
           </div>
         ) : (
-          <p className="text-red-500">Failed to load video</p>
+          <div className="aspect-video bg-gray-100 flex items-center justify-center">
+            <p className="text-sm md:text-base text-red-500">Failed to load video</p>
+          </div>
         )}
       </div>
     </div>

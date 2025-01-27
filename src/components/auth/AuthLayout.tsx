@@ -1,33 +1,112 @@
-'use client'
+"use client";
 
-import { GoogleSignInButton } from './GoogleSignInButton';
-import { LogoNavbar } from '@/components/common/LogoNavbar';
+import React from "react";
+import { GoogleSignInButton } from "./GoogleSignInButton";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { AUTH_PROMOTION_ITEMS } from "@/constants";
 
 export function AuthLayout() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % AUTH_PROMOTION_ITEMS.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col">
-      <LogoNavbar />
-      
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="max-w-md w-full space-y-6">
-          <h1 className="text-3xl font-semibold text-center">
-            Create an account
-          </h1>
-          
-          <div className="space-y-4">
-            <GoogleSignInButton />
-            
-            <p className="text-sm text-gray-600 text-center px-8">
-              By clicking "Sign up with Google" I agree to the{' '}
-              <a href="#" className="text-blue-600 hover:underline">
-                Terms of Service
-              </a>
-              , acknowledge{' '}
-              <a href="#" className="text-blue-600 hover:underline">
-                Privacy Policy
-              </a>
-              , and consent to receive updates, special offers, and promotional emails. I understand that I can opt out at any time.
-            </p>
+    <div className="min-h-screen bg-background">
+      <div className="flex min-h-screen">
+        {/* Left Section - Auth Form */}
+        <div className="w-full lg:w-1/2 flex flex-col p-4 sm:p-6 lg:p-8">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-md space-y-6 px-4 sm:px-6">
+              <div className="text-center space-y-4">
+                <Link
+                  href="/"
+                  className="flex justify-center items-center"
+                >
+                  <Image
+                    src="/logo.svg"
+                    alt="EasyToVideo"
+                    width={48}
+                    height={48}
+                    className="text-primary mx-auto sm:w-[60px] sm:h-[60px]"
+                  />
+                </Link>
+                <p className="text-2xl font-bold text-secondary font-dm-sans">
+                  EasyToVideo
+                </p>
+                <p className="text-muted-text text-base sm:text-lg px-2">
+                  Turn Your Ideas Into Stunning Videos
+                </p>
+              </div>
+
+              <div className="space-y-6 mt-8">
+                <GoogleSignInButton />
+
+                <div className="space-y-4">
+                  <p className="text-xs sm:text-sm text-center text-muted-text">
+                    Trusted by creators worldwide
+                  </p>
+                  <p className="text-xs sm:text-sm text-muted-text text-center px-2 sm:px-6">
+                    By signing up, you agree to our{" "}
+                    <a
+                      href="#"
+                      className="text-primary hover:text-primary/80 font-medium"
+                    >
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="#"
+                      className="text-primary hover:text-primary/80 font-medium"
+                    >
+                      Privacy Policy
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section - Carousel */}
+        <div className="hidden lg:block lg:w-1/2 bg-secondary relative">
+          <div className="absolute inset-0 bg-opacity-90 flex items-center justify-center p-12">
+            <div className="text-center space-y-6">
+              <div className="flex justify-center mb-8">
+                {React.createElement(AUTH_PROMOTION_ITEMS[activeSlide].icon, {
+                  className: "w-24 h-24 text-secondary-text",
+                })}
+              </div>
+              <h2 className="text-3xl font-bold text-secondary-text font-dm-sans">
+                {AUTH_PROMOTION_ITEMS[activeSlide].title}
+              </h2>
+              <p className="text-secondary-text/90 text-lg max-w-md mx-auto">
+                {AUTH_PROMOTION_ITEMS[activeSlide].description}
+              </p>
+
+              {/* Carousel Indicators */}
+              <div className="flex justify-center space-x-2 mt-8">
+                {AUTH_PROMOTION_ITEMS.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === activeSlide
+                        ? "bg-secondary-text w-6"
+                        : "bg-secondary-text/50"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

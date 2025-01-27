@@ -15,7 +15,7 @@ export const RangeSeeker: React.FC<VideoRangeProps> = ({
       <div
         key={key}
         {...trackProps}
-        className="w-full h-2 rounded-md bg-muted"
+        className="w-full h-1.5 md:h-2 rounded-md bg-muted"
         style={{
           background: getTrackBackground({
             values,
@@ -36,17 +36,23 @@ export const RangeSeeker: React.FC<VideoRangeProps> = ({
       <div
         key={key}
         {...thumbProps}
-        className="h-4 w-4 rounded-full bg-primary shadow focus:outline-none"
+        className="h-5 w-5 md:h-4 md:w-4 rounded-full bg-primary shadow-md 
+                  touch-none focus:outline-none focus:ring-2 focus:ring-primary/50
+                  hover:scale-110 transition-transform"
       />
     );
   };
 
   return (
-    <div className="space-y-6 p-4 bg-secondary/5 rounded-lg">
-      <div className="px-2">
-        <div className="flex justify-between mb-3">
-          <span className="text-sm text-muted-text">{formatValue(values[0])}</span>
-          <span className="text-sm text-muted-text">{formatValue(values[1])}</span>
+    <div className="space-y-4 md:space-y-6 p-3 md:p-4 bg-secondary/5 rounded-lg">
+      <div className="px-1 md:px-2">
+        <div className="flex justify-between mb-2 md:mb-3">
+          <span className="text-xs md:text-sm text-muted-text font-medium">
+            {formatValue(values[0])}
+          </span>
+          <span className="text-xs md:text-sm text-muted-text font-medium">
+            {formatValue(values[1])}
+          </span>
         </div>
         
         <Range
@@ -59,8 +65,8 @@ export const RangeSeeker: React.FC<VideoRangeProps> = ({
           renderThumb={renderThumb}
         />
 
-        <div className="mt-2 text-center">
-          <div className="text-sm text-muted-text">
+        <div className="mt-4 md:mt-3 text-center">
+          <div className="text-xs md:text-sm text-muted-text font-medium">
             Selected Duration: {formatValue(values[1] - values[0])}
           </div>
         </div>

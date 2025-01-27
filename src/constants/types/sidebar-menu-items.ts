@@ -29,10 +29,10 @@ export const menuItems: MenuItems = {
     { icon: FaFolder, label: 'Projects', path: '/studio/projects' },
     // { icon: FaDatabase, label: 'Storage', path: '/studio/storage' }
   ],
-  Audio: [
-    { icon: FaMusic, label: 'Sound Effects', path: '/studio/text-to-sfx' },
-    { icon: FaMicrophone, label: 'Text to Speech', path: '/studio/text-to-speech' },
-  ],
+  // Audio: [
+  //   { icon: FaMusic, label: 'Sound Effects', path: '/studio/text-to-sfx' },
+  //   { icon: FaMicrophone, label: 'Text to Speech', path: '/studio/text-to-speech' },
+  // ],
   Video: [
     { icon: FaVideo, label: 'Effects', path: '/studio/effects' },
     // { icon: FaFire, label: 'Viral Clip', path: '/studio/agents' },

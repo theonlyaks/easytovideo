@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { useRazorpaySubscription } from "@/store/hooks/useRazorpaySubscription";
 import { useState } from "react";
-import { CancelSubscriptionModal } from "./CancelSubscriptionModal";
+import { CancelSubscriptionModal } from "@/components/features/studio/account/CancelSubscriptionModal";
 import { handleLogout } from "@/services/auth/logout";
 
 export function Account() {
@@ -52,12 +52,12 @@ export function Account() {
     }
 
     return (
-        <div className="max-w-2xl mx-auto py-12 px-6">
-            <h1 className="text-3xl font-bold text-background-text mb-8">Account</h1>
+        <div className="max-w-2xl mx-auto py-6 sm:py-12 px-4 sm:px-6">
+            <h1 className="text-lg md:text-xl font-bold text-center md:text-left text-background-text mb-6 sm:mb-8">Settings</h1>
 
             {/* Profile */}
-            <div className="bg-white rounded-lg border mb-6">
-                <div className="p-6 flex items-center gap-6">
+            <div className="bg-white rounded-lg border mb-4 sm:mb-6">
+                <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
                     <div className="h-16 w-16 rounded-full bg-background flex items-center justify-center overflow-hidden">
                         {user?.photoURL ? (
                             <img
@@ -69,11 +69,11 @@ export function Account() {
                             <FiUser className="w-6 h-6 text-neutral" />
                         )}
                     </div>
-                    <div>
-                        <h2 className="text-xl font-medium text-background-text mb-1">
+                    <div className="text-center sm:text-left">
+                        <h2 className="text-lg sm:text-xl font-medium text-background-text mb-1">
                             {user?.displayName || "User"}
                         </h2>
-                        <p className="text-neutral-text">{user?.email}</p>
+                        <p className="text-neutral-text text-sm sm:text-base">{user?.email}</p>
                     </div>
                 </div>
             </div>
@@ -82,8 +82,8 @@ export function Account() {
             <div className="bg-white rounded-lg border">
                 {/* Plan Info */}
                 {hasActivePlan ? (
-                    <div className="p-6 flex items-center justify-between border-b">
-                        <div className="flex items-center gap-4">
+                    <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b gap-4 sm:gap-0">
+                        <div className="flex items-center gap-4 w-full sm:w-auto">
                             <FiCreditCard className="w-5 h-5 text-primary" />
                             <div>
                                 <div className="font-medium text-background-text">{subscription.planName}</div>
@@ -94,21 +94,21 @@ export function Account() {
                         </div>
                         <button 
                             onClick={handlePlanNav}
-                            className="px-4 py-2 rounded-md text-primary hover:bg-background transition-colors"
+                            className="w-full sm:w-auto px-4 py-2 rounded-md text-primary hover:bg-background transition-colors"
                         >
                             Change Plan
                         </button>
                     </div>
                 ) : (
-                    <div className="p-6 border-b">
-                        <div className="flex items-center justify-between">
+                    <div className="p-4 sm:p-6 border-b">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
                             <div className="flex items-center gap-4">
                                 <FiCreditCard className="w-5 h-5 text-neutral" />
                                 <span className="text-neutral-text">No active plan</span>
                             </div>
                             <button 
                                 onClick={handlePlanNav}
-                                className="px-4 py-2 rounded-md bg-primary text-primary-text hover:bg-primary/90 transition-colors"
+                                className="w-full sm:w-auto px-4 py-2 rounded-md bg-primary text-primary-text hover:bg-primary/90 transition-colors"
                             >
                                 Select Plan
                             </button>
@@ -118,14 +118,14 @@ export function Account() {
 
                 {/* Billing Date / Plan Expiry */}
                 {endDate && (
-                    <div className="p-6 flex items-center justify-between border-b">
+                    <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b gap-2 sm:gap-0">
                         <div className="flex items-center gap-4">
                             <FiClock className="w-5 h-5 text-neutral" />
                             <span className="font-medium text-background-text">
                                 {isCancelled ? "Plan Expires On" : "Next Billing Date"}
                             </span>
                         </div>
-                        <span className="text-neutral-text">{endDate}</span>
+                        <span className="text-neutral-text ml-9 sm:ml-0">{endDate}</span>
                     </div>
                 )}
 

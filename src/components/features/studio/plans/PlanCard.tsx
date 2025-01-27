@@ -190,7 +190,7 @@ export const PlanCard: React.FC<PlanProps> = ({
   return (
     <>
       <div
-        className={`relative rounded-2xl p-8 bg-white border transition-all duration-200 hover:shadow-lg
+        className={`rounded-2xl p-8 bg-white border transition-all duration-200 hover:shadow-lg
         ${
           isPopular
             ? "border-2 border-primary shadow-md scale-105"
@@ -216,7 +216,7 @@ export const PlanCard: React.FC<PlanProps> = ({
                   ? "bg-neutral cursor-not-allowed text-white"
                   : isPopular
                   ? "bg-primary hover:bg-primary/90 text-primary-text shadow-sm hover:shadow-md"
-                  : "bg-background hover:bg-background/90 text-background-text border border-neutral/20"
+                  : "bg-primary hover:bg-primary/90 text-primary-text border border-neutral/20"
               }`}
           >
             {isProcessing || loading
@@ -226,7 +226,7 @@ export const PlanCard: React.FC<PlanProps> = ({
               : "Subscribe Now"}
           </button>
         </div>
-        {renderSubscriptionInfo()}
+        {/* {renderSubscriptionInfo()} */}
         <div className="space-y-6">
           <FeatureList title="Core Features" features={features.core} />
           <FeatureList title="Advanced Features" features={features.advanced} />
