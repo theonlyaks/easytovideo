@@ -188,7 +188,8 @@ export class PlansService {
           currentStart: data.currentStart || null,
           amount: data.amount || null,
           planName:data.planName || null,
-          subscriptionId:data.subscriptionId || null
+          subscriptionId:data.subscriptionId || null,
+          credit:0
         };
       }
       return null;
@@ -299,5 +300,31 @@ export class PlansService {
       console.error('Error updating subscription after payment:', error);
       throw error;
     }
+  }
+
+  static async getPlanCredits(pgPlanId: string): Promise<number> {
+    const plansRef = collection(db, 'plans');
+    const q = query(plansRef, where('price.pgPlanId', '==', pgPlanId));
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+      const planDoc = querySnapshot.docs[0];
+      return planDoc.data().credits || 0;
+    }
+    
+    return 0;
+  }
+
+  static async getPlanById(planId: string) {
+    const plansRef = collection(db, 'plans');
+    const q = query(plansRef, where('price.pgPlanId', '==', planId));
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+      const planDoc = querySnapshot.docs[0];
+      return planDoc.data();
+    }
+    
+    throw new Error('Plan not found');
   }
 }

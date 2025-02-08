@@ -71,6 +71,7 @@ export function ProjectListComponent({ user }: AuthState) {
                 key={project.id}
                 project={project}
                 onClick={handleProjectClick}
+                user={user}
               />
             ))}
           </div>

@@ -20,6 +20,7 @@ export function useStorageUrl(path: string | null): UseStorageUrlResult {
         setLoading(true);
         setError(null);
         const downloadUrl = await FirebaseStorageService.getDownloadUrl(path||'');
+        console.log('Download URL:', downloadUrl);
         setUrl(downloadUrl);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to fetch URL'));

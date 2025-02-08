@@ -23,11 +23,11 @@ export const FeatureList: React.FC<FeatureListProps> = ({ features, title }) => 
               Pro
             </span>
           )}
-          {feature.value && (
+          {/* {feature.value && (
             <span className="ml-2 text-xs text-neutral">
               ({feature.value})
             </span>
-          )}
+          )} */}
         </span>
       </div>
     ))}
