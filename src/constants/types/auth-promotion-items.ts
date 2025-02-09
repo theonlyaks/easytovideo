@@ -1,4 +1,4 @@
-import { FiMusic, FiVideo, FiHeadphones, FiPlay } from "react-icons/fi";
+import { FiCreditCard, FiZap, FiImage, FiBox, FiSettings, FiServer, FiHeadphones, FiClock } from "react-icons/fi";
 import { IconType } from "react-icons";
 
 export interface AuthPromotionItem {
@@ -9,23 +9,28 @@ export interface AuthPromotionItem {
 
 export const AUTH_PROMOTION_ITEMS: AuthPromotionItem[] = [
   {
-    icon: FiMusic,
-    title: "Transform Your Ideas Into Sound",
-    description: "Generate custom sound effects for your videos, games, and creative projects in seconds"
+    icon: FiZap,
+    title: "One-Click AI Effects",
+    description: "Transform your videos instantly with professional AI-powered effects at the click of a button"
   },
   {
-    icon: FiVideo,
-    title: "Perfect for Content Creators",
-    description: "Enhance your videos with unique and professional sound effects"
+    icon: FiZap,
+    title: "Smart Effects",
+    description: "Access to intelligent effect generation and processing tools"
   },
   {
-    icon: FiHeadphones,
-    title: "High Quality Audio",
-    description: "Create studio-quality sound effects powered by AI technology"
+    icon: FiImage,
+    title: "Stock Photos / Videos",
+    description: "Access to a comprehensive library of stock media content"
   },
   {
-    icon: FiPlay,
-    title: "Quick and Easy",
-    description: "Generate sound effects in seconds with simple text descriptions"
+    icon: FiBox,
+    title: "AI Generated Images",
+    description: "AI images using advanced technology",
+  },
+  {
+    icon: FiSettings,
+    title: "Advanced Effects Suite",
+    description: "Professional-grade effects and editing capabilities",
   }
 ];

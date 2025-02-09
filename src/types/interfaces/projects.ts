@@ -19,6 +19,9 @@ export interface Project {
   statusMessage?:string;
   progress?: number;
   outputFileName?: string;
+  thumbnailFilename?:string;
+  isOriginalClip?:boolean;
+  thumbnailUrl?:string;
 }
 
 export interface ProjectState {

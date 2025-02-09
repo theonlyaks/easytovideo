@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['storage.googleapis.com', 'i.ytimg.com'],
+    domains: ['storage.googleapis.com', 'i.ytimg.com','firebasestorage.googleapis.com'],
     remotePatterns: [
       {
         protocol: 'https',

@@ -83,7 +83,14 @@ export const PlanCard: React.FC<PlanProps> = ({
             return;
           }
 
-          const verified = await verifySubscription(data.subscription.id);
+          const verified = await verifySubscription(
+            data.subscription.id, 
+            session!.user.id,
+            subscription.planId,
+            subscription.status === 'active' || subscription.status === 'authenticated',
+            subscription.credit
+          );
+          
           if (verified) {
             // setIsPaymentModalOpen(false);
             return;

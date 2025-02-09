@@ -1,6 +1,7 @@
 "use client";
 import { auth } from "@/lib/common/firebase";
 import { FiUser, FiLogOut, FiCreditCard, FiClock, FiList, FiXCircle } from "react-icons/fi";
+import { BiCoinStack } from "react-icons/bi";  // Add this import
 import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { unixToLocalTime } from "@/lib/common/time";
@@ -115,6 +116,24 @@ export function Account() {
                         </div>
                     </div>
                 )}
+
+                {/* Credits Info */}
+                <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b gap-2 sm:gap-0">
+                    <div className="flex items-center gap-4">
+                        <BiCoinStack className="w-5 h-5 text-neutral" />
+                        <div>
+                            <span className="font-medium text-background-text">Available Credits</span>
+                            {subscription.credit === 0 && (
+                                <p className="text-sm text-neutral-600 mt-1">
+                                    You ran out of credits
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    <span className="text-xl font-medium text-primary">
+                        {subscription.credit}
+                    </span>
+                </div>
 
                 {/* Billing Date / Plan Expiry */}
                 {endDate && (

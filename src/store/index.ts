@@ -19,6 +19,7 @@ export * from './hooks/useDocument';
 export * from './hooks/useStorageUrl';
 export * from './hooks/useFileDownload';
 export * from './hooks/usePlans';
+export * from './hooks/useProjectThumbnailUrl';
 
 
 

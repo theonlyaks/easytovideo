@@ -11,3 +11,4 @@ export * from './interfaces/upload';
 export * from './interfaces/video';
 export * from './interfaces/plan';
 export * from './interfaces/subscription';
+export * from './interfaces/credits';

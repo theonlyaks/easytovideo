@@ -29,7 +29,7 @@ export const plansData = [
         description: "Ideal for creators and professionals",
         features: {
             core: [
-                { text: "500 Audio Generations Monthly", included: true },
+                { text: "100 Audio Generations Monthly", included: true },
                 { text: "Premium Sound Effects", included: true },
                 { text: "4K Audio Quality", included: true },
                 { text: "Unlimited Saved Generations", included: true },

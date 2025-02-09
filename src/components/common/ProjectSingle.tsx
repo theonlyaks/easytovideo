@@ -2,25 +2,44 @@ import React from "react";
 import Image from "next/image";
 import { MdMovie, MdAccessTime, MdCategory, MdError } from "react-icons/md"; // Added MdError icon
 import { Project } from "@/types";
+import { useStorageUrl } from "@/store/hooks/useStorageUrl";
+import { useProjectThumbnailUrl } from '@/store';
 import {
   getTimeAgo,
   convertToLocalTime,
   formatRelativeTime,
 } from "@/lib/common/time";
+import { User } from "@/types";
 
 interface ProjectSingleProps {
   project: Project;
   onClick: (id: string, status: string) => void;
+  user: User | null;
 }
 
 const ProjectSingle: React.FC<ProjectSingleProps> = ({
   project,
   onClick,
+  user
 }) => {
   const isClickable = project.status === "completed" && project.progress === 100;
+  
+  const thumbnailPath = !project.thumbnailUrl && project.thumbnailFilename && user ? 
+    `user_files/${user.uid}/thumbnails/${project.thumbnailFilename}` : null;
+  
+  const { url: thumbnailUrl } = useStorageUrl(thumbnailPath);
+  useProjectThumbnailUrl(project, thumbnailUrl);
 
   const renderThumbnail = () => (
-    project.signed_url_image ? (
+    project.status === "completed" ? (
+      <Image
+        src={project.thumbnailUrl || thumbnailUrl}  // Changed from generated_thumbnailUrl
+        alt={project.title || "Project thumbnail"}
+        width={400}
+        height={225}
+        className="w-full h-full object-cover"
+      />
+    ) : project.signed_url_image ? (
       <Image
         src={project.signed_url_image}
         alt={project.title || "Project thumbnail"}
@@ -80,7 +99,7 @@ const ProjectSingle: React.FC<ProjectSingleProps> = ({
                  transition-all duration-200 ${isClickable ? "cursor-pointer" : ""}`}
       onClick={() => isClickable && onClick(project.id ?? "", project.status ?? "")}
     >
-      <div className="relative aspect-video">
+      <div className="relative" style={{ aspectRatio: '9/16' }}>
         {renderThumbnail()}
         {renderOverlay()}
       </div>

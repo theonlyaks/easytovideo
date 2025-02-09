@@ -53,7 +53,7 @@ export function ProjectListComponent({ user }: AuthState) {
               <MdMovie className="h-24 w-24 text-gray-400" />
             </div>
             <button
-              onClick={() => router.push("/project")}
+              onClick={() => router.push("/studio/effects")}
               className="inline-flex items-center px-6 py-3 border border-transparent 
                        text-base font-medium rounded-md shadow-sm text-primary-text 
                        bg-primary hover:bg-opacity-90 
@@ -71,6 +71,7 @@ export function ProjectListComponent({ user }: AuthState) {
                 key={project.id}
                 project={project}
                 onClick={handleProjectClick}
+                user={user}
               />
             ))}
           </div>
