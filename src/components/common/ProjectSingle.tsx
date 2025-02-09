@@ -3,6 +3,7 @@ import Image from "next/image";
 import { MdMovie, MdAccessTime, MdCategory, MdError } from "react-icons/md"; // Added MdError icon
 import { Project } from "@/types";
 import { useStorageUrl } from "@/store/hooks/useStorageUrl";
+import { useProjectThumbnailUrl } from '@/store';
 import {
   getTimeAgo,
   convertToLocalTime,
@@ -22,14 +23,17 @@ const ProjectSingle: React.FC<ProjectSingleProps> = ({
   user
 }) => {
   const isClickable = project.status === "completed" && project.progress === 100;
-  const thumbnailPath = project.thumbnailFilename && user ? 
-    `user_files/${user.uid}/${project.thumbnailFilename}` : null;
+  
+  const thumbnailPath = !project.thumbnailUrl && project.thumbnailFilename && user ? 
+    `user_files/${user.uid}/thumbnails/${project.thumbnailFilename}` : null;
+  
   const { url: thumbnailUrl } = useStorageUrl(thumbnailPath);
+  useProjectThumbnailUrl(project, thumbnailUrl);
 
   const renderThumbnail = () => (
-    project.status === "completed" && thumbnailUrl ? (
+    project.status === "completed" ? (
       <Image
-        src={thumbnailUrl}
+        src={project.thumbnailUrl || thumbnailUrl}  // Changed from generated_thumbnailUrl
         alt={project.title || "Project thumbnail"}
         width={400}
         height={225}

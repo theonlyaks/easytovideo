@@ -21,6 +21,7 @@ export interface Project {
   outputFileName?: string;
   thumbnailFilename?:string;
   isOriginalClip?:boolean;
+  thumbnailUrl?:string;
 }
 
 export interface ProjectState {
