@@ -8,3 +8,4 @@ export * from './types/upload';
 export * from './types/video';
 export * from './types/plans';
 export * from './types/auth-promotion-items';
+export * from './types/terms-items';

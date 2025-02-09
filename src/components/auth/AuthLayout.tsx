@@ -42,7 +42,7 @@ export function AuthLayout() {
                   EasyToVideo
                 </p>
                 <p className="text-muted-text text-base sm:text-lg px-2">
-                  Turn Your Ideas Into Stunning Videos
+                  Turn Your Video Into Viral Videos
                 </p>
               </div>
 
@@ -55,19 +55,23 @@ export function AuthLayout() {
                   </p>
                   <p className="text-xs sm:text-sm text-muted-text text-center px-2 sm:px-6">
                     By signing up, you agree to our{" "}
-                    <a
-                      href="#"
+                    <Link
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-primary hover:text-primary/80 font-medium"
                     >
                       Terms of Service
-                    </a>{" "}
+                    </Link>{" "}
                     and{" "}
-                    <a
-                      href="#"
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-primary hover:text-primary/80 font-medium"
                     >
                       Privacy Policy
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
