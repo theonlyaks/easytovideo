@@ -23,6 +23,6 @@ export const QuickActionButton: React.FC<QuickActionButtonProps> = ({
                    group-hover:text-primary transition-colors">
       {label}
     </h3>
-    <p className="text-xs text-background-text text-center">{description}</p>
+    <p className="text-sm text-background-text text-center">{description}</p>
   </button>
 );
