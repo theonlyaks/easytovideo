@@ -18,11 +18,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     <div className="border-b border-muted pb-3 md:pb-5 mb-4 md:mb-8">
       <div className="flex flex-col gap-3 md:gap-0 md:flex-row md:items-center md:justify-between">
         <div className="space-y-1 md:space-y-2">
-          <h1 className="text-lg md:text-xl font-semibold tracking-tight text-background-text">
+          <h1 className="text-lg md:text-xl font-medium tracking-tight text-background-text">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-xs md:text-sm leading-5 md:leading-6 text-background-text/80 max-w-2xl">
+            <p className="text-sm leading-5 md:leading-6 text-background-text/80 max-w-2xl">
               {subtitle}
             </p>
           )}
@@ -36,7 +36,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
               value={filter} 
               onChange={onFilterChange} 
               className="bg-background text-background-text border-muted rounded-md 
-                       px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm w-32 md:w-auto
+                       px-2 md:px-3 py-1 md:py-1.5 text-sm md:text-sm w-32 md:w-auto
                        focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent 
                        hover:border-accent transition-colors duration-200"
             >

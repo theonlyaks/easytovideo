@@ -130,7 +130,7 @@ export function Account() {
                             )}
                         </div>
                     </div>
-                    <span className="text-xl font-medium text-primary">
+                    <span className="sm:text-xl text-base font-medium text-primary ml-9 sm:ml-0">
                         {subscription.credit}
                     </span>
                 </div>

@@ -86,7 +86,7 @@ export function Effects({ user }: AuthState) {
       setErrorMessage(null);
       const project: Project = {
         userId: user.uid,
-        type: "effects",
+        type: "Effects",
         startTime: timeRange.start,
         endTime: timeRange.end,
         fileName: selectedFile.fileName,
@@ -123,24 +123,24 @@ export function Effects({ user }: AuthState) {
       {!videoUrl ? (
         <>
           <div className="mb-8 text-center">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+            <h1 className="text-2xl md:text-3xl font-medium mb-2">
               Smart Video Effects
             </h1>
-            <p className="text-lg text-muted-text px-1">
+            <p className="text-sm text-muted-text px-1">
               AI-powered effects for TikTok, Reels & Shorts
             </p>
           </div>
           <button
             onClick={() => setIsFileManagerOpen(true)}
-            className="w-full border-2 border-dashed border-primary rounded-lg p-4 md:p-8 text-center cursor-pointer hover:bg-primary/5 transition-colors"
+            className="w-full border-2 border-dashed border-primary rounded-lg p-4 md:p-8 text-center cursor-pointer hover:bg-primary/5 transition-colors flex flex-col items-center justify-center min-h-[200px]"
           >
-            <MdAdd className="mx-auto h-8 w-8 md:h-12 md:w-12 text-primary mb-2" />
+            <MdAdd className="h-8 w-8 md:h-24 md:w-12 text-primary mb-2" />
             <p className="text-base md:text-lg mb-1 md:mb-2">
               Select video from library
             </p>
-            <p className="text-xs md:text-sm text-muted-text">
+            {/* <p className="text-xs md:text-sm text-muted-text">
               Supports MP4, WebM, and Ogg
-            </p>
+            </p> */}
           </button>
         </>
       ) : (
