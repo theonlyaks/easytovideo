@@ -4,7 +4,7 @@ export type TermItem = {
   listItems?: string[];
 };
 
-export const termsLastUpdated = "December 15, 2023";
+export const termsLastUpdated = "February 09, 2025";
 
 export const termsItems: TermItem[] = [
   {

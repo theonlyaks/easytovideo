@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Terms() {
   return (
-    <div className="py-16">
+    <div className="py-16 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Logo and Title Section */}
         <div className="text-center space-y-4 mb-12">
