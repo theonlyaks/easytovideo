@@ -4,7 +4,7 @@ export type PrivacyItem = {
   listItems?: string[];
 };
 
-export const privacyLastUpdated = "December 15, 2023";
+export const privacyLastUpdated = "February 09, 2025";
 
 export const privacyItems: PrivacyItem[] = [
   {

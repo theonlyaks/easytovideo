@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Privacy() {
   return (
-    <div className="py-16">
+    <div className="py-16 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Logo and Title Section */}
         <div className="text-center space-y-4 mb-12">
@@ -30,7 +30,7 @@ export default function Privacy() {
           Last Updated: {privacyLastUpdated}
         </p>
         
-        <div className="space-y-6 text-background-text/90 font-inter">
+        <div className="space-y-6 text-background-text/90 font-inter ">
           {privacyItems.map((item, index) => (
             <section key={index} className="space-y-4">
               <h2 className="text-2xl font-bold text-secondary">{item.title}</h2>
