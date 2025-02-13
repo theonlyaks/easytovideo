@@ -39,7 +39,7 @@ export function useTextToSfx() {
         setAudioUrls(urls);
       } catch (error) {
         setError('Failed to generate speech');
-        console.error(error);
+        //console.error(error);
       } finally {
         setIsLoading(false);
       }

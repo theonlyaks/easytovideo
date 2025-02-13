@@ -7,7 +7,7 @@ export class FirebaseStorageService {
       const storageRef = ref(storage, path);
       return await getDownloadURL(storageRef);
     } catch (error) {
-      console.error('Error getting download URL:', error);
+      //console.error('Error getting download URL:', error);
       throw error;
     }
   }
@@ -31,7 +31,7 @@ export class FirebaseStorageService {
             }
           },
           (error) => {
-            console.error('Upload error:', error);
+            //console.error('Upload error:', error);
             reject(error);
           },
           async () => {
@@ -41,7 +41,7 @@ export class FirebaseStorageService {
         );
       });
     } catch (error) {
-      console.error('Error uploading file:', error);
+      //console.error('Error uploading file:', error);
       throw error;
     }
   }

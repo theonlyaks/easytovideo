@@ -20,7 +20,7 @@ export const useFilesList = (user: User | null) => {
         setFiles(fileList);
         setError(null);
       } catch (err) {
-        console.error('Error loading files:', err);
+        //console.error('Error loading files:', err);
         setError('Failed to load files');
       } finally {
         setLoading(false);

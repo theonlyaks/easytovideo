@@ -15,7 +15,7 @@ export const useProjectThumbnailUrl = (
         try {
           await ProjectService.updateProjectThumbnailUrl(project.id, newThumbnailUrl);
         } catch (error) {
-          console.error("Error updating thumbnail URL:", error);
+          //console.error("Error updating thumbnail URL:", error);
         }
       }
     };

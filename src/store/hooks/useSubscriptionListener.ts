@@ -32,7 +32,7 @@ export const useSubscriptionListener = () => {
           credit: userCredits.credit
         });
       } catch (error) {
-        console.error('Failed to fetch initial data:', error);
+        //console.error('Failed to fetch initial data:', error);
         setSubscription({
           status: 'error',
           planId: null,
@@ -53,11 +53,11 @@ export const useSubscriptionListener = () => {
     const unsubscribePlan = PlansService.listenToActiveSubscription(
       session.user.id,
       (data: SubscriptionState) => {
-        console.log("Subscription update:", data);
+        // console.log("Subscription update:", data);
         setSubscription(prev => ({ ...data, credit: prev.credit }));
       },
       (error) => {
-        console.error("Subscription listener error:", error);
+        //console.error("Subscription listener error:", error);
         setSubscription(prev => ({ 
           ...prev,
           status: 'error',
@@ -70,11 +70,11 @@ export const useSubscriptionListener = () => {
     const unsubscribeCredits = CreditsService.listenToCredits(
       session.user.id,
       (userCredits) => {
-        console.log("Credits update:", userCredits);
+        // console.log("Credits update:", userCredits);
         setSubscription(prev => ({ ...prev, credit: userCredits.credit }));
       },
       (error) => {
-        console.error("Credits listener error:", error);
+        //console.error("Credits listener error:", error);
         setSubscription(prev => ({ 
           ...prev,
           credit: 0,

@@ -13,7 +13,7 @@ export async function POST(request) {
         if (!subscriptionId) {
             return NextResponse.json({ error: 'Subscription ID is required' }, { status: 400 });
         }
-        console.log(subscriptionId);
+        // console.log(subscriptionId);
         // Call Razorpay API directly with cancel_at_cycle_end parameter
         const response = await fetch(
             `https://api.razorpay.com/v1/subscriptions/${subscriptionId}/cancel`,
@@ -33,7 +33,7 @@ export async function POST(request) {
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('Razorpay API error:', errorData);
+            //console.error('Razorpay API error:', errorData);
             return NextResponse.json({
                 error: 'Failed to cancel subscription',
                 details: process.env.NODE_ENV === 'development' ? errorData : undefined
@@ -41,7 +41,7 @@ export async function POST(request) {
         }
 
         const cancelledSubscription = await response.json();
-        console.log('Subscription cancelled successfully:', cancelledSubscription);
+        // console.log('Subscription cancelled successfully:', cancelledSubscription);
 
         return NextResponse.json({
             success: true,
@@ -50,7 +50,7 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error('Error cancelling subscription:', error);
+        //console.error('Error cancelling subscription:', error);
         return NextResponse.json({
             error: 'Failed to cancel subscription',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined

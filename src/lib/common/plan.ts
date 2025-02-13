@@ -20,24 +20,24 @@ interface PlanSwitchParams {
     currentEndDate
    }: PlanSwitchParams): PlanSwitchResult => {
    
-    console.log('Input Parameters:', {
-      currentPrice,
-      newPrice,
-      billingCycleDays, 
-      currentStartDate,
-      currentEndDate,
-      currentStartDateReadable: new Date(currentStartDate * 1000).toLocaleString(),
-      currentEndDateReadable: new Date(currentEndDate * 1000).toLocaleString()
-    });
+    // console.log('Input Parameters:', {
+    //   currentPrice,
+    //   newPrice,
+    //   billingCycleDays, 
+    //   currentStartDate,
+    //   currentEndDate,
+    //   currentStartDateReadable: new Date(currentStartDate * 1000).toLocaleString(),
+    //   currentEndDateReadable: new Date(currentEndDate * 1000).toLocaleString()
+    // });
    
     // Calculate daily prices
     const currentPlanDailyPrice = Math.round(currentPrice / billingCycleDays);
     const newPlanDailyPrice = Math.round(newPrice / billingCycleDays);
     
-    console.log('Daily Prices:', {
-      currentPlanDailyPrice,
-      newPlanDailyPrice
-    });
+    // console.log('Daily Prices:', {
+    //   currentPlanDailyPrice,
+    //   newPlanDailyPrice
+    // });
    
     // Calculate days used
     const now = Math.floor(Date.now() / 1000);
@@ -45,22 +45,22 @@ interface PlanSwitchParams {
     const normalizedDaysUsed = daysUsed % billingCycleDays;
     const remainingDays = billingCycleDays - normalizedDaysUsed;
    
-    console.log('Time Calculations:', {
-      now,
-      nowReadable: new Date(now * 1000).toLocaleString(),
-      daysUsed,
-      normalizedDaysUsed,
-      remainingDays
-    });
+    // console.log('Time Calculations:', {
+    //   now,
+    //   nowReadable: new Date(now * 1000).toLocaleString(),
+    //   daysUsed,
+    //   normalizedDaysUsed,
+    //   remainingDays
+    // });
    
     // Downgrade case
     if (newPlanDailyPrice < currentPlanDailyPrice) {
-      console.log('Downgrade Case - returning:', {
-        nextPlanStartDate: currentEndDate,
-        nextPlanStartDateReadable: new Date(currentEndDate * 1000).toLocaleString(),
-        remainingDays,
-        amountDue: 0
-      });
+      // console.log('Downgrade Case - returning:', {
+      //   nextPlanStartDate: currentEndDate,
+      //   nextPlanStartDateReadable: new Date(currentEndDate * 1000).toLocaleString(),
+      //   remainingDays,
+      //   amountDue: 0
+      // });
    
       return {
         nextPlanStartDate: currentEndDate,
@@ -84,13 +84,13 @@ interface PlanSwitchParams {
     const nextPlanStartDate = Math.floor(utcMidnight / 1000) + (daysInNewPlan * 24 * 60 * 60);
     const amountDue = Math.max(0, (remainingDays * newPlanDailyPrice) - remainingBalance);
    
-    console.log('Upgrade Calculations:', {
-      remainingBalance,
-      daysInNewPlan,
-      nextPlanStartDate,
-      nextPlanStartDateReadable: new Date(nextPlanStartDate * 1000).toLocaleString(),
-      amountDue
-    });
+    // console.log('Upgrade Calculations:', {
+    //   remainingBalance,
+    //   daysInNewPlan,
+    //   nextPlanStartDate,
+    //   nextPlanStartDateReadable: new Date(nextPlanStartDate * 1000).toLocaleString(),
+    //   amountDue
+    // });
    
     return {
       nextPlanStartDate,

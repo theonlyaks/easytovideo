@@ -10,21 +10,21 @@ export const useProjects = (user: User | null): ProjectState => {
 
   useEffect(() => {
     if (!user?.id) {
-      console.log('No user or userId found:', user);
+      // console.log('No user or userId found:', user);
       setState({ projects: [], loading: false });
       return;
     }
 
-    console.log('Subscribing to projects for user:', user.id);
+    // console.log('Subscribing to projects for user:', user.id);
 
     const unsubscribe = ProjectService.subscribeToProjects(
       user.id,
       (projects) => {
-        console.log('Projects response:', projects);
+        // console.log('Projects response:', projects);
         setState({ projects, loading: false });
       },
       (error) => {
-        console.error('Error subscribing to projects:', error);
+        //console.error('Error subscribing to projects:', error);
         setState((prev) => ({ ...prev, loading: false, error: error.message }));
       }
     );

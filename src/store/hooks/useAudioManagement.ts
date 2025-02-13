@@ -46,7 +46,7 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
       setGeneratedFileNames(newGeneratedFileNames);
 
     } catch (error) {
-      console.error("Error uploading audio:", error);
+      //console.error("Error uploading audio:", error);
     } finally {
       const newIsUploading = [...isUploading];
       newIsUploading[index] = false;
@@ -80,7 +80,7 @@ export function useAudioManagement(audioFiles: AudioFile[], userId: string) {
         await handleUpload(index);
       }
     } catch (error) {
-      console.error("Error toggling audio:", error);
+      //console.error("Error toggling audio:", error);
     } finally {
       const newIsUploading = [...isUploading];
       newIsUploading[index] = false;

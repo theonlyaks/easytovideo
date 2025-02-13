@@ -15,7 +15,7 @@ export function usePlans() {
         setError(null);
       } catch (err) {
         setError('Failed to fetch plans. Please try again later.');
-        console.error('Error in usePlans:', err);
+        //console.error('Error in usePlans:', err);
       } finally {
         setLoading(false);
       }

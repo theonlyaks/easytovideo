@@ -30,7 +30,7 @@ export const getAudioLanguages = async (): Promise<AudioLanguageData[]> => {
     const querySnapshot = await getDocs(collection(db, 'audio_language'));
     return querySnapshot.docs.map(doc => doc.data() as AudioLanguageData);
   } catch (error) {
-    console.error('Error fetching audio languages:', error);
+    //console.error('Error fetching audio languages:', error);
     return [];
   }
 };
@@ -39,7 +39,7 @@ export const getAudioVoices = async (): Promise<AudioVoice[]> => {
     const querySnapshot = await getDocs(collection(db, 'audio_voices'));
     return querySnapshot.docs.map(doc => doc.data() as AudioVoice);
   } catch (error) {
-    console.error('Error fetching audio voices:', error);
+    //console.error('Error fetching audio voices:', error);
     return [];
   }
 };
@@ -71,7 +71,7 @@ export async function generateTextToSfx(text: string, options?: GenerateTextToSf
     const audioBlob = await response.blob();
     return audioBlob;
   } catch (error) {
-    console.error('Error generating sfx:', error);
+    //console.error('Error generating sfx:', error);
     throw error;
   }
 }
@@ -102,7 +102,7 @@ export async function generateTextToSpeech(text: string, options?: GenerateTextT
       const audioBlob = await response.blob();
       return audioBlob;
     } catch (error) {
-      console.error('Error generating speech:', error);
+      //console.error('Error generating speech:', error);
       throw error;
     }
   }

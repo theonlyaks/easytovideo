@@ -29,7 +29,7 @@ export class ProjectService {
   }
 
   static async createProject(project: Project) {
-    console.log(project)
+    // console.log(project)
     const projectRef = await addDoc(collection(db, 'projects'), {
       ...project,
       createdAt: serverTimestamp(),
@@ -47,7 +47,7 @@ export class ProjectService {
         updatedAt: serverTimestamp()
       });
     } catch (error) {
-      console.error("Error updating thumbnail URL:", error);
+      //console.error("Error updating thumbnail URL:", error);
       throw error;
     }
   }

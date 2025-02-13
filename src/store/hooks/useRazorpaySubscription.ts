@@ -77,7 +77,7 @@ export const useRazorpaySubscription = () => {
       });
 
       const { subscription } = await response.json();
-      console.log('Raw subscription data:', subscription);
+      // console.log('Raw subscription data:', subscription);
 
       if (subscription.status === 'active' || subscription.status === 'authenticated') {
         const subscriptionData = {
@@ -129,13 +129,13 @@ export const useRazorpaySubscription = () => {
           }
         }
 
-        console.log('Processed subscription data:', subscriptionData);
+        // console.log('Processed subscription data:', subscriptionData);
         await PlansService.updateSubscriptionAfterPayment(subscriptionId, subscriptionData);
         return true;
       }
       return false;
     } catch (err) {
-      console.error('Verification failed:', err);
+      //console.error('Verification failed:', err);
       return false;
     }
   };

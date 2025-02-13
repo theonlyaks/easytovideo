@@ -22,7 +22,7 @@ export async function createViralProject(file: FileItem, type: String) {
       stepStatus:'0/5'
     });
 
-    console.log('Creating viral project...', file);
+    // console.log('Creating viral project...', file);
     const response = await fetch('/api/viral/create', {
       method: 'POST',
       headers: {

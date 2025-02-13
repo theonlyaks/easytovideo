@@ -33,7 +33,7 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error('Error creating customer:', error);
+        //console.error('Error creating customer:', error);
         return NextResponse.json({
             error: 'Failed to create customer',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined

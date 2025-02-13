@@ -46,7 +46,7 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
       });
       setIsEditing(false);
     } catch (error) {
-      console.error('Error updating title:', error);
+      //console.error('Error updating title:', error);
     }
   };
 

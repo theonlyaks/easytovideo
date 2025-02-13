@@ -28,7 +28,7 @@ export function useFileDownload() {
       document.body.removeChild(a);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Download failed'));
-      console.error('Error downloading file:', err);
+      //console.error('Error downloading file:', err);
     } finally {
       setIsDownloading(false);
     }

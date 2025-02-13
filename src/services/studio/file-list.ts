@@ -24,7 +24,7 @@ export const getUserFiles = async (userId: string): Promise<FileItem[]> => {
     const files = await Promise.all(filesPromises);
     return files.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   } catch (error) {
-    console.error('Error loading files:', error);
+    //console.error('Error loading files:', error);
     throw error;
   }
 };
