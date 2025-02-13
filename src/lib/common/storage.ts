@@ -23,7 +23,7 @@ export async function uploadAudioFile(audioBlob: Blob) {
 
     return { url: downloadURL, id: docRef.id };
   } catch (error) {
-    console.error('Error uploading audio:', error);
+    //console.error('Error uploading audio:', error);
     throw error;
   }
 }
@@ -33,7 +33,7 @@ export async function removeAudioEntry(docId: string) {
     await deleteDoc(doc(db, 'add', docId));
     return true;
   } catch (error) {
-    console.error('Error removing audio entry:', error);
+    //console.error('Error removing audio entry:', error);
     throw error;
   }
 }

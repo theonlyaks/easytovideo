@@ -17,7 +17,7 @@ export async function POST(request) {
         return NextResponse.json({ subscription });
 
     } catch (error) {
-        console.error('Verification error:', error);
+        //console.error('Verification error:', error);
         return NextResponse.json({ error: 'Verification failed' }, { status: 500 });
     }
 }

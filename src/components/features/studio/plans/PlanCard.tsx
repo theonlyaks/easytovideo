@@ -54,12 +54,12 @@ export const PlanCard: React.FC<PlanProps> = ({
     subscription.planId === price.pgPlanId;
   const isProcessing = subscription.status === "loading";
   const loading = customerLoading || subscriptionLoading;
-  console.log("Subscription details:", {
-    price: price.dayPrice,
-    amount: subscription.amount,
-    startTime: unixToLocalTime(subscription.currentStart),
-    endTime: unixToLocalTime(subscription.currentEnd),
-  });
+  // console.log("Subscription details:", {
+  //   price: price.dayPrice,
+  //   amount: subscription.amount,
+  //   startTime: unixToLocalTime(subscription.currentStart),
+  //   endTime: unixToLocalTime(subscription.currentEnd),
+  // });
 
   const handlePayment = (data: SubscriptionRazorpay) => {
     if (!scriptLoaded) {
@@ -128,7 +128,7 @@ export const PlanCard: React.FC<PlanProps> = ({
     }
 
     try {
-      console.log("subscription new", subscription);
+      // console.log("subscription new", subscription);
       // If user has an active subscription, show plan change modal
       if (
         subscription.status === "active" ||
@@ -149,7 +149,7 @@ export const PlanCard: React.FC<PlanProps> = ({
       // For new subscriptions, proceed directly
       await processSubscription();
     } catch (error) {
-      console.error("Subscription failed:", error);
+      //console.error("Subscription failed:", error);
       alert("Failed to initialize subscription process");
     }
   };
@@ -168,7 +168,7 @@ export const PlanCard: React.FC<PlanProps> = ({
       );
       handlePayment(data);
     } catch (error) {
-      console.error("Subscription processing failed:", error);
+      //console.error("Subscription processing failed:", error);
       alert("Failed to process subscription");
     }
   };

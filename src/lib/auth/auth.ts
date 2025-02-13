@@ -26,17 +26,17 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.idToken) return null;
-
+        // console.log('Firebase credentials:', credentials);
         try {
           const credential = GoogleAuthProvider.credential(null, credentials.idToken);
           const { user } = await signInWithCredential(auth, credential);
-          console.log('Firebase auth user:', user);
+          // console.log('Firebase auth user:', user.uid,user.email,user.providerData[0].email);
 
           return {
             id: user.uid,
             uid: user.uid,
             name: user.displayName,
-            email: user.email,
+            email: user.email || user.providerData[0].email,
             image: user.photoURL,
           }
         } catch (error) {
@@ -50,11 +50,12 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      // console.log('JWT callback:', user);
       if (user) {
         token.id = user.id
         token.uid = user.uid
         token.name = user.name
-        token.email = user.email
+        token.email = user.email 
         token.picture = user.image
       }
       return token

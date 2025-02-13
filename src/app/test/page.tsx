@@ -16,7 +16,7 @@ export default function Home() {
       const data = await response.json();
       setApiResponse(data);
     } catch (error) {
-      console.error('API Error:', error);
+      //console.error('API Error:', error);
       setApiResponse({ error: 'Failed to fetch' });
     } finally {
       setIsLoading(false);

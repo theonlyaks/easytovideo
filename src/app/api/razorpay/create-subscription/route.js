@@ -35,7 +35,7 @@ export async function POST(request) {
         }
         
 
-        console.log('subscriptionData:', subscriptionData);
+        // console.log('subscriptionData:', subscriptionData);
 
         const subscription = await razorpay.subscriptions.create(subscriptionData);
 
@@ -46,7 +46,7 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error('Error creating subscription:', error);
+        //console.error('Error creating subscription:', error);
         return NextResponse.json({
             error: 'Failed to create subscription',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined

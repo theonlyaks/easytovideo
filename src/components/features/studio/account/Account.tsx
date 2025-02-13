@@ -2,6 +2,7 @@
 import { auth } from "@/lib/common/firebase";
 import { FiUser, FiLogOut, FiCreditCard, FiClock, FiList, FiXCircle } from "react-icons/fi";
 import { BiCoinStack } from "react-icons/bi";  // Add this import
+import { useSession } from "next-auth/react"; // Add this import
 import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { unixToLocalTime } from "@/lib/common/time";
@@ -14,6 +15,7 @@ import { handleLogout } from "@/services/auth/logout";
 
 export function Account() {
     const user = auth.currentUser;
+    const { data: session } = useSession(); // Add this
     const subscription = useAtomValue(subscriptionAtom);
     const router = useRouter();
     const { cancelSubscription, loading: cancelLoading } = useRazorpaySubscription();
@@ -39,7 +41,7 @@ export function Account() {
             setShowCancelModal(false);
             router.refresh(); // Refresh the page to update subscription status
         } catch (error) {
-            console.error("Error cancelling subscription:", error);
+            //console.error("Error cancelling subscription:", error);
             setCancelError("Failed to cancel subscription. Please try again.");
         }
     };
@@ -51,6 +53,19 @@ export function Account() {
             </div>
         );
     }
+
+    // // Add logging for both auth methods
+    // console.log('Firebase Auth User:', {
+    //     uid: user?.uid,
+    //     email: user?.email,
+    //     displayName: user?.displayName,
+    //     providerData: user?.providerData
+    // });
+    
+    // console.log('NextAuth Session:', {
+    //     user: session?.user,
+    //     expires: session?.expires
+    // });
 
     return (
         <div className="max-w-2xl mx-auto py-6 sm:py-12 px-4 sm:px-6">
@@ -74,7 +89,7 @@ export function Account() {
                         <h2 className="text-lg sm:text-xl font-medium text-background-text mb-1">
                             {user?.displayName || "User"}
                         </h2>
-                        <p className="text-neutral-text text-sm sm:text-base">{user?.email}</p>
+                        <p className="text-neutral-text text-sm sm:text-base">{session?.user?.email}</p>
                     </div>
                 </div>
             </div>

@@ -42,7 +42,7 @@ export class CreditsService {
         }
       },
       (error) => {
-        console.error('Credits listener error:', error);
+        //console.error('Credits listener error:', error);
         onError?.(error);
       }
     );
@@ -73,7 +73,7 @@ export class CreditsService {
     };
 
     // Debug log to check the entry
-    console.log('Creating history entry:', cleanHistoryEntry);
+    // console.log('Creating history entry:', cleanHistoryEntry);
 
     try {
       await updateDoc(docRef, {
@@ -81,8 +81,8 @@ export class CreditsService {
         history: arrayUnion(cleanHistoryEntry)
       });
     } catch (error) {
-      console.error('Failed to update credits:', error);
-      console.error('History entry that caused error:', cleanHistoryEntry);
+      //console.error('Failed to update credits:', error);
+      //console.error('History entry that caused error:', cleanHistoryEntry);
       throw error;
     }
   }

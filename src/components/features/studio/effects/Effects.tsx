@@ -94,7 +94,7 @@ export function Effects({ user }: AuthState) {
         isOriginalClip, // Add this new property
       };
       const projectId = await createProject(project);
-      console.log("Project created:", projectId);
+      // console.log("Project created:", projectId);
 
       // Subtract 1 credit and add to history - removed videoName
       await CreditsService.updateCredits(
@@ -108,10 +108,10 @@ export function Effects({ user }: AuthState) {
       );
 
       await createAndProcessProject(projectId);
-      console.log("Project processed:", projectId);
+      // console.log("Project processed:", projectId);
       router.push("/studio/projects");
     } catch (error) {
-      console.error("Error creating or processing project:", error);
+      //console.error("Error creating or processing project:", error);
       setErrorMessage("Failed to process video. Please try again.");
     } finally {
       setIsLoading(false);

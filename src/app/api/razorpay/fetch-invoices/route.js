@@ -31,7 +31,7 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error('Error fetching invoices:', error);
+        //console.error('Error fetching invoices:', error);
         return NextResponse.json({
             error: 'Failed to fetch invoices',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined

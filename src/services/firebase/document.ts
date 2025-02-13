@@ -16,7 +16,7 @@ export class FirebaseDocumentService {
       
       return null;
     } catch (error) {
-      console.error(`Error fetching document from ${collectionName}:`, error);
+      //console.error(`Error fetching document from ${collectionName}:`, error);
       throw error;
     }
   }
@@ -26,7 +26,7 @@ export class FirebaseDocumentService {
       const docRef = doc(db, collectionName, documentId);
       await updateDoc(docRef, data);
     } catch (error) {
-      console.error(`Error updating document in ${collectionName}:`, error);
+      //console.error(`Error updating document in ${collectionName}:`, error);
       throw error;
     }
   }

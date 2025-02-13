@@ -27,7 +27,7 @@ export class PlansService {
 
       return plans;
     } catch (error) {
-      console.error('Error fetching plans:', error);
+      //console.error('Error fetching plans:', error);
       throw error;
     }
   }
@@ -38,7 +38,7 @@ export class PlansService {
       const docSnap = await getDoc(docRef);
       return docSnap.exists() ? docSnap.data() : null;
     } catch (error) {
-      console.error('Error fetching customer:', error);
+      //console.error('Error fetching customer:', error);
       throw error;
     }
   }
@@ -59,7 +59,7 @@ export class PlansService {
         updated_at: now
       }, { merge: true });
     } catch (error) {
-      console.error('Error saving customer:', error);
+      //console.error('Error saving customer:', error);
       throw error;
     }
   }
@@ -93,7 +93,7 @@ export class PlansService {
       const subscriptionsRef = collection(db, "razorpay_subscriptions");
       await addDoc(subscriptionsRef, subscriptionData);
     } catch (error) {
-      console.error('Error saving subscription:', error);
+      //console.error('Error saving subscription:', error);
       throw error;
     }
   }
@@ -104,7 +104,7 @@ export class PlansService {
       const docSnap = await getDoc(docRef);
       return docSnap.exists() ? docSnap.data() : null;
     } catch (error) {
-      console.error('Error fetching subscription:', error);
+      //console.error('Error fetching subscription:', error);
       throw error;
     }
   }
@@ -119,13 +119,13 @@ export class PlansService {
         ...doc.data()
       }));
     } catch (error) {
-      console.error('Error fetching subscriptions:', error);
+      //console.error('Error fetching subscriptions:', error);
       throw error;
     }
   }
 
   static subscriptionListener(subscriptionId: string, callback: (data: any) => void, onError: (error: any) => void) {
-    console.log("Setting up listener for subscription:", subscriptionId);
+    // console.log("Setting up listener for subscription:", subscriptionId);
     
     try {
       const subscriptionsRef = collection(db, "razorpay_subscriptions");
@@ -140,26 +140,26 @@ export class PlansService {
             if (!snapshot.empty) {
               const doc = snapshot.docs[0];
               const data = doc.data();
-              console.log("Subscription update:", data);
+              // console.log("Subscription update:", data);
               callback(data);
             } else {
-              console.log("No subscription found with ID:", subscriptionId);
+              // console.log("No subscription found with ID:", subscriptionId);
               callback({ status: 'not_found' });
             }
           } catch (err) {
-            console.error("Error processing snapshot:", err);
+            //console.error("Error processing snapshot:", err);
             onError(err);
           }
         }, 
         (error) => {
-          console.error("Snapshot listener error:", error);
+          //console.error("Snapshot listener error:", error);
           onError(error);
         }
       );
 
       return unsubscribe;
     } catch (error) {
-      console.error("Error setting up subscription listener:", error);
+      //console.error("Error setting up subscription listener:", error);
       onError(error);
       // Return a no-op cleanup function
       return () => {};
@@ -194,7 +194,7 @@ export class PlansService {
       }
       return null;
     } catch (error) {
-      console.error('Error fetching active subscription:', error);
+      //console.error('Error fetching active subscription:', error);
       throw error;
     }
   }
@@ -232,7 +232,7 @@ export class PlansService {
               });
             }
           } catch (err) {
-            console.error("Error processing snapshot:", err);
+            //console.error("Error processing snapshot:", err);
             onError(err);
           }
         }, 
@@ -241,7 +241,7 @@ export class PlansService {
 
       return unsubscribe;
     } catch (error) {
-      console.error("Error setting up subscription listener:", error);
+      //console.error("Error setting up subscription listener:", error);
       onError(error);
       return () => {};
     }
@@ -261,7 +261,7 @@ export class PlansService {
             }, { merge: true });
         }
     } catch (error) {
-        console.error('Error updating subscription status:', error);
+        //console.error('Error updating subscription status:', error);
         throw error;
     }
   }
@@ -297,7 +297,7 @@ export class PlansService {
         await setDoc(doc.ref, validatedData, { merge: true });
       }
     } catch (error) {
-      console.error('Error updating subscription after payment:', error);
+      //console.error('Error updating subscription after payment:', error);
       throw error;
     }
   }

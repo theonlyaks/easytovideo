@@ -32,7 +32,7 @@ export const useUpload = (userId: string, mediaType: MediaType = 'video', source
 
   const startUpload = useCallback(async (file: File) => {
     if (!userId) {
-      console.error('No user ID provided');
+      //console.error('No user ID provided');
       setState(prev => ({ 
         ...prev, 
         error: 'Authentication required',
@@ -58,7 +58,7 @@ export const useUpload = (userId: string, mediaType: MediaType = 'video', source
         new File([file], fileName, { type: file.type }), 
         config, 
         (progress) => {
-          console.log('Upload progress:', progress);
+          // console.log('Upload progress:', progress);
           setState(prev => ({ ...prev, ...progress }));
         },
         (uploadTask) => {
