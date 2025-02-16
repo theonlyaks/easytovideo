@@ -22,6 +22,11 @@ const ProjectSingle: React.FC<ProjectSingleProps> = ({
   onClick,
   user
 }) => {
+  // Don't render if status is null or undefined
+  if (!project.status) {
+    return null;
+  }
+
   const isClickable = project.status === "completed" && project.progress === 100;
   
   const thumbnailPath = !project.thumbnailUrl && project.thumbnailFilename && user ? 

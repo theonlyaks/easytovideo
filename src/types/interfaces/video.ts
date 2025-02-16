@@ -21,9 +21,9 @@ export interface VideoRangeProps {
     values: number[];
     onChange: (values: number[]) => void;
     formatValue?: (value: number) => string;
-}
+  }
 
 export interface VideoPlayerProps {
     source: string;
-    onDuration: (duration: number) => void;
+    onDuration: (duration: number,videoElement: HTMLVideoElement) => void;
 }

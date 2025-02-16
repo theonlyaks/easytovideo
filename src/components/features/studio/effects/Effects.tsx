@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { VideoTime, FileItem, User, AuthProps, AuthState } from "@/types";
-import { MAX_DURATION_SECONDS } from "@/constants";
+import { MAX_DURATION_SECONDS, MIN_DURATION_SECONDS } from "@/constants";
 import { isClipTooLong, formatTime } from "@/lib/common/video";
 import { VideoPlayer } from "@/components/common/VideoPlayer";
 import { RangeSeeker } from "@/components/common/RangeSeeker";
@@ -35,6 +35,11 @@ export function Effects({ user }: AuthState) {
   const subscription = useAtomValue(subscriptionAtom);
   const [isOriginalClip, setIsOriginalClip] = useState(true);
   const [originalDuration, setOriginalDuration] = useState<VideoTime>({ start: 0, end: 0 });
+  const [videoDimensions, setVideoDimensions] = useState<{ width: number; height: number } | null>(null);
+  
+  const isVerticalVideo = videoDimensions 
+    ? videoDimensions.height / videoDimensions.width >= 1.5 // roughly checks for vertical aspect ratio
+    : true;
 
   const syncTask = useSyncTask();
 
@@ -42,15 +47,23 @@ export function Effects({ user }: AuthState) {
     setIsFileManagerOpen(false);
     setVideoUrl(file.fileUrl);
     setSelectedFile(file);
-    setIsOriginalClip(true); // Reset when new file is selected
+    setIsOriginalClip(true);
+    setErrorMessage(null); // Reset error message
+    setVideoDimensions(null); // Reset video dimensions
   };
 
-  const handleLoadedMetadata = (videoDuration: number) => {
+  const handleLoadedMetadata = (videoDuration: number, videoElement: HTMLVideoElement) => {
     setDuration(videoDuration);
     const initialTimeRange = { start: 0, end: videoDuration };
     setTimeRange(initialTimeRange);
     setOriginalDuration(initialTimeRange);
     setIsOriginalClip(true);
+    
+    // Get video dimensions
+    setVideoDimensions({
+      width: videoElement.videoWidth,
+      height: videoElement.videoHeight
+    });
   };
 
   const handleRangeChange = ([start, end]: number[]) => {
@@ -67,15 +80,29 @@ export function Effects({ user }: AuthState) {
     setTimeRange({ start: 0, end: 0 });
     setDuration(0);
     setSelectedFile(null);
+    setErrorMessage(null); // Reset error message
+    setVideoDimensions(null); // Reset video dimensions
   };
 
   const isInvalidDuration =
     duration > 0 &&
-    isClipTooLong(timeRange.start, timeRange.end, MAX_DURATION_SECONDS);
+    (isClipTooLong(timeRange.start, timeRange.end, MAX_DURATION_SECONDS) ||
+    (timeRange.end - timeRange.start) < 20);
 
   const handleApplyEffects = async () => {
     if (!user || !selectedFile) return;
     
+    if (!isVerticalVideo) {
+      setErrorMessage("Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok");
+      return;
+    }
+
+    const clipDuration = timeRange.end - timeRange.start;
+    if (clipDuration < MIN_DURATION_SECONDS) {
+      setErrorMessage(`Selected clip must be at least ${MIN_DURATION_SECONDS} seconds long.`);
+      return;
+    }
+
     if (subscription.credit <= 0) {
       setErrorMessage("You ran out of credits. Please upgrade your plan to continue creating videos.");
       return;
@@ -108,7 +135,14 @@ export function Effects({ user }: AuthState) {
       );
 
       await createAndProcessProject(projectId);
-      // console.log("Project processed:", projectId);
+      
+      // Add status update
+      await ProjectService.updateProjectStatus(
+        projectId,
+        'progress',
+        'Added to the processing queue'
+      );
+
       router.push("/studio/projects");
     } catch (error) {
       //console.error("Error creating or processing project:", error);
@@ -182,14 +216,21 @@ export function Effects({ user }: AuthState) {
                     />
 
                     {isInvalidDuration && (
-                      <div className="text-xs md:text-sm text-primary text-center">
-                        Clip duration cannot exceed {MAX_DURATION_SECONDS}{" "}
-                        seconds
-                      </div>
+                      <p className="text-xs md:text-sm text-primary text-center">
+                        {(timeRange.end - timeRange.start) < 20
+                          ? `Clip duration must be at least ${MIN_DURATION_SECONDS} seconds`
+                          : `Clip duration cannot exceed ${MAX_DURATION_SECONDS} seconds`}
+                      </p>
+                    )}
+
+                  {!isVerticalVideo && (
+                      <p className="text-xs md:text-sm text-primary text-center">
+                        Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok
+                      </p>
                     )}
 
                     {errorMessage && (
-                      <div className="text-sm text-red-500 text-center mb-2">
+                      <div className="text-sm text-primary text-center mb-2">
                         {errorMessage}
                       </div>
                     )}
@@ -201,7 +242,7 @@ export function Effects({ user }: AuthState) {
                       customLoadingText="Applying Effects..."
                       icon={FiPlayCircle}
                       className="w-full text-sm md:text-base relative"
-                      disabled={isInvalidDuration || !user || isLoading}
+                      disabled={isInvalidDuration || !user || isLoading || !isVerticalVideo}
                     >
                       <span className="flex items-center justify-center gap-2">
                         Apply Effects

@@ -274,6 +274,7 @@ export class PlansService {
     amount: number;
     subscriptionId: string;
     planName: string;
+    isCreditAdded?: boolean;
   }): Promise<void> {
     try {
       // Validate data before saving
@@ -285,9 +286,11 @@ export class PlansService {
         amount: data.amount || 0,  // Ensure amount has a default value
         subscriptionId: data.subscriptionId,
         planName: data.planName || 'Default Plan',
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
+        isCreditAdded: data.isCreditAdded || false
       };
 
+      // console.log('Updating subscription:', validatedData);
       const subscriptionsRef = collection(db, "razorpay_subscriptions");
       const q = query(subscriptionsRef, where("subscriptionId", "==", subscriptionId));
       const querySnapshot = await getDocs(q);

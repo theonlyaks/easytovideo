@@ -90,7 +90,7 @@ export const useRazorpaySubscription = () => {
           planName: subscription.notes?.planName || 'Default Plan',
           isCreditAdded:true
         };
-
+        // console.log('subscriptionData',subscriptionData);
         // Handle credits calculation
         if (subscription.plan_id) {
           const newPlanCredits = await PlansService.getPlanCredits(subscription.plan_id);

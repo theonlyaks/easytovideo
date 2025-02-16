@@ -3,7 +3,8 @@ import { VideoPlayerProps } from '@/types';
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
   source, 
-  onDuration 
+  onDuration,
+  ...props
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,13 +44,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }, []);
 
   const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      const video = videoRef.current;
-      if (video.duration && !isNaN(video.duration)) {
-        onDuration(video.duration);
-      }
-      updateDimensions();
+    if (videoRef.current && onDuration) {
+      onDuration(videoRef.current.duration, videoRef.current);
     }
+    updateDimensions();
   };
 
   return (
@@ -67,6 +65,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           controls
           onLoadedMetadata={handleLoadedMetadata}
           className="w-full h-full rounded-lg bg-secondary"
+          {...props}
         />
       </div>
     </div>

@@ -51,4 +51,17 @@ export class ProjectService {
       throw error;
     }
   }
+
+  static async updateProjectStatus(projectId: string, status: string, message: string) {
+    try {
+      const projectRef = doc(db, 'projects', projectId);
+      await updateDoc(projectRef, {
+        status: status,
+        message: message,
+        updatedAt: serverTimestamp()
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
