@@ -86,7 +86,7 @@ const ProjectSingle: React.FC<ProjectSingleProps> = ({
             <div className="bg-secondary bg-opacity-75 rounded-lg px-6 py-3 
                           min-w-[160px] text-center">
               <p className="text-secondary-text text-sm font-medium mb-1">
-                {project.statusMessage || 'Processing'}
+                {project.statusMessage || 'Added to queue'}
               </p>
               <p className="text-muted text-xs">{project.remainingTime}</p>
             </div>
