@@ -33,7 +33,16 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
 
   const handleDownload = () => {
     if (!videoUrl || !project?.outputFileName) return;
-    downloadFile(videoUrl, { fileName: getFilenamePartByIndex(project.outputFileName,'original') || ''});
+    // downloadFile(videoUrl, { fileName: getFilenamePartByIndex(project.outputFileName,'original') || ''});
+    const fileName = getFilenamePartByIndex(project.outputFileName, 'original') || 'video.mp4';
+  
+    const a = document.createElement('a');
+    a.href = videoUrl;
+    a.download = fileName;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.click();
+    
   };
 
   const handleTitleUpdate = async () => {
