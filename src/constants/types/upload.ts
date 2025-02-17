@@ -4,7 +4,7 @@ export const getUploadConfig = (userId: string, type: MediaType): UploadConfig =
   const configs: Record<MediaType, Omit<UploadConfig, 'type'>> = {
     video: {
       allowedTypes: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
-      maxSizeInMB: 100,
+      maxSizeInMB: 500,
       path: `user_files/${userId}`
     },
     audio: {

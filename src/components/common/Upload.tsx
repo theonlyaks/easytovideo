@@ -39,7 +39,7 @@ export const Upload: React.FC<UploadProps> = ({ userId, mediaType = 'video' }) =
           <MdCloudUpload className="mx-auto h-12 w-12 text-gray-400" />
           <p className="mt-2 text-sm text-gray-600">Click to upload or drag and drop</p>
           <p className="text-xs text-gray-500">
-            {mediaType === 'video' ? 'MP4, MOV, AVI (max. 100MB)' : 'MP3, WAV, OGG (max. 50MB)'}
+            {mediaType === 'video' ? 'MP4, MOV, AVI' : 'MP3, WAV, OGG (max. 50MB)'}
           </p>
         </div>
       )}
