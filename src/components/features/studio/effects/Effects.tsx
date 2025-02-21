@@ -19,6 +19,7 @@ import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { CreditsService } from "@/services/studio/credits";
 import { BiCoinStack } from "react-icons/bi"; // Add this import
+import { Demo } from '@/components/features/studio/effects/Demo';
 
 const { createProject } = ProjectService;
 const { createAndProcessProject } = EffectsService;
@@ -166,7 +167,7 @@ export function Effects({ user }: AuthState) {
           </div>
           <button
             onClick={() => setIsFileManagerOpen(true)}
-            className="w-full border-2 border-dashed border-primary rounded-lg p-4 md:p-8 text-center cursor-pointer hover:bg-primary/5 transition-colors flex flex-col items-center justify-center min-h-[200px]"
+            className="w-full border-2 border-dashed border-primary rounded-lg p-4 md:p-8 text-center cursor-pointer hover:bg-primary/5 transition-colors flex flex-col items-center justify-center min-h-[150px]"
           >
             <MdAdd className="h-8 w-8 md:h-24 md:w-12 text-primary mb-2" />
             <p className="text-base md:text-lg mb-1 md:mb-2">
@@ -176,6 +177,7 @@ export function Effects({ user }: AuthState) {
               Supports MP4, WebM, and Ogg
             </p> */}
           </button>
+          <Demo />
         </>
       ) : (
         <div className="space-y-3 md:space-y-4">
