@@ -48,7 +48,9 @@ export const useRazorpaySubscription = () => {
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error);
+      if (!response.ok || typeof data?.subscription?.ended_at === 'undefined') {
+        throw new Error(data.error || 'Failed to cancel subscription');
+      }
 
       // Update subscription status in Firestore
       await PlansService.updateSubscriptionStatus(subscriptionId, 'cancelled');

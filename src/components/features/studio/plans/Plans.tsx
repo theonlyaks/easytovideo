@@ -35,12 +35,17 @@ export function Plans({ user }: AuthState) {
         ))}
       </div>
 
-      <p className="text-center mt-6 sm:mt-8 text-xs sm:text-sm text-muted-text px-4 sm:px-0">
-        All plans include our core platform features.
-        <button className="text-primary ml-1 hover:underline focus:outline-none">
-          Compare all features
-        </button>
-      </p>
+      <div className="text-center space-y-2 mt-6 sm:mt-8 px-4 sm:px-0">
+        <p className="text-xs sm:text-sm text-muted-text">
+          All plans include our core platform features.
+          <button className="text-primary ml-1 hover:underline focus:outline-none">
+            Compare all features
+          </button>
+        </p>
+        <p className="text-sm ">
+          Note: USD prices shown are approximate. Actual charges may vary based on current exchange rates at the time of payment.
+        </p>
+      </div>
     </div>
   );
 }

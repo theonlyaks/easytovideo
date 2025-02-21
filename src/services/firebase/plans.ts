@@ -256,7 +256,7 @@ export class PlansService {
         if (!querySnapshot.empty) {
             const doc = querySnapshot.docs[0];
             await setDoc(doc.ref, {
-                // status,
+                status,
                 updatedAt: serverTimestamp()
             }, { merge: true });
         }
