@@ -1,6 +1,6 @@
 const DEMO_VIDEOS = {
-  before: '/videos/input_demo.mp4', // Update with actual demo video paths
-  after: '/videos/output_demo.mp4'
+  before: '/videos/unwatermark_input_demo.mp4', // Update with actual demo video paths
+  after: '/videos/unwatermark_output_demo.mp4'
 };
 
 export function Demo() {
