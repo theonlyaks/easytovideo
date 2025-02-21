@@ -165,8 +165,6 @@ export function Effects({ user }: AuthState) {
               AI-powered effects for TikTok, Reels & Shorts
             </p>
           </div>
-          
-
           <button
             onClick={() => setIsFileManagerOpen(true)}
             className="w-full border-2 border-dashed border-primary rounded-lg p-4 md:p-8 text-center cursor-pointer hover:bg-primary/5 transition-colors flex flex-col items-center justify-center min-h-[150px]"
@@ -180,7 +178,6 @@ export function Effects({ user }: AuthState) {
             </p> */}
           </button>
           <Demo />
-
         </>
       ) : (
         <div className="space-y-3 md:space-y-4">
