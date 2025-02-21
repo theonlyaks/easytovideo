@@ -61,6 +61,11 @@ export const PlanCard: React.FC<PlanProps> = ({
   //   endTime: unixToLocalTime(subscription.currentEnd),
   // });
 
+  const convertToINR = (usdCents: number) => {
+    const conversionRate = 86.63; // USD to INR approximate rate
+    return Math.round(usdCents * conversionRate / 100);
+  };
+
   const handlePayment = (data: SubscriptionRazorpay) => {
     if (!scriptLoaded) {
       alert("Payment system is loading. Please try again.");
@@ -207,11 +212,16 @@ export const PlanCard: React.FC<PlanProps> = ({
         {isPopular && <PopularBadge />}
         <PlanHeader displayName={displayName} description={description} />
         <div className="mt-6 mb-8">
-          <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-bold text-background-text">
-              ${(price.amount / 100).toFixed(2)}
-            </span>
-            <span className="text-neutral">/{price.interval}</span>
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-bold text-background-text">
+                ${(price.amount / 100).toFixed(2)}
+              </span>
+              <span className="text-neutral">/{price.interval}</span>
+            </div>
+            <div className="text-sm text-muted-text mt-1">
+              (₹{convertToINR(price.amount)} INR)
+            </div>
           </div>
           <button
             onClick={handleSubscribe}
