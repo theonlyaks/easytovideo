@@ -90,6 +90,6 @@ export const privacyItems: PrivacyItem[] = [
   },
   {
     title: "10. Contact Information",
-    content: "For privacy-related inquiries, please contact us at support@easytovideo.com"
+    content: "For privacy-related inquiries, please contact us at hello@easyto.video"
   }
 ];

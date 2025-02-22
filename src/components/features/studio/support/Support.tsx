@@ -115,13 +115,13 @@ export function Support({ user }: AuthState) {
             <h2 className="text-xl font-medium mb-4">Quick Support</h2>
             <div className="space-y-4">
               <a
-                href="mailto:support@easytovideo.com"
+                href="mailto:hello@easyto.video"
                 className="flex items-center p-4 border border-muted rounded-md hover:bg-background transition-colors"
               >
                 <MdEmail className="w-6 h-6 text-primary mr-3" />
                 <div>
                   <h3 className="font-medium">Email Support</h3>
-                  <p className="text-sm text-muted-text">support@easytovideo.com</p>
+                  <p className="text-sm text-muted-text">hello@easyto.video</p>
                 </div>
               </a>
 
