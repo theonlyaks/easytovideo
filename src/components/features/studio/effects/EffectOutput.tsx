@@ -11,11 +11,8 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useState, useEffect } from 'react';
 import { FirebaseDocumentService } from '@/services/firebase/document';
 import { serverTimestamp } from 'firebase/firestore';
-
-interface EffectOutputProps {
-  effectId: string;
-  user: User | null;
-}
+import { FeedbackEffect } from '@/components/features/studio/effects/FeedbackEffect';
+import { EffectOutputProps } from '@/types';
 
 export function EffectOutput({ effectId, user }: EffectOutputProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -33,7 +30,6 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
 
   const handleDownload = () => {
     if (!videoUrl || !project?.outputFileName) return;
-    // downloadFile(videoUrl, { fileName: getFilenamePartByIndex(project.outputFileName,'original') || ''});
     const fileName = getFilenamePartByIndex(project.outputFileName, 'original') || 'video.mp4';
   
     const a = document.createElement('a');
@@ -162,8 +158,25 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
               {isDownloading ? 'Downloading...' : 'Download Video'}
             </Button>
           )}
+          <hr/>
+          {videoUrl && (
+            <div className="hidden md:block">
+              <FeedbackEffect 
+                projectId={effectId}
+                userId={user?.uid}
+              />
+            </div>
+          )}
         </div>
       </div>
+      {videoUrl && (
+        <div className="md:hidden mt-4">
+          <FeedbackEffect 
+            projectId={effectId}
+            userId={user?.uid}
+          />
+        </div>
+      )}
     </div>
   );
 }
