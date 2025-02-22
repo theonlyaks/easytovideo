@@ -86,3 +86,8 @@ export interface SyncTaskResult {
 
 export type FilenamePart = 'original' | 'timestamp' | 'type' | 'source';
 
+
+export interface EffectOutputProps {
+  effectId: string;
+  user: User | null;
+}

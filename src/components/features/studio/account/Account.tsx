@@ -1,6 +1,6 @@
 "use client";
 import { auth } from "@/lib/common/firebase";
-import { FiUser, FiLogOut, FiCreditCard, FiClock, FiList, FiXCircle } from "react-icons/fi";
+import { FiUser, FiLogOut, FiCreditCard, FiClock, FiList, FiXCircle, FiHelpCircle } from "react-icons/fi"; // Add FiHelpCircle
 import { BiCoinStack } from "react-icons/bi";  // Add this import
 import { useSession } from "next-auth/react"; // Add this import
 import { useAtomValue } from "jotai";
@@ -172,6 +172,19 @@ export function Account() {
                         <FiList className="w-5 h-5 text-neutral" />
                         <span className="font-medium text-background-text">
                             Payment History
+                        </span>
+                    </div>
+                </button>
+
+                {/* Support - Add this new button */}
+                <button 
+                    onClick={() => router.push('/studio/support')}
+                    className="w-full p-6 flex items-center justify-between border-b hover:bg-background transition-colors"
+                >
+                    <div className="flex items-center gap-4">
+                        <FiHelpCircle className="w-5 h-5 text-neutral" />
+                        <span className="font-medium text-background-text">
+                            Support
                         </span>
                     </div>
                 </button>
