@@ -97,6 +97,6 @@ export const termsItems: TermItem[] = [
   },
   {
     title: "11. Contact Information",
-    content: "For support-related inquiries, please contact us at support@easytovideo.com"
+    content: "For support-related inquiries, please contact us at hello@easyto.video"
   }
 ];
