@@ -13,7 +13,7 @@ export class CreditsService {
         userId,
         history: [{
           type: 'trial',
-          amount: 1,
+          amount: 3,
           timestamp: Date.now(),
           description: 'Trial Credit Added',
           newCredit: 1,
