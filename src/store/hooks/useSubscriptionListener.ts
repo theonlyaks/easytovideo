@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { subscriptionAtom, SubscriptionState } from '../atoms/subscriptionAtom';
 import { PlansService } from '@/services/firebase/plans';
@@ -8,31 +8,41 @@ import { useSession } from 'next-auth/react';
 export const useSubscriptionListener = () => {
   const [subscription, setSubscription] = useAtom(subscriptionAtom);
   const { data: session } = useSession();
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    // Set initial loading state if not already set
+    if (!initialized && subscription.status !== 'loading') {
+      setSubscription(prev => ({ ...prev, status: 'loading' }));
+    }
+
     if (!session?.user?.id) return;
 
     const fetchInitialData = async () => {
       try {
-        const [activeSub, userCredits] = await Promise.all([
-          PlansService.getActiveSubscription(session.user.id),
-          CreditsService.getUserCredits(session.user.id)
-        ]);
+        // Only fetch if we haven't already initialized or if needed
+        if (!initialized) {
+          const [activeSub, userCredits] = await Promise.all([
+            PlansService.getActiveSubscription(session.user.id),
+            CreditsService.getUserCredits(session.user.id)
+          ]);
 
-        setSubscription({
-          ...(activeSub || {
-            status: 'inactive',
-            planId: null,
-            currentStart: null,
-            currentEnd: null,
-            amount: null,
-            planName: null,
-            subscriptionId: null
-          }),
-          credit: userCredits.credit
-        });
+          setSubscription({
+            ...(activeSub || {
+              status: 'inactive',
+              planId: null,
+              currentStart: null,
+              currentEnd: null,
+              amount: null,
+              planName: null,
+              subscriptionId: null
+            }),
+            credit: userCredits.credit
+          });
+
+          setInitialized(true);
+        }
       } catch (error) {
-        //console.error('Failed to fetch initial data:', error);
         setSubscription({
           status: 'error',
           planId: null,
@@ -44,6 +54,7 @@ export const useSubscriptionListener = () => {
           credit: 0,
           error: 'Failed to fetch data'
         });
+        setInitialized(true);
       }
     };
 
@@ -57,7 +68,6 @@ export const useSubscriptionListener = () => {
         setSubscription(prev => ({ ...data, credit: prev.credit }));
       },
       (error) => {
-        //console.error("Subscription listener error:", error);
         setSubscription(prev => ({ 
           ...prev,
           status: 'error',
@@ -74,7 +84,6 @@ export const useSubscriptionListener = () => {
         setSubscription(prev => ({ ...prev, credit: userCredits.credit }));
       },
       (error) => {
-        //console.error("Credits listener error:", error);
         setSubscription(prev => ({ 
           ...prev,
           credit: 0,
@@ -88,7 +97,7 @@ export const useSubscriptionListener = () => {
       unsubscribePlan();
       unsubscribeCredits();
     };
-  }, [session?.user?.id, setSubscription]);
+  }, [session?.user?.id, setSubscription, initialized]);
 
   return subscription;
 };

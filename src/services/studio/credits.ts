@@ -9,14 +9,14 @@ export class CreditsService {
     
     if (!creditDoc.exists()) {
       const newCredit: UserCredits = {
-        credit: 1,
+        credit: 3,
         userId,
         history: [{
           type: 'trial',
           amount: 3,
           timestamp: Date.now(),
           description: 'Trial Credit Added',
-          newCredit: 1,
+          newCredit: 3,
           previousCredit: 0
         }]
       };
