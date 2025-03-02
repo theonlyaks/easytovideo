@@ -176,6 +176,7 @@ export function Effects({ user }: AuthState) {
             {/* <p className="text-xs md:text-sm text-muted-text">
               Supports MP4, WebM, and Ogg
             </p> */}
+            
           </button>
           <Demo />
         </>
