@@ -73,7 +73,7 @@ export function Invoices({user}: AuthState) {
                                                 ${invoice.status === 'paid' ? 'bg-accent/10 text-accent' : 
                                                 invoice.status === 'cancelled' ? 'bg-red-100 text-red-500' :
                                                 'bg-neutral/10 text-neutral'}
-                                            `}>
+                                            `}> 
                                                 {invoice.status}
                                             </span>
                                         </td>
