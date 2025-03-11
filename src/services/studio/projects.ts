@@ -64,4 +64,23 @@ export class ProjectService {
       throw error;
     }
   }
+
+  static subscribeToProject(
+    projectId: string,
+    onSuccess: (project: Project) => void,
+    onError: (error: Error) => void
+  ): Unsubscribe {
+    const projectRef = doc(db, 'projects', projectId);
+    
+    return onSnapshot(
+      projectRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const project = { id: snapshot.id, ...snapshot.data() } as Project;
+          onSuccess(project);
+        }
+      },
+      onError
+    );
+  }
 }

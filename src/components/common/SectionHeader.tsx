@@ -42,6 +42,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             >
               <option value="all">All</option>
               <option value="effects">Effects</option>
+              <option value="subtitle">Subtitle</option>
             </select>
           </div>
         )}

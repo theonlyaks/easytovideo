@@ -10,6 +10,7 @@ import {
   FaFolder,
   FaMicrophoneAlt,
   FaVideo,
+  FaRegClosedCaptioning,
   FaHeadphones,
   FaWaveSquare,
   FaBrain,
@@ -21,7 +22,8 @@ import {
   FaDatabase,
   FaPaypal,
   FaCreditCard,
-  FaStar
+  FaStar,
+  FaAlignLeft
 } from 'react-icons/fa';
 
 export const menuItems: MenuItems = {
@@ -35,7 +37,7 @@ export const menuItems: MenuItems = {
   // ],
   Video: [
     { icon: FaVideo, label: 'Effects', path: '/studio/effects' },
-    // { icon: FaFire, label: 'Viral Clip', path: '/studio/agents' },
+    { icon: FaAlignLeft, label: 'Subtitle', path: '/studio/subtitle' },
     // { icon: FaComments, label: 'Conversations', path: '/studio/conversations' },
     // { icon: FaPhone, label: 'Phone Numbers', path: '/studio/phone-numbers' },
   ],

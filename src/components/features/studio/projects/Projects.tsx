@@ -10,21 +10,25 @@ import { SectionHeader } from "@/components/common/SectionHeader";
 import { QuickActions } from "@/components/common/QuickActions";
 import { AuthState } from "@/types";
 export function ProjectListComponent({ user }: AuthState) {
-  const [filter, setFilter] = useState<"all" | "effects">("all");
+  const [filter, setFilter] = useState<"all" | "effects" | "subtitle">("all");
     
   const { projects, loading } = useProjects(user);
   const updatedProjects = useProjectUpdates(projects);
   const router = useRouter();
 
-  const handleProjectClick = (projectId: string, status: string) => {
-    if (status !== "processing") {
-      router.push(`/studio/effects/${projectId}/output`);
+  const handleProjectClick = (projectId: string, status: string, type: string | undefined) => {
+    if (status !== "processing" && type) {
+      if (type === "subtitle") {
+        router.push(`/studio/subtitle/${projectId}/edit`);
+      } else {
+        router.push(`/studio/effects/${projectId}/output`);
+      }
     }
   };
 
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value as "all" | "effects");
+    setFilter(event.target.value as "all" | "effects" | "subtitle");
   };
 
   const filteredProjects = updatedProjects.filter(project => 
@@ -70,7 +74,7 @@ export function ProjectListComponent({ user }: AuthState) {
               <ProjectSingle
                 key={project.id}
                 project={project}
-                onClick={handleProjectClick}
+                onClick={(id, status) => handleProjectClick(id, status, project?.type)}
                 user={user}
               />
             ))}

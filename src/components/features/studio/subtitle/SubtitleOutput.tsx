@@ -1,10 +1,9 @@
-import { User } from '@/types';
 import { useDocument } from '@/store/hooks/useDocument';
 import { useStorageUrl } from '@/store/hooks/useStorageUrl';
 import { Project } from '@/types';
 import { VideoPlayer } from '@/components/common/VideoPlayer';
 import Button from '@/components/common/Button';
-import { FiDownload, FiCheckCircle, FiEdit2 } from 'react-icons/fi';
+import { FiDownload, FiCheckCircle, FiEdit2, FiEdit3 } from 'react-icons/fi';
 import { useFileDownload } from '@/store/hooks/useFileDownload';
 import { getFilenamePartByIndex } from '@/lib/common/file';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
@@ -12,9 +11,10 @@ import { useState, useEffect } from 'react';
 import { FirebaseDocumentService } from '@/services/firebase/document';
 import { serverTimestamp } from 'firebase/firestore';
 import { FeedbackEffect } from '@/components/features/studio/effects/FeedbackEffect';
-import { EffectOutputProps } from '@/types';
+import { SubtitleOutputProps } from '@/types';
 
-export function EffectOutput({ effectId, user }: EffectOutputProps) {
+
+export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
   const { data: project, loading, error } = useDocument<Project>('projects', effectId);
@@ -95,7 +95,7 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
                 <VideoPlayer
                   source={videoUrl}
                   onDuration={() => {}}
-                  controls={true}
+                  controls = {true}
                 />
               </div>
             ) : (
@@ -113,7 +113,7 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
               <div className="flex items-center gap-2 md:gap-3">
                 <FiCheckCircle className="text-accent w-5 h-5 md:w-6 md:h-6 flex-shrink-0" />
                 <span className="text-sm md:text-base text-background-text font-medium">
-                  Your video is ready! You can preview or download it below.
+                  Your subtitle video is ready! You can preview or download it below.
                 </span>
               </div>
             </div>
@@ -148,16 +148,29 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
           </div>
   
           {videoUrl && (
-            <Button
-              onClick={handleDownload}
-              icon={FiDownload}
-              variant="primary"
-              isLoading={isDownloading}
-              disabled={isDownloading}
-              className="w-full"
-            >
-              {isDownloading ? 'Downloading...' : 'Download Video'}
-            </Button>
+            <>
+              <Button
+                onClick={handleDownload}
+                icon={FiDownload}
+                variant="primary"
+                isLoading={isDownloading}
+                disabled={isDownloading}
+                className="w-full"
+                size='lg'
+              >
+                {isDownloading ? 'Downloading...' : 'Download Video'}
+              </Button>
+              
+              <Button
+                onClick={onEdit}
+                icon={FiEdit3}
+                size='lg'
+                variant="outline"
+                className="w-full"
+              >
+                Edit Subtitles
+              </Button>
+            </>
           )}
           <hr/>
           {videoUrl && (
