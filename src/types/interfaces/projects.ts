@@ -22,10 +22,35 @@ export interface Project {
   thumbnailFilename?:string;
   isOriginalClip?:boolean;
   thumbnailUrl?:string;
+  subTitlePosition?: {
+    y_position: number;
+    frontend_video_height: number;
+  };
+  subTitleTheme?: {
+    backgroundColor: string;
+    textColor: string;
+    fontFamily: string;
+    fontWeight: string;
+  };
+  subTitleText?: string;
+  subTitleSize?: {
+    width: number;
+    height: number;
+  };
+  selectedThemeId?: string;
+  transcription?:any;
+  isActive?:boolean;
+  transcriptionProgress?:number;
 }
 
 export interface ProjectState {
   projects: Project[];
   loading: boolean;
   error?: string;
+}
+
+export interface ProjectSubscriptionResult {
+  project: Project | null;
+  progress: number;
+  error: string | null;
 }

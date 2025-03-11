@@ -62,7 +62,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <video
           ref={videoRef}
           src={source}
-          controls
           onLoadedMetadata={handleLoadedMetadata}
           className="w-full h-full rounded-lg bg-secondary"
           {...props}

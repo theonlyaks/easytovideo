@@ -14,3 +14,4 @@ export * from './interfaces/subscription';
 export * from './interfaces/credits';
 export * from './interfaces/feedback';
 export * from './interfaces/support';
+export * from './interfaces/subtitle';

@@ -13,7 +13,7 @@ import { User } from "@/types";
 
 interface ProjectSingleProps {
   project: Project;
-  onClick: (id: string, status: string) => void;
+  onClick: (id: string, status: string, type?: string) => void;
   user: User | null;
 }
 
@@ -102,7 +102,11 @@ const ProjectSingle: React.FC<ProjectSingleProps> = ({
     <div
       className={`group bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-md 
                  transition-all duration-200 ${isClickable ? "cursor-pointer" : ""}`}
-      onClick={() => isClickable && onClick(project.id ?? "", project.status ?? "")}
+      onClick={() => isClickable && onClick(
+        project.id || "", 
+        project.status || "", 
+        project.type
+      )}
     >
       <div className="relative" style={{ aspectRatio: '9/16' }}>
         {renderThumbnail()}

@@ -25,5 +25,6 @@ export interface VideoRangeProps {
 
 export interface VideoPlayerProps {
     source: string;
-    onDuration: (duration: number,videoElement: HTMLVideoElement) => void;
+    onDuration: (duration: number, videoElement: HTMLVideoElement) => void;
+    [key: string]: any; // Allow additional props for the video element (e.g., HTML video attributes)
 }
