@@ -135,7 +135,7 @@ export function EffectOutput({ effectId, user }: EffectOutputProps) {
             ) : (
               <div className="flex items-center gap-2">
                 <h1 className="text-lg md:text-2xl font-semibold text-background-text truncate">
-                  {title || 'Untitled'}
+                  {title || 'My Video'}
                 </h1>
                 <button
                   onClick={() => setIsEditing(true)}

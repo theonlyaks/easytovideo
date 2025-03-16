@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { Edit } from "@/components/features/studio/subtitle/Edit";
 import { useSession } from "next-auth/react";
 import { User } from "@/types";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 export default function SubtitleEditPage() {
   const params = useParams();
@@ -19,7 +20,7 @@ export default function SubtitleEditPage() {
     : null;
 
   if (status === "loading") {
-    return null;  
+    return (<div className="mt-12"><LoadingSpinner color="primary" text="Authenticating.."/></div>);  
   }
 
   return <Edit projectId={projectId} user={user} />;

@@ -53,6 +53,8 @@ export interface QuickActionButtonProps {
 
 export interface QuickActionsProps {
   onCreateAiEffect: () => void;
+  onCreateSubtitle: () => void;
+
 }
 
 export interface FileItem {

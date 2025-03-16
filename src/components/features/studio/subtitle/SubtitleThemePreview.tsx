@@ -1,9 +1,31 @@
 import React, { useMemo, CSSProperties } from 'react';
+import { Poppins, Inter, DM_Sans, Noto_Sans_Devanagari } from "next/font/google";
 import { SubtitleThemePreviewProps } from '@/types';
 import { useSubtitleAnimation } from '@/store';
 import { THEME_CONFIG, BACKGROUND_IMAGE } from '@/constants';
 
-export function SubtitleThemePreview({ theme }: SubtitleThemePreviewProps) {
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
+
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ['devanagari'],
+  weight: ['400', '700']
+});
+
+export function SubtitleThemePreview({ theme, customization }: SubtitleThemePreviewProps) {
   const { displayWords, activeIndex } = useSubtitleAnimation(theme.displayMode);
 
   const styles = useMemo(() => ({
@@ -41,7 +63,7 @@ export function SubtitleThemePreview({ theme }: SubtitleThemePreviewProps) {
       flexWrap: 'wrap',
       gap: '0.25rem',
       justifyContent: 'center',
-      ...(theme.id === 'minimal' ? {
+      ...(theme.id === 'group_with_background' ? {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Changed from 0.75 to 0.1
         padding: '0.75rem 1.5rem',
         borderRadius: '0.5rem',
@@ -55,19 +77,25 @@ export function SubtitleThemePreview({ theme }: SubtitleThemePreviewProps) {
 
   const getWordStyle = (index: number): CSSProperties => {
     const baseStyle: CSSProperties = {
-      color: theme.id === 'minimal' ? '#FFFFFF' : theme.textColor,
-      fontSize: theme.fontSize,
+      color: theme.id === 'group_with_background' 
+        ? (customization?.color || theme.textColor)
+        : (theme.id === 'highlight_group' // Changed from 'word-highlight'
+          ? theme.textColor
+          : (customization?.color || theme.textColor)),
+      fontSize: `${customization?.size || theme.fontSize}px`, // Add px here
     };
 
-    if (theme.id === 'word-highlight') {
+    if (theme.id === 'highlight_group') { // Changed from 'word-highlight'
       return {
         ...baseStyle,
-        color: index === activeIndex ? theme.highlightColor : theme.textColor,
+        color: index === activeIndex 
+          ? (customization?.color || theme.highlightColor) // Use customization color for highlight
+          : theme.textColor,
         transition: 'color 0.3s ease',
       };
     }
 
-    if (theme.displayMode === 'progressive') {
+    if (theme.displayMode === 'group_progressive_active') {
       return {
         ...baseStyle,
         opacity: index <= activeIndex ? 1 : 0,
@@ -75,7 +103,7 @@ export function SubtitleThemePreview({ theme }: SubtitleThemePreviewProps) {
       } as CSSProperties;
     }
 
-    if (theme.displayMode === 'highlight' && theme.id !== 'word-highlight') {
+    if (theme.displayMode === 'highlight' && theme.id !== 'highlight_group') {
       return {
         ...baseStyle,
         opacity: index <= activeIndex ? 1 : 0.3,
@@ -94,7 +122,7 @@ export function SubtitleThemePreview({ theme }: SubtitleThemePreviewProps) {
         {displayWords.map((word, index) => (
           <span
             key={`${word}-${index}`}
-            className={`font-${theme.fontFamily} font-${theme.fontWeight}`}
+            className={getFontClass(customization?.font || theme.fontFamily)}
             style={getWordStyle(index)}
           >
             {word}
@@ -104,3 +132,22 @@ export function SubtitleThemePreview({ theme }: SubtitleThemePreviewProps) {
     </div>
   );
 }
+
+const getFontClass = (fontValue: string) => {
+  switch (fontValue) {
+    case 'poppins-regular':
+      return `${poppins.className} font-normal`;
+    case 'poppins-bold':
+      return `${poppins.className} font-bold`;
+    case 'poppins-bold-italic':
+      return `${poppins.className} font-bold italic`;
+    case 'inter':
+      return inter.className;
+    case 'dm-sans':
+      return dmSans.className;
+    case 'noto-sans-devanagari':
+      return `${notoSansDevanagari.className} font-normal`;
+    default:
+      return '';
+  }
+};

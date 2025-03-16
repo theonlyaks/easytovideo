@@ -81,7 +81,7 @@ export const formatRelativeTime = (formattedDate: string): string => {
   if (inputDate.getTime() === today.getTime()) {
     return ` ${time}, Today`;
   } else if (inputDate.getTime() === yesterday.getTime()) {
-    return ` ${time}, Yesterday`;
+    return ` ${time}, Yest`;
   } else {
     return `${time}, ${month}/${day}/${year}`;
   }

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { EditProps } from "@/types";
+import React, { useMemo, useEffect } from "react";
+import { EditProps, ThemeConfig } from "@/types";
 import { PositionSelector } from "@/components/features/studio/subtitle/PositionSelector";
 import { ThemeSelector } from "@/components/features/studio/subtitle/ThemeSelector";
 import { TextEditor } from "@/components/features/studio/subtitle/TextEditor";
@@ -9,6 +9,11 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { SubtitleOutput } from "@/components/features/studio/subtitle/SubtitleOutput";
 import { useRouter } from "next/navigation";
 import { useSubtitleEdit } from "@/store";
+import { SUBTITLE_THEMES } from "@/constants";
+import { FiEdit2, FiSave, FiX } from "react-icons/fi";
+import { FirebaseDocumentService } from '@/services/firebase/document';
+import { serverTimestamp } from 'firebase/firestore';
+import { ProjectNameEditor } from "@/components/features/studio/subtitle/ProjectNameEditor";
 
 // Memoized components
 const MemoizedPositionSelector = React.memo(PositionSelector);
@@ -16,30 +21,37 @@ const MemoizedThemeSelector = React.memo(ThemeSelector);
 const MemoizedTextEditor = React.memo(TextEditor);
 const MemoizedSubtitleOutput = React.memo(SubtitleOutput);
 
-export function Edit(props: EditProps) {
+export function Edit({ projectId, user }: EditProps) {
   const router = useRouter();
   const {
     isLoading,
     isProcessing,
     currentStep,
     errorMessage,
-    isEditing,
+    isEditing: isSubtitleEditing,
     customPosition,
     selectedThemeId,
     project,
     videoUrl,
     error,
-    setIsEditing,
+    setIsEditing: setIsSubtitleEditing,
     handleTranscriptionUpdate,
     nextStep,
     prevStep,
     setCustomPosition,
-    setSelectedThemeId
-  } = useSubtitleEdit(props);
+    setSelectedThemeId,
+    themeCustomization,
+    setThemeCustomization,
+    isCapital,
+    setIsCapital,
+  } = useSubtitleEdit({ projectId, user });
 
-  // Memoize step rendering
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
+
   const currentStepContent = useMemo(() => {
-    if (isLoading || isProcessing) {
+    if (isLoading || isProcessing || !project || !videoUrl) {
       return (
         <div className="flex flex-col items-center justify-center min-h-[400px]">
           <LoadingSpinner size="lg" color="primary" />
@@ -51,38 +63,14 @@ export function Edit(props: EditProps) {
     }
 
     if (error) {
-      return (
-        <div className="text-center text-primary mt-8">
-          <p>Error loading project: {error.message}</p>
-          <button
-            onClick={() => router.push('/studio/subtitle')}
-            className="mt-4 text-white bg-primary px-4 py-2 rounded-lg"
-          >
-            Go Back
-          </button>
-        </div>
-      );
+      router.push('/studio/subtitle');
     }
 
-    if (!project || !videoUrl) {
-      return (
-        <div className="text-center text-primary mt-8">
-          <p>Project not found or video unavailable</p>
-          <button
-            onClick={() => router.push('/studio/subtitle')}
-            className="mt-4 text-white bg-primary px-4 py-2 rounded-lg"
-          >
-            Go Back
-          </button>
-        </div>
-      );
-    }
-
-    if (project.outputFileName && !isEditing) {
+    if (project.outputFileName && !isSubtitleEditing) {
       return <MemoizedSubtitleOutput 
-        effectId={props.projectId} 
-        user={props.user} 
-        onEdit={() => setIsEditing(true)}
+        effectId={projectId} 
+        user={user} 
+        onEdit={() => setIsSubtitleEditing(true)}
       />;
     }
 
@@ -99,39 +87,74 @@ export function Edit(props: EditProps) {
       case 2:
         return (
           <MemoizedThemeSelector
-            onNext={(themeId) => {
-              setSelectedThemeId(themeId);
+            onNext={(config: ThemeConfig) => {
+              setSelectedThemeId(config.themeId);
+              setThemeCustomization(config);         
               nextStep();
             }}
-            onPrevious={prevStep}
+            onPrevious={(config: ThemeConfig) => {
+              setSelectedThemeId(config.themeId);
+              setThemeCustomization(config);
+              prevStep();         
+            }}
+            initialCustomization={themeCustomization}
+            targetLanguage={project.targetLanguage}
+            isDifferentLanguage={project.isDifferentLanguage || false}
           />
         );
       case 3:
         return (
           <MemoizedTextEditor
-            onNext={nextStep}
+            onNext={() => {
+              if (project && project.subTitleTheme) {
+                project.subTitleTheme.isCapital = isCapital;
+              } else if (project) {
+                project.subTitleTheme = {
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  textColor: "#ffffff",
+                  fontFamily: "Arial",
+                  fontWeight: "normal",
+                  isCapital
+                };
+              }
+              
+              nextStep();
+            }}
             onPrevious={prevStep}
             transcription={project.transcription}
             onTranscriptionUpdate={handleTranscriptionUpdate}
+            isDifferentLanguage={project?.isDifferentLanguage}
+            isCapital={isCapital}
+            onCapitalChange={setIsCapital}
           />
         );
       default:
         return null;
     }
-  }, [currentStep, isLoading, isProcessing, error, project, videoUrl, isEditing, props.projectId, props.user, nextStep, prevStep, handleTranscriptionUpdate, router]);
+  }, [currentStep, isLoading, isProcessing, error, project, videoUrl, isSubtitleEditing, projectId, user, nextStep, prevStep, handleTranscriptionUpdate, router, setSelectedThemeId, isCapital, setThemeCustomization, themeCustomization]);
 
   return (
-    <main className="mx-auto py-4 md:py-12 px-2 md:px-0">
-      <div className="space-y-3 md:space-y-4">
-        <div className="flex flex-col">
-          {currentStepContent}
-          {errorMessage && (
-            <div className="text-primary text-lg text-center mt-4">
-              {errorMessage}
-            </div>
-          )}
+    <>
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center min-h-screen ">
+          <LoadingSpinner size="lg" color="primary" />
+          <p className="text-primary mt-4">Loading project...</p>
         </div>
-      </div>
-    </main>
+      ) : (
+        <main className="mx-auto py-4 md:py-0 px-2 md:px-0">
+          <ProjectNameEditor projectId={projectId} initialTitle={project?.title} />
+          <div className="">
+            <div className="flex flex-col">
+              {currentStepContent}
+              {errorMessage && (
+                <div className="text-primary text-lg text-center mt-4">
+                  {errorMessage}
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
+      )}
+    </>
   );
 }

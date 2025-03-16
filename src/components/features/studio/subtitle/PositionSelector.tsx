@@ -9,12 +9,12 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 // Memoized Header component
 const Header = memo(({ className }: { className?: string }) => (
   <div className={className}>
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       <h1 className="text-xl lg:text-2xl font-semibold text-background-text">
         Adjust Subtitle Position
       </h1>
       <p className="text-sm lg:text-base text-background-textLight">
-        Drag the subtitle overlay up or down to set its position
+        Drag the subtitle overlay <span className="text-primary font-semibold">up or down</span> to set its position
       </p>
     </div>
   </div>
@@ -31,19 +31,21 @@ const Controls = memo(
     <div className="bg-white/5 rounded-xl p-4 lg:p-6 space-y-3 lg:space-y-4">
       <Button
         onClick={onNext}
-        size="lg"
-        className="w-full"
-        icon={MdArrowForward}
-        iconPosition="right"
+         icon={MdArrowForward}
+         size='md'
+
+                iconPosition='right'
+        className="w-full  bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
       >
         Next (Step 1 of 3)
       </Button>
       <Button
         onClick={onCancel}
-        variant="outline"
-        size="lg"
-        className="w-full"
         icon={MdArrowBack}
+        size='md'
+
+        variant="outline"
+        className="w-full rounded-lg hover:bg-white/5 transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
       >
         Back
       </Button>
@@ -128,7 +130,7 @@ export const PositionSelector = memo(function PositionSelector({
 
   return (
     <div className="max-w-4xl mx-auto min-h-screen bg-background">
-      <div ref={containerRef} className="w-full max-w-[1920px] mx-auto px-2 lg:px-4 py-8 lg:py-8">
+      <div ref={containerRef} className="w-full max-w-[1920px] mx-auto px-2 lg:px-4">
         <Header className="mb-4 lg:mb-8 lg:hidden" />
 
         <div className="grid lg:grid-cols-[1fr,320px] gap-4 lg:gap-8 lg:min-h-[70vh]">

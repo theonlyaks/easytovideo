@@ -7,7 +7,6 @@ export interface PositionSelectorProps {
   onPositionUpdate: (position: { frontend_video_height: number; y_position: number }) => void;
 }
 
-
 export interface ThemeProps {
   backgroundColor: string;
   textColor: string;
@@ -16,7 +15,7 @@ export interface ThemeProps {
   fontSize: string;
 }
 
-export type DisplayMode = 'single' | 'full' | 'progressive' | 'multi' | 'highlight';
+export type DisplayMode = 'single' | 'full' | 'group_progressive_active' | 'multi' | 'highlight';
 
 export interface SubtitleTheme {
   id: string;
@@ -30,6 +29,7 @@ export interface SubtitleTheme {
   displayMode: DisplayMode;
   preview: string;
   highlightColor?: string;
+  is_different_language_support?: boolean; // Add this line
 }
 
 export interface Preset {
@@ -66,11 +66,29 @@ export interface VideoValidationProps {
     onPrevious: () => void;
     transcription: SubtitleData | null;
     onTranscriptionUpdate: (newTranscription: SubtitleData) => void;
+    isDifferentLanguage?: boolean;
+    isCapital?: boolean;
+    onCapitalChange?: (isCapital: boolean) => void;
   }
   
+  export interface SubtitleSegment {
+    id: number;
+    avg_logprob: number;
+    compression_ratio: number;
+    end: number;
+    no_speech_prob: number;
+    seek: number;
+    start: number;
+    temperature: number;
+    text: string;
+    tokens: number[];
+  }
+
   export interface SubtitleData {
     duration: number;
     language: string;
+    subtitleType: string;
+    segments?: SubtitleSegment[];
     words: Array<{
       end: number;
       start: number;
@@ -89,9 +107,29 @@ export interface FileSelectorProps {
 
 export interface SubtitleThemePreviewProps {
     theme: SubtitleTheme;
+    customization?: {
+      font?: string;
+      size?: string;
+      color?: string;
+    };
   }
 
+export interface ThemeConfig {
+  themeId: string;
+  fontId: string;
+  fontSize: string; // Explicitly string type
+  color: string;
+}
+
 export interface ThemeSelectorProps {
-  onNext: (themeId: string) => void;
-  onPrevious: () => void;
+  onNext: (config: ThemeConfig) => void;
+  onPrevious: (config: ThemeConfig) => void;
+  initialCustomization: ThemeConfig;
+  isDifferentLanguage?: boolean; 
+  targetLanguage?: string;
+}
+
+export interface VideoProcessingOptions {
+  videoLang: string;
+  subtitleType: string;
 }

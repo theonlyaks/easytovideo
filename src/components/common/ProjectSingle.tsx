@@ -101,30 +101,31 @@ const ProjectSingle: React.FC<ProjectSingleProps> = ({
   return (
     <div
       className={`group bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-md 
-                 transition-all duration-200 ${isClickable ? "cursor-pointer" : ""}`}
-      onClick={() => isClickable && onClick(
-        project.id || "", 
-        project.status || "", 
-        project.type
-      )}
+                 transition-all duration-200 ${
+                   isClickable ? "cursor-pointer" : ""
+                 }`}
+      onClick={() =>
+        isClickable &&
+        onClick(project.id || "", project.status || "", project.type)
+      }
     >
-      <div className="relative" style={{ aspectRatio: '9/16' }}>
+      <div className="relative" style={{ aspectRatio: "9/16" }}>
         {renderThumbnail()}
         {renderOverlay()}
       </div>
 
       <div className="p-4">
         <p className="text-md mb-4 text-background-text flex items-center">
-          {project.title || "Untitled"}
+          {project.title || "My Video"}
         </p>
-        <div className="flex justify-between">
-          <p className="text-xs text-background-text flex items-center">
+        <div className="flex flex-col sm:flex-row justify-between">
+          <p className="text-xs text-background-text flex items-center mb-2 sm:mb-0">
             <MdAccessTime className="h-4 w-4 mr-1" />
             {project.updatedAt
               ? `${formatRelativeTime(convertToLocalTime(project.updatedAt))}`
-              : "Unknown time"}
+              : ""}
           </p>
-          <p className="text-xs text-background-text flex items-center">
+          <p className="text-xs text-background-text flex items-center capitalize">
             <MdCategory className="h-4 w-4 mr-1" />
             {project.type}
           </p>

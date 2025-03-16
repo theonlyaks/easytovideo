@@ -19,7 +19,7 @@ export default function StudioLayout({ children }: PropsWithChildren) {
       <div className="fixed inset-y-0 left-0 z-[2]">
         <Sidebar />
       </div>
-      <main className="flex-1 py-4 md:p-8 md:pl-[280px] overflow-auto">
+      <main className="flex-1 py-4 lg:p-8 lg:pl-[280px] overflow-auto">
         {children}
       </main>
     </div>

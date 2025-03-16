@@ -37,13 +37,14 @@ export function ProjectListComponent({ user }: AuthState) {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto  mt-8 lg:mt-0 p-4 sm:p-6 lg:p-8">
         <QuickActions
           onCreateAiEffect={() => router.push("/studio/effects")}
+          onCreateSubtitle={() => router.push("/studio/subtitle")}
         />
 
         <SectionHeader
-          title="Recent Projects"
+          title="My Workspace"
           subtitle="Transform your content into engaging videos with AI-powered editing tools"
           filter={filter}
           onFilterChange={handleFilterChange}
@@ -69,7 +70,7 @@ export function ProjectListComponent({ user }: AuthState) {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {filteredProjects.map((project) => (
               <ProjectSingle
                 key={project.id}
