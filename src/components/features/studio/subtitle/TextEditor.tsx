@@ -1,87 +1,214 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Button from "@/components/common/Button";
 import { MdArrowBack, MdCheck, MdClose } from "react-icons/md";
-import { BiExport } from 'react-icons/bi';
-import { TextEditorProps, SubtitleData } from '@/types';
+import { BiExport } from "react-icons/bi";
+import { TextEditorProps, SubtitleData } from "@/types";
+import { Switch } from "@/components/common/Switch"; // Import the existing Switch component
 
 // Memoized EditableWord component
-const EditableWord = React.memo(({ 
-  word, 
-  index, 
-  isEditing, 
-  onWordClick 
-}: { 
-  word: string; 
-  index: number; 
-  isEditing: boolean; 
-  onWordClick: (index: number, word: string) => void;
-}) => {
-  if (isEditing) return null;
-  
-  return (
-    <span
-      onClick={() => onWordClick(index, word)}
-      className="cursor-pointer inline relative text-background-text group transition-all duration-200"
-    >
-      <span className="inline text-lg group-hover:bg-background group-hover:px-2 group-hover:rounded-md transition-all duration-200">
-        {word}
-      </span>
-    </span>
-  );
-});
+const EditableWord = React.memo(
+  ({
+    word,
+    index,
+    isEditing,
+    onWordClick,
+  }: {
+    word: string;
+    index: number;
+    isEditing: boolean;
+    onWordClick: (index: number, word: string) => void;
+  }) => {
+    if (isEditing) return null;
 
-EditableWord.displayName = 'EditableWord';
+    return (
+      <span
+        onClick={() => onWordClick(index, word)}
+        className="cursor-pointer inline relative text-background-text group transition-all duration-200"
+      >
+        <span className="inline text-lg group-hover:bg-background group-hover:px-2 group-hover:rounded-md transition-all duration-200">
+          {word}
+        </span>
+      </span>
+    );
+  }
+);
+
+EditableWord.displayName = "EditableWord";
+
+// Add a capitalized version of EditableWord component
+const EditableCapitalizedWord = React.memo(
+  ({
+    word,
+    index,
+    isEditing,
+    onWordClick,
+  }: {
+    word: string;
+    index: number;
+    isEditing: boolean;
+    onWordClick: (index: number, word: string) => void;
+  }) => {
+    if (isEditing) return null;
+
+    return (
+      <span
+        onClick={() => onWordClick(index, word)}
+        className="cursor-pointer inline relative text-background-text group transition-all duration-200"
+      >
+        <span className="inline text-lg group-hover:bg-background group-hover:px-2 group-hover:rounded-md transition-all duration-200">
+          {word.toUpperCase()}
+        </span>
+      </span>
+    );
+  }
+);
+
+EditableCapitalizedWord.displayName = "EditableCapitalizedWord";
+
+// Memoized EditableSegment component for different language subtitles
+const EditableSegment = React.memo(
+  ({
+    segment,
+    index,
+    isEditing,
+    onSegmentClick,
+  }: {
+    segment: string;
+    index: number;
+    isEditing: boolean;
+    onSegmentClick: (index: number, segment: string) => void;
+  }) => {
+    if (isEditing) return null;
+
+    return (
+      <div
+        onClick={() => onSegmentClick(index, segment)}
+        className="cursor-pointer relative text-background-text group transition-all duration-200 mb-3 p-2 hover:bg-background hover:rounded-md"
+      >
+        <span className="block text-lg">{segment}</span>
+      </div>
+    );
+  }
+);
+
+EditableSegment.displayName = "EditableSegment";
+
+// Add a capitalized version of EditableSegment component
+const EditableCapitalizedSegment = React.memo(
+  ({
+    segment,
+    index,
+    isEditing,
+    onSegmentClick,
+  }: {
+    segment: string;
+    index: number;
+    isEditing: boolean;
+    onSegmentClick: (index: number, segment: string) => void;
+  }) => {
+    if (isEditing) return null;
+
+    return (
+      <div
+        onClick={() => onSegmentClick(index, segment)}
+        className="cursor-pointer relative text-background-text group transition-all duration-200 mb-3 p-2 hover:bg-background hover:rounded-md"
+      >
+        <span className="block text-lg">{segment.toUpperCase()}</span>
+      </div>
+    );
+  }
+);
+
+EditableCapitalizedSegment.displayName = "EditableCapitalizedSegment";
 
 // Memoized EditingForm component
-const EditingForm = React.memo(({ 
-  editedWord, 
-  onWordChange, 
-  onSave, 
-  onCancel 
-}: { 
-  editedWord: string; 
-  onWordChange: (value: string) => void; 
-  onSave: () => void; 
-  onCancel: () => void;
-}) => (
-  <div className="inline-flex items-center gap-1 bg-background rounded-lg p-1">
-    <input
-      type="text"
-      value={editedWord}
-      onChange={(e) => onWordChange(e.target.value)}
-      autoFocus
-      className="bg-white border border-muted rounded-md px-3 py-1.5 min-w-[80px] text-background-text focus:outline-none focus:border-primary"
-    />
-    <Button
-      onClick={onSave}
-      title="Save"
-      variant='accent'
-      icon={MdCheck}
-      iconOnly={true}
-      size="sm"
-    />
-    <Button
-      onClick={onCancel}
-      title="Cancel"
-      variant='primary'
-      iconOnly={true}
-      icon={MdClose}
-      size="sm"
-    />
-  </div>
-));
+const EditingForm = React.memo(
+  ({
+    editedWord,
+    onWordChange,
+    onSave,
+    onCancel,
+    isMultiline = false,
+  }: {
+    editedWord: string;
+    onWordChange: (value: string) => void;
+    onSave: () => void;
+    onCancel: () => void;
+    isMultiline?: boolean;
+  }) => (
+    <div
+      className={`${
+        isMultiline ? "block" : "inline-flex"
+      } items-center gap-1 bg-background rounded-lg p-1`}
+    >
+      {isMultiline ? (
+        <textarea
+          value={editedWord.toUpperCase()}
+          onChange={(e) => onWordChange(e.target.value)}
+          autoFocus
+          rows={3}
+          className="bg-white border border-muted rounded-md px-3 py-1.5 w-full text-background-text focus:outline-none focus:border-primary mb-2"
+        />
+      ) : (
+        <input
+          type="text"
+          value={editedWord}
+          onChange={(e) => onWordChange(e.target.value)}
+          autoFocus
+          className="bg-white border border-muted rounded-md px-3 py-1.5 min-w-[80px] text-background-text focus:outline-none focus:border-primary"
+        />
+      )}
+      <div className="flex gap-1 justify-end">
+        <Button
+          onClick={onSave}
+          title="Save"
+          variant="accent"
+          icon={MdCheck}
+          iconOnly={true}
+          size="sm"
+        />
+        <Button
+          onClick={onCancel}
+          title="Cancel"
+          variant="primary"
+          iconOnly={true}
+          icon={MdClose}
+          size="sm"
+        />
+      </div>
+    </div>
+  )
+);
 
-EditingForm.displayName = 'EditingForm';
+EditingForm.displayName = "EditingForm";
 
 export function TextEditor({
   onNext,
   onPrevious,
   transcription,
-  onTranscriptionUpdate
+  onTranscriptionUpdate,
+  isDifferentLanguage = false,
+  isCapital = false,
+  onCapitalChange,
 }: TextEditorProps) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editedWord, setEditedWord] = useState("");
   const [subtitleData, setSubtitleData] = useState<SubtitleData | null>(null);
+  const [capitalizeAll, setCapitalizeAll] = useState(isCapital); // Initialize from props
+
+  // Sync local state with props
+  useEffect(() => {
+    setCapitalizeAll(isCapital);
+  }, [isCapital]);
+
+  // Notify parent component when capitalization changes
+  const handleCapitalChange = (value: boolean) => {
+    console.log("Capitalization changed:", value);
+    setCapitalizeAll(value);
+    if (onCapitalChange) {
+      onCapitalChange(value);
+    }
+  };
 
   useEffect(() => {
     if (transcription) {
@@ -94,51 +221,125 @@ export function TextEditor({
     setEditedWord(word);
   }, []);
 
-  const handleWordSave = useCallback((index: number) => {
-    if (editedWord.trim() && subtitleData) {
-      const newSubtitleData = {
-        ...subtitleData,
-        words: subtitleData.words.map((item, i) =>
-          i === index ? { ...item, word: editedWord.trim() } : item
-        )
-      };
-      
-      setSubtitleData(newSubtitleData);
-      onTranscriptionUpdate(newSubtitleData);
-      setEditingIndex(null);
-      setEditedWord("");
-    }
-  }, [editedWord, subtitleData, onTranscriptionUpdate]);
+  const handleSegmentClick = useCallback((index: number, segment: string) => {
+    setEditingIndex(index);
+    setEditedWord(segment);
+  }, []);
+
+  const handleWordSave = useCallback(
+    (index: number) => {
+      if (editedWord.trim() && subtitleData) {
+        if (isDifferentLanguage && subtitleData.segments) {
+          // Handle segments for different language
+          const newSubtitleData = {
+            ...subtitleData,
+            segments: subtitleData.segments.map((item, i) =>
+              i === index ? { ...item, text: editedWord.trim() } : item
+            ),
+          };
+
+          setSubtitleData(newSubtitleData);
+          onTranscriptionUpdate(newSubtitleData);
+        } else if (subtitleData.words) {
+          // Handle words for same language
+          const newSubtitleData = {
+            ...subtitleData,
+            words: subtitleData.words.map((item, i) =>
+              i === index ? { ...item, word: editedWord.trim() } : item
+            ),
+          };
+
+          setSubtitleData(newSubtitleData);
+          onTranscriptionUpdate(newSubtitleData);
+        }
+
+        setEditingIndex(null);
+        setEditedWord("");
+      }
+    },
+    [editedWord, subtitleData, onTranscriptionUpdate, isDifferentLanguage]
+  );
 
   const handleCancel = useCallback(() => {
     setEditingIndex(null);
     setEditedWord("");
   }, []);
 
-  const wordElements = useMemo(() => {
+  const contentElements = useMemo(() => {
     if (!subtitleData) return null;
 
-    return subtitleData.words.map((item, index) => (
-      <React.Fragment key={index}>
-        {editingIndex === index ? (
-          <EditingForm
-            editedWord={editedWord}
-            onWordChange={setEditedWord}
-            onSave={() => handleWordSave(index)}
-            onCancel={handleCancel}
-          />
-        ) : (
-          <EditableWord
-            word={item.word}
-            index={index}
-            isEditing={editingIndex === index}
-            onWordClick={handleWordClick}
-          />
-        )}
-        {index < subtitleData.words.length - 1 && <span> </span>}
-      </React.Fragment>
-    ));
-  }, [subtitleData, editingIndex, editedWord, handleWordSave, handleCancel, handleWordClick]);
+    if (isDifferentLanguage && subtitleData.segments) {
+      // Render segments for different language
+      return subtitleData.segments.map((item, index) => (
+        <React.Fragment key={index}>
+          {editingIndex === index ? (
+            <EditingForm
+              editedWord={editedWord}
+              onWordChange={setEditedWord}
+              onSave={() => handleWordSave(index)}
+              onCancel={handleCancel}
+              isMultiline={true}
+            />
+          ) : capitalizeAll ? (
+            <EditableCapitalizedSegment
+              segment={item.text}
+              index={index}
+              isEditing={editingIndex === index}
+              onSegmentClick={handleSegmentClick}
+            />
+          ) : (
+            <EditableSegment
+              segment={item.text}
+              index={index}
+              isEditing={editingIndex === index}
+              onSegmentClick={handleSegmentClick}
+            />
+          )}
+        </React.Fragment>
+      ));
+    } else if (subtitleData.words) {
+      // Render words for same language
+      return subtitleData.words.map((item, index) => (
+        <React.Fragment key={index}>
+          {editingIndex === index ? (
+            <EditingForm
+              editedWord={editedWord}
+              onWordChange={setEditedWord}
+              onSave={() => handleWordSave(index)}
+              onCancel={handleCancel}
+            />
+          ) : capitalizeAll ? (
+            <EditableCapitalizedWord
+              word={item.word}
+              index={index}
+              isEditing={editingIndex === index}
+              onWordClick={handleWordClick}
+            />
+          ) : (
+            <EditableWord
+              word={item.word}
+              index={index}
+              isEditing={editingIndex === index}
+              onWordClick={handleWordClick}
+            />
+          )}
+          {index < subtitleData.words.length - 1 && <span> </span>}
+        </React.Fragment>
+      ));
+    }
+
+    return null;
+  }, [
+    subtitleData,
+    editingIndex,
+    editedWord,
+    handleWordSave,
+    handleCancel,
+    handleWordClick,
+    isDifferentLanguage,
+    handleSegmentClick,
+    capitalizeAll,
+  ]);
 
   if (!subtitleData) {
     return (
@@ -149,36 +350,58 @@ export function TextEditor({
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-8 px-2">
-      <h2 className="text-xl sm:text-3xl font-semibold text-background-text mb-2">
-        Subtitle Editor
-      </h2>
-      <p className="text-muted-text mb-6">
-        Click on any word to edit the subtitle text
-      </p>
+    <div className="w-full max-w-4xl mx-auto  px-2">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+        <div>
+          <p className="text-xl lg:text-2xl font-semibold text-background-text mb-2">
+            {isDifferentLanguage ? "Text Editor" : "Text Editor"}
+          </p>
+          <p className="text-muted-text">
+            {isDifferentLanguage
+              ? "Click on any segment to edit the translated subtitle"
+              : "Click on any word to edit the subtitle text"}
+          </p>
+        </div>
+        <div className="flex items-center space-x-2 self-end mt-2 sm:mt-0">
+          <span className="text-xs sm:text-sm text-muted-text font-bold">
+            CAPITALIZE
+          </span>
+          <Switch
+            checked={capitalizeAll}
+            onChange={handleCapitalChange} // Use our handler that notifies parent
+            size="lg"
+          />
+        </div>
+      </div>
 
-      <div className="bg-white rounded-lg border border-muted shadow-sm">
+      <div className="bg-white border border-muted shadow-sm">
         <div className="p-6">
-          <div className="min-h-[100px]">
-            {wordElements}
+          <div
+            className={`min-h-[100px] ${
+              isDifferentLanguage ? "space-y-2" : ""
+            }`}
+          >
+            {contentElements}
           </div>
         </div>
 
         <div className="flex items-center justify-between p-4 border-t border-muted bg-background">
           <Button
-            size='lg'
             onClick={onPrevious}
-            variant='outline'
-            className="flex items-center gap-2"
+            variant="outline"
+            icon={MdArrowBack}
+            className="py-2 bg-red sm:py-3 px-4  rounded-lg hover:bg-white/5 transition-all duration-300 text-xs sm:text-sm flex items-center  gap-2"
           >
-            <MdArrowBack /> Back
+            {" "}
+            Back{" "}
           </Button>
           <Button
-            size='lg'
             onClick={onNext}
-            className="flex items-center gap-2 text-secondary"
+            icon={BiExport}
+            iconPosition="right"
+            className=" py-2 sm:py-3 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
           >
-            Export<BiExport/>
+            Export
           </Button>
         </div>
       </div>

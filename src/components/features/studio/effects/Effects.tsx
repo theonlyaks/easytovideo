@@ -118,7 +118,7 @@ export function Effects({ user }: AuthState) {
         startTime: timeRange.start,
         endTime: timeRange.end,
         fileName: selectedFile.fileName,
-        title: "Untitled Project",
+        title: "My Video",
         isOriginalClip, // Add this new property
       };
       const projectId = await createProject(project);

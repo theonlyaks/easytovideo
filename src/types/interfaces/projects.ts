@@ -31,6 +31,8 @@ export interface Project {
     textColor: string;
     fontFamily: string;
     fontWeight: string;
+    isCapital?:boolean;
+    fontSize?:number;
   };
   subTitleText?: string;
   subTitleSize?: {
@@ -41,6 +43,13 @@ export interface Project {
   transcription?:any;
   isActive?:boolean;
   transcriptionProgress?:number;
+  subtitleProperties?:{
+    videoLang:string, subtitleType:string, whisperLanguage:string
+  },
+  isDifferentLanguage?:boolean;
+  isNative?:boolean;
+  targetLanguage?:string;
+  isCapital?: boolean;
 }
 
 export interface ProjectState {

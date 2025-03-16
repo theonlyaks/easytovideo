@@ -3,30 +3,20 @@ import { useStorageUrl } from '@/store/hooks/useStorageUrl';
 import { Project } from '@/types';
 import { VideoPlayer } from '@/components/common/VideoPlayer';
 import Button from '@/components/common/Button';
-import { FiDownload, FiCheckCircle, FiEdit2, FiEdit3 } from 'react-icons/fi';
+import { FiDownload, FiCheckCircle, FiEdit3 } from 'react-icons/fi';
 import { useFileDownload } from '@/store/hooks/useFileDownload';
 import { getFilenamePartByIndex } from '@/lib/common/file';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import { useState, useEffect } from 'react';
 import { FirebaseDocumentService } from '@/services/firebase/document';
 import { serverTimestamp } from 'firebase/firestore';
 import { FeedbackEffect } from '@/components/features/studio/effects/FeedbackEffect';
 import { SubtitleOutputProps } from '@/types';
 
-
 export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState('');
   const { data: project, loading, error } = useDocument<Project>('projects', effectId);
   const storagePath = project && user ? `user_files/${user.uid}/${project.outputFileName}` : null;
   const { url: videoUrl, loading: urlLoading } = useStorageUrl(storagePath);
   const { downloadFile, isDownloading } = useFileDownload();
-
-  useEffect(() => {
-    if (project?.title) {
-      setTitle(project.title);
-    }
-  }, [project?.title]);
 
   const handleDownload = () => {
     if (!videoUrl || !project?.outputFileName) return;
@@ -39,20 +29,6 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
     a.rel = 'noopener noreferrer';
     a.click();
     
-  };
-
-  const handleTitleUpdate = async () => {
-    if (!project || !title.trim()) return;
-    
-    try {
-      await FirebaseDocumentService.updateDocument('projects', effectId, {
-        title: title.trim(),
-        updatedAt: serverTimestamp()
-      });
-      setIsEditing(false);
-    } catch (error) {
-      //console.error('Error updating title:', error);
-    }
   };
 
   if (loading) {
@@ -81,7 +57,7 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-6 md:py-12 px-2 mt-8 sm:mt-0 md:px-0">
+    <div className="max-w-6xl mx-auto px-2">
       <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-8">
         {/* Left side - Video Player */}
         <div className="w-full md:w-2/3">
@@ -118,34 +94,7 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
               </div>
             </div>
           )}
-  
-          <div>
-            {isEditing ? (
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onBlur={handleTitleUpdate}
-                onKeyDown={(e) => e.key === 'Enter' && handleTitleUpdate()}
-                className="px-3 py-2 text-lg md:text-xl border border-accent rounded-md 
-                         focus:outline-none focus:ring-2 focus:ring-accent w-full"
-                autoFocus
-                placeholder="Enter title..."
-              />
-            ) : (
-              <div className="flex items-center gap-2">
-                <h1 className="text-lg md:text-2xl font-semibold text-background-text truncate">
-                  {title || 'Untitled'}
-                </h1>
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="p-1 hover:text-accent transition-colors"
-                >
-                  <FiEdit2 className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-          </div>
+
   
           {videoUrl && (
             <>
@@ -155,8 +104,8 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
                 variant="primary"
                 isLoading={isDownloading}
                 disabled={isDownloading}
-                className="w-full"
-                size='lg'
+                className="w-full  bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                size='md'
               >
                 {isDownloading ? 'Downloading...' : 'Download Video'}
               </Button>
@@ -164,7 +113,7 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
               <Button
                 onClick={onEdit}
                 icon={FiEdit3}
-                size='lg'
+                size='md'
                 variant="outline"
                 className="w-full"
               >

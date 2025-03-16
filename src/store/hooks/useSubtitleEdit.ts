@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Project, EditProps } from '@/types';
-import { useDocument } from '@/store/hooks/useDocument';
-import { useStorageUrl } from '@/store/hooks/useStorageUrl';
+import { Project, EditProps, ThemeConfig } from '@/types';
+import { useDocument,useStorageUrl } from '@/store';
 import { FirebaseDocumentService } from '@/services/firebase/document';
 import { useRouter } from 'next/navigation';
 
@@ -23,6 +22,10 @@ interface UseSubtitleEditReturn {
   prevStep: () => void;
   setCustomPosition: (position: { y_position: number; frontend_video_height: number }) => void;
   setSelectedThemeId: (themeId: string) => void;
+  themeCustomization: ThemeConfig;
+  setThemeCustomization: (config: ThemeConfig) => void;
+  isCapital: boolean;
+  setIsCapital: (value: boolean) => void;
 }
 
 export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEditReturn {
@@ -37,15 +40,48 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [customPosition, setCustomPosition] = useState({ y_position: 50, frontend_video_height: 50 });
-  const [selectedThemeId, setSelectedThemeId] = useState<string>('single-word');
+  const [selectedThemeId, setSelectedThemeId] = useState<string>('one_word');
+
+  const defaultCustomization: ThemeConfig = {
+    themeId: 'one_word',
+    fontId: 'poppins-regular',
+    fontSize: '32',
+    color: '#8ee6eb'
+  };
+
+  const [themeCustomization, setThemeCustomization] = useState<ThemeConfig>(() => {
+    if (project?.subTitleTheme) {
+      return {
+        themeId: project.selectedThemeId || defaultCustomization.themeId,
+        fontId: project.subTitleTheme.fontFamily || defaultCustomization.fontId,
+        fontSize: String(project.subTitleTheme.fontSize || defaultCustomization.fontSize),
+        color: project.subTitleTheme.textColor || defaultCustomization.color
+      };
+    }
+    return defaultCustomization;
+  });
+
+  const [isCapital, setIsCapital] = useState<boolean>(() => {
+    return project?.subTitleTheme?.isCapital ?? false;
+  });
 
   const handleSubtitleCreate = useCallback(async () => {
     setIsProcessing(true);
     try {
+      // console.log("ASdasdasd",{
+      //   transcription: project?.transcription,
+      //   subTitlePosition: customPosition,
+      //   selectedThemeId: selectedThemeId,
+      //   themeCustomization: themeCustomization,
+      //   isCapital: isCapital
+      // });
+      // return
       await FirebaseDocumentService.updateDocument('projects', projectId, {
         transcription: project?.transcription,
         subTitlePosition: customPosition,
-        selectedThemeId: selectedThemeId
+        selectedThemeId: selectedThemeId,
+        themeCustomization: themeCustomization,
+        isCapital: isCapital
       });
 
       const response = await fetch('/api/subtitle/create', {
@@ -68,7 +104,7 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
       setErrorMessage('Failed to create subtitle');
       setIsProcessing(false);
     }
-  }, [projectId, project?.transcription, customPosition, selectedThemeId, router]);
+  }, [projectId, project?.transcription, customPosition, selectedThemeId, router,isCapital]);
 
   const handleTranscriptionUpdate = useCallback((newTranscription: any) => {
     if (project) {
@@ -105,6 +141,10 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
     nextStep,
     prevStep,
     setCustomPosition,
-    setSelectedThemeId
+    setSelectedThemeId,
+    themeCustomization,
+    setThemeCustomization,
+    isCapital,
+    setIsCapital
   };
 }

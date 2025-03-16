@@ -14,7 +14,7 @@ export function useSubtitleAnimation(displayMode: DisplayMode) {
         return [words[index]];
       case 'full':
         return words;
-      case 'progressive':
+      case 'group_progressive_active':
       case 'highlight':
         return words;
       case 'multi':

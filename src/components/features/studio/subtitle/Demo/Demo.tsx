@@ -6,7 +6,7 @@ export const Demo = memo(function Demo() {
   return (
     <section className="mt-12 space-y-6" aria-labelledby="how-it-works-title">
       <h2 id="how-it-works-title" className="text-xl font-medium text-center">
-        How It Works
+      Fast & Simple – 2 Minutes!
       </h2>
       
       <div className="grid grid-cols-1 gap-6" 

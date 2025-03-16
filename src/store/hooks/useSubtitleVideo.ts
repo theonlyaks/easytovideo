@@ -15,7 +15,7 @@ interface UseVideoSubtitleReturn {
   status: VideoStatus;
   errorMessage: string | null;
   currentProjectId: string | null;
-  handleProcessVideo: (file: FileItem) => Promise<void>;
+    handleProcessVideo: (file: FileItem,videoLang:string, subtitleType:string, whisperLanguage:string) => Promise<void>;
   resetState: () => void;
   setErrorMessage: (error: string | null) => void;  // Add this line
 }
@@ -35,11 +35,11 @@ export function useVideoSubtitle({ user }: UseVideoSubtitleProps): UseVideoSubti
     if (video.duration > 300) throw new Error('Video must be less than 5 minutes');
     if (video.duration < 3) throw new Error('Video must be at least 3 seconds');
     if (video.videoHeight / video.videoWidth < 1.5) {
-      throw new Error('Please upload a vertical video (9:16 aspect ratio)');
+      throw new Error('Please upload a vertical video');
     }
   };
 
-  const handleProcessVideo = async (file: FileItem) => {
+  const handleProcessVideo = async (file: FileItem,videoLang:string, subtitleType:string, whisperLanguage:string) => {
     if (!user) return;
 
     try {
@@ -67,6 +67,7 @@ export function useVideoSubtitle({ user }: UseVideoSubtitleProps): UseVideoSubti
         duration: video.duration,
         is_active: false,
         progress: 0,
+        subtitleProperties: { videoLang, subtitleType, whisperLanguage }
       };
 
       const projectId = await SubtitleService.createSubtitleProject(newProject);

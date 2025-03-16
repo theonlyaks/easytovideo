@@ -27,6 +27,7 @@ export * from './hooks/useVideoContainer';
 export * from './hooks/useSubtitlePosition';
 export * from './hooks/useSubtitleVideo';
 export * from './hooks/useSubtitleEdit';
+export * from './hooks/useThemeSelector';
 
 
 
