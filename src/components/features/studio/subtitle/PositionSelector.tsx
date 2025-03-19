@@ -28,7 +28,7 @@ const Controls = memo(
     onNext,
     onCancel,
   }: Pick<PositionSelectorProps, "onNext" | "onCancel">) => (
-    <div className="bg-white/5 rounded-xl p-4 lg:p-6 space-y-3 lg:space-y-4">
+    <div className="bg-white/5 rounded-xl py-4 space-y-4">
       <Button
         onClick={onNext}
          icon={MdArrowForward}
@@ -165,7 +165,7 @@ export const PositionSelector = memo(function PositionSelector({
           </div>
 
           <div className="w-full">
-            <Header className="hidden lg:block mb-6" />
+            <Header className="hidden lg:block" />
             <Controls onNext={handleNextClick} onCancel={onCancel} />
           </div>
         </div>

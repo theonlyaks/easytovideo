@@ -11,7 +11,8 @@ export default {
     extend: {
       colors: {
         // Background colors
-        background: "#f6f4f1",
+        // background: "#f6f4f1",
+        background: "#f3f4f6",
         "background-text": "#2a2522",
         
         // Primary colors

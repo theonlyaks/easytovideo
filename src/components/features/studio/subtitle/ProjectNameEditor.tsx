@@ -29,8 +29,8 @@ export function ProjectNameEditor({ projectId, initialTitle = '' }: ProjectNameE
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-6 lf:mt-2 mb-2 lg:mb-8">
-      <div className="flex items-center md:justify-center w-full py-3 bg-background">
+    <div className="max-w-6xl mx-auto my-6">
+      <div className="flex items-center md:justify-center w-full  bg-background">
         {isEditing ? (
           <div className="flex items-center gap-2 w-full max-w-xl px-2 sm:px-6">
             <input
@@ -61,7 +61,7 @@ export function ProjectNameEditor({ projectId, initialTitle = '' }: ProjectNameE
           </div>
         ) : (
           <div className="flex sm:items-center gap-2 w-full max-w-xl px-2 sm:px-6">
-            <p className="text-lg sm:text-2xl font-dm-sans text-background-text flex-1 sm:text-center truncate">
+            <p className="text-lg sm:text-2xl font-medium text-background-text flex-1 sm:text-center truncate">
               <span className="truncate">{title || 'My Video'}</span> <span className="text-neutral/50 whitespace-nowrap"></span> <span className="text-primary whitespace-nowrap">Subtitle Editor</span>
             </p>
             <button

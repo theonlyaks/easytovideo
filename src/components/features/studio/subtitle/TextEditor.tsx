@@ -351,28 +351,28 @@ export function TextEditor({
 
   return (
     <div className="w-full max-w-4xl mx-auto  px-2">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-        <div>
-          <p className="text-xl lg:text-2xl font-semibold text-background-text mb-2">
-            {isDifferentLanguage ? "Text Editor" : "Text Editor"}
-          </p>
-          <p className="text-muted-text">
-            {isDifferentLanguage
-              ? "Click on any segment to edit the translated subtitle"
-              : "Click on any word to edit the subtitle text"}
-          </p>
-        </div>
-        <div className="flex items-center space-x-2 self-end mt-2 sm:mt-0">
-          <span className="text-xs sm:text-sm text-muted-text font-bold">
-            CAPITALIZE
-          </span>
-          <Switch
-            checked={capitalizeAll}
-            onChange={handleCapitalChange} // Use our handler that notifies parent
-            size="lg"
-          />
-        </div>
-      </div>
+      <div className="flex flex-col sm:flex-row justify-between mb-4">
+  <div className="text-left">
+    <p className="text-xl lg:text-2xl font-semibold text-background-text mb-2">
+      {isDifferentLanguage ? "Text Editor" : "Text Editor"}
+    </p>
+    <p className="text-muted-text">
+      {isDifferentLanguage
+        ? "Click on any segment to edit the translated subtitle"
+        : "Click on any word to edit the subtitle text"}
+    </p>
+  </div>
+  <div className="flex items-center space-x-2 self-end mt-2 sm:mt-0">
+    <span className="text-xs sm:text-sm text-muted-text font-bold">
+      CAPITALIZE
+    </span>
+    <Switch
+      checked={capitalizeAll}
+      onChange={handleCapitalChange}
+      size="lg"
+    />
+  </div>
+</div>
 
       <div className="bg-white border border-muted shadow-sm">
         <div className="p-6">
