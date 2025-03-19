@@ -36,7 +36,7 @@ export const menuItems: MenuItems = {
   //   { icon: FaMicrophone, label: 'Text to Speech', path: '/studio/text-to-speech' },
   // ],
   Video: [
-    { icon: FaVideo, label: 'Effects', path: '/studio/effects' },
+    { icon: FaVideo, label: 'Speech to Visuals', path: '/studio/effects' },
     { icon: FaAlignLeft, label: 'Subtitle', path: '/studio/subtitle' },
     // { icon: FaComments, label: 'Conversations', path: '/studio/conversations' },
     // { icon: FaPhone, label: 'Phone Numbers', path: '/studio/phone-numbers' },

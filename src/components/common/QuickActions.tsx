@@ -19,7 +19,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
         />
          <QuickActionButton
           icon={<MdAdd className="h-6 w-6" />}
-          label="Add AI effects"
+          label="Speech To Visuals"
           description=""
           onClick={onCreateAiEffect}
         />

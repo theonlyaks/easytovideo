@@ -23,7 +23,7 @@ export const VIDEO_LANGUAGES: Language[] = [
     name: 'Hindi', 
     flag: '🇮🇳', 
     hasTranslation: true, 
-    additionalOptions: ['hinglish'], 
+    // additionalOptions: ['hinglish'], 
     isNative: true, 
     whisper_language: 'hindi',
     supported_fonts: ['noto-sans-devanagari']
@@ -73,7 +73,7 @@ export const getSubtitleOptions = (language: Language): SubtitleOption[] => {
   }
 
   if (language.code === 'hi') {
-    options.push({ value: 'hi_hinglish', label: 'Hinglish' });
+    // options.push({ value: 'hi_hinglish', label: 'Hinglish' });
   }
 
   // Handle additional options if any

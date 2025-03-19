@@ -154,31 +154,33 @@ export function Effects({ user }: AuthState) {
   };
 
   return (
-    <main className="max-w-4xl mx-auto py-4 md:py-12 px-2 md:px-0 mt-8 sm:mt-0">
+    <main className="mx-auto px-7 sm:px-4 py-16 sm:py-6 mt-4 sm:mt-0 min-h-screen bg-background">
       {!videoUrl ? (
         <>
           <div className="mb-8 text-center">
-            <h1 className="text-2xl md:text-3xl font-medium mb-2">
-              Smart Video Effects
-            </h1>
-            <p className="text-sm text-muted-text px-1">
-              AI-powered effects for TikTok, Reels & Shorts
-            </p>
-          </div>
-          <button
-            onClick={() => setIsFileManagerOpen(true)}
-            className="w-full border-2 border-dashed border-primary rounded-lg p-4 md:p-8 text-center cursor-pointer hover:bg-primary/5 transition-colors flex flex-col items-center justify-center min-h-[150px]"
-          >
-            <MdAdd className="h-8 w-8 md:h-24 md:w-12 text-primary mb-2" />
-            <p className="text-base md:text-lg mb-1 md:mb-2">
-              Select video from library
-            </p>
-            {/* <p className="text-xs md:text-sm text-muted-text">
-              Supports MP4, WebM, and Ogg
-            </p> */}
-            
-          </button>
-          <Demo />
+  <h1 className="text-2xl md:text-3xl font-semibold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+    Speech to Visuals
+  </h1>
+  <p className="text-base text-muted-text px-1 mb-4">
+  Upload a video with clear speech, and our AI will add stunning visuals, B-Roll, transitions, and more to make your content pop for TikTok, Reels & Shorts!  </p>
+  
+</div>
+<button
+  onClick={() => setIsFileManagerOpen(true)}
+  className="relative w-full border border-primary/20 rounded-xl p-6 md:p-8 text-center cursor-pointer bg-gradient-to-br from-white to-primary/5 hover:from-primary/10 hover:to-primary/20 transition-all duration-300 flex flex-col items-center justify-center min-h-[150px] shadow-md hover:shadow-lg"
+  aria-label="Upload or select a video"
+>
+  <MdAdd className="h-8 w-8 md:h-10 md:w-10 text-primary mb-2 animate-bounce" />
+  <p className="text-base md:text-lg font-medium text-gray-800">
+    Click to Upload or Select
+  </p>
+  <p className="text-sm text-muted-text mt-1">
+    Supports vertical videos up to 90 Seconds with ease
+  </p>
+  {/* Subtle Hover Overlay */}
+  <div className="absolute inset-0 rounded-xl bg-primary/0 hover:bg-primary/5 transition-opacity duration-300"></div>
+</button>
+<Demo />
         </>
       ) : (
         <div className="space-y-3 md:space-y-4">
