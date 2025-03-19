@@ -206,8 +206,7 @@ export const SUBTITLE_THEMES: SubtitleTheme[] = [
 }));
 
 export const SAMPLE_SENTENCES = [
-  "I You Me",
-  "we were all asleep"
+  "I You Me"
 ];
 
 export const getSampleWords = (sentenceIndex: number) => 

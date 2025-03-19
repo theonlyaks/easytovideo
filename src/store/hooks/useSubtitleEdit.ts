@@ -46,7 +46,7 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
     themeId: 'one_word',
     fontId: 'poppins-regular',
     fontSize: '32',
-    color: '#8ee6eb'
+    color: '#ff5a5a'
   };
 
   const [themeCustomization, setThemeCustomization] = useState<ThemeConfig>(() => {

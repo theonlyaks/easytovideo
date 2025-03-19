@@ -9,11 +9,8 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { SubtitleOutput } from "@/components/features/studio/subtitle/SubtitleOutput";
 import { useRouter } from "next/navigation";
 import { useSubtitleEdit } from "@/store";
-import { SUBTITLE_THEMES } from "@/constants";
-import { FiEdit2, FiSave, FiX } from "react-icons/fi";
-import { FirebaseDocumentService } from '@/services/firebase/document';
-import { serverTimestamp } from 'firebase/firestore';
 import { ProjectNameEditor } from "@/components/features/studio/subtitle/ProjectNameEditor";
+import { ProgressBar } from "@/components/common/ProgressBar";
 
 // Memoized components
 const MemoizedPositionSelector = React.memo(PositionSelector);
@@ -56,7 +53,7 @@ export function Edit({ projectId, user }: EditProps) {
         <div className="flex flex-col items-center justify-center min-h-[400px]">
           <LoadingSpinner size="lg" color="primary" />
           <p className="text-primary mt-4">
-            {isProcessing ? 'Processing Subtitle...' : 'Loading project...'}
+            {isProcessing ? 'Building Video...' : 'Loading project...'}
           </p>
         </div>
       );
@@ -141,8 +138,14 @@ export function Edit({ projectId, user }: EditProps) {
           <p className="text-primary mt-4">Loading project...</p>
         </div>
       ) : (
-        <main className="mx-auto py-4 md:py-0 px-2 md:px-0">
+        <main className="mx-auto py-6 md:py-0 px-2 md:px-0">
           <ProjectNameEditor projectId={projectId} initialTitle={project?.title} />
+          {/* Add ProgressBar here */}
+          {!isProcessing && project && isSubtitleEditing && (
+            <div className="max-w-5xl mx-auto px-2">
+              <ProgressBar currentStep={currentStep} totalSteps={3} />
+            </div>
+          )}
           <div className="">
             <div className="flex flex-col">
               {currentStepContent}

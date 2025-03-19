@@ -70,7 +70,7 @@ export function Subtitle({ user }: AuthState) {
   };
 
   return (
-    <main className="mx-auto px-3 sm:px-4 py-4 sm:py-6 mt-4 sm:mt-0 min-h-screen bg-gray-100">
+    <main className="mx-auto px-3 sm:px-4 py-4 sm:py-6 mt-4 sm:mt-0 min-h-screen bg-background">
       {!selectedFile ? (
         <FileSelector onOpenFileManager={() => setIsFileManagerOpen(true)} />
       ) : showLanguageSelector ? (
