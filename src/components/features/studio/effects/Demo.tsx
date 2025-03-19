@@ -7,7 +7,7 @@ import { MdInfoOutline } from "react-icons/md";
 export function Demo() {
   return (
     <div className="w-full max-w-4xl mx-auto my-8">
-      <div className="bg-accent/5 px-4 py-3 rounded-lg mb-4" role="alert">
+      {/* <div className="bg-accent/5 px-4 py-3 rounded-lg mb-4" role="alert">
         <div className="flex items-center gap-2">
           <MdInfoOutline className="text-accent flex-shrink-0 h-5 w-5" />
           <p className="text-base text-secondary">
@@ -17,7 +17,7 @@ export function Demo() {
             speech to generate relevant effects.
           </p>
         </div>
-      </div>
+      </div> */}
 
       <h2 className="text-xl md:text-2xl font-semibold text-center mb-6">
         See the Difference

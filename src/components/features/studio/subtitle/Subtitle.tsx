@@ -20,6 +20,7 @@ export function Subtitle({ user }: AuthState) {
   const [isFileManagerOpen, setIsFileManagerOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  const [dummyProgress, setDummyProgress] = useState(0);
   const syncTask = useSyncTask();
 
   // Add effect for scroll behavior
@@ -49,6 +50,19 @@ export function Subtitle({ user }: AuthState) {
       setErrorMessage(subscriptionError);
     }
   }, [subscriptionError]);
+
+  // Optimized dummy progress simulation
+  useEffect(() => {
+    if (status !== "transcribing" || progress !== 0 || dummyProgress >= 80) {
+      return; // Don't even create interval if conditions aren't met
+    }
+
+    const intervalId = setInterval(() => {
+      setDummyProgress(prev => Math.min(prev + 1, 80));
+    }, 750);
+
+    return () => clearInterval(intervalId);
+  }, [status, progress, dummyProgress]); // Add dummyProgress to dependencies
 
   const handleFileSelect = async (file: FileItem) => {
     setIsFileManagerOpen(false);
@@ -90,7 +104,7 @@ export function Subtitle({ user }: AuthState) {
                   </p>
                   {status === "transcribing" && progress !== undefined && (
                     <p className="text-sm sm:text-base text-accent text-center m-2">
-                      {progress === 0 ? "Getting things ready..." : `${progress}% complete`}
+                      {progress === 0 ? `${dummyProgress}% complete` : `${progress}% complete`}
                     </p>
                   )}
                 </>

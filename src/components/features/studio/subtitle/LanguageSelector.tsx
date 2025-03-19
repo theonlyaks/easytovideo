@@ -59,7 +59,7 @@ export const LanguageSelector = memo(({ onSubmit, onCancel }: {
     return getSubtitleOptions(language).map(option => ({
       ...option,
       label: option.label.includes('Translation')
-        ? option.label.replace('Translation', `(${option.label.split(' to ')[0]} to ${option.label.split(' to ')[1]})`)
+        ? option.label.replace('Translation', `Translation`)
         : option.label
     }));
   }, [selectedVideoLang]);
