@@ -14,6 +14,7 @@ import { useVideoSubtitle } from "@/store";
 import { LanguageSelector } from "@/components/features/studio/subtitle/LanguageSelector";
 import Button from "@/components/common/Button";
 import { FiAlertCircle } from "react-icons/fi";
+import { Logo } from "@/components/common/Logo";
 
 export function Subtitle({ user }: AuthState) {
   const router = useRouter();
@@ -84,7 +85,9 @@ export function Subtitle({ user }: AuthState) {
   };
 
   return (
-    <main className="mx-auto px-3 sm:px-4 py-4 sm:py-6 mt-4 sm:mt-0 min-h-screen bg-background">
+  <div className=" max-w-4xl mx-auto">
+    <Logo />
+    <main className="px-3 sm:px-4 sm:mt-0 min-h-screen bg-background">
       {!selectedFile ? (
         <FileSelector onOpenFileManager={() => setIsFileManagerOpen(true)} />
       ) : showLanguageSelector ? (
@@ -159,5 +162,6 @@ export function Subtitle({ user }: AuthState) {
         </div>
       </Modal>
     </main>
+    </div>
   );
 }
