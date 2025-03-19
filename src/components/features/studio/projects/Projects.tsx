@@ -9,6 +9,7 @@ import { SkeletonLoader } from "@/components/common/SkeletonProjectLoader";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { QuickActions } from "@/components/common/QuickActions";
 import { AuthState } from "@/types";
+import { Logo } from "@/components/common/Logo";
 export function ProjectListComponent({ user }: AuthState) {
   const [filter, setFilter] = useState<"all" | "effects" | "subtitle">("all");
     
@@ -37,7 +38,8 @@ export function ProjectListComponent({ user }: AuthState) {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto  mt-8 lg:mt-0 p-4 sm:p-6 lg:p-8">
+      <Logo />
+      <div className="max-w-7xl mx-auto  mt-2 lg:mt-0 p-4 sm:p-6 lg:p-8">
         <QuickActions
           onCreateAiEffect={() => router.push("/studio/effects")}
           onCreateSubtitle={() => router.push("/studio/subtitle")}

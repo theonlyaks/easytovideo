@@ -19,7 +19,8 @@ import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { CreditsService } from "@/services/studio/credits";
 import { BiCoinStack } from "react-icons/bi"; // Add this import
-import { Demo } from '@/components/features/studio/effects/Demo';
+import { Demo } from "@/components/features/studio/effects/Demo";
+import { Logo } from "@/components/common/Logo";
 
 const { createProject } = ProjectService;
 const { createAndProcessProject } = EffectsService;
@@ -35,10 +36,16 @@ export function Effects({ user }: AuthState) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const subscription = useAtomValue(subscriptionAtom);
   const [isOriginalClip, setIsOriginalClip] = useState(true);
-  const [originalDuration, setOriginalDuration] = useState<VideoTime>({ start: 0, end: 0 });
-  const [videoDimensions, setVideoDimensions] = useState<{ width: number; height: number } | null>(null);
-  
-  const isVerticalVideo = videoDimensions 
+  const [originalDuration, setOriginalDuration] = useState<VideoTime>({
+    start: 0,
+    end: 0,
+  });
+  const [videoDimensions, setVideoDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const isVerticalVideo = videoDimensions
     ? videoDimensions.height / videoDimensions.width >= 1.5 // roughly checks for vertical aspect ratio
     : true;
 
@@ -53,17 +60,20 @@ export function Effects({ user }: AuthState) {
     setVideoDimensions(null); // Reset video dimensions
   };
 
-  const handleLoadedMetadata = (videoDuration: number, videoElement: HTMLVideoElement) => {
+  const handleLoadedMetadata = (
+    videoDuration: number,
+    videoElement: HTMLVideoElement
+  ) => {
     setDuration(videoDuration);
     const initialTimeRange = { start: 0, end: videoDuration };
     setTimeRange(initialTimeRange);
     setOriginalDuration(initialTimeRange);
     setIsOriginalClip(true);
-    
+
     // Get video dimensions
     setVideoDimensions({
       width: videoElement.videoWidth,
-      height: videoElement.videoHeight
+      height: videoElement.videoHeight,
     });
   };
 
@@ -71,8 +81,8 @@ export function Effects({ user }: AuthState) {
     setTimeRange({ start, end });
     // Check if current range matches original duration
     setIsOriginalClip(
-      Math.abs(start - originalDuration.start) < 0.1 && 
-      Math.abs(end - originalDuration.end) < 0.1
+      Math.abs(start - originalDuration.start) < 0.1 &&
+        Math.abs(end - originalDuration.end) < 0.1
     );
   };
 
@@ -88,24 +98,30 @@ export function Effects({ user }: AuthState) {
   const isInvalidDuration =
     duration > 0 &&
     (isClipTooLong(timeRange.start, timeRange.end, MAX_DURATION_SECONDS) ||
-    (timeRange.end - timeRange.start) < 20);
+      timeRange.end - timeRange.start < 20);
 
   const handleApplyEffects = async () => {
     if (!user || !selectedFile) return;
-    
+
     if (!isVerticalVideo) {
-      setErrorMessage("Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok");
+      setErrorMessage(
+        "Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok"
+      );
       return;
     }
 
     const clipDuration = timeRange.end - timeRange.start;
     if (clipDuration < MIN_DURATION_SECONDS) {
-      setErrorMessage(`Selected clip must be at least ${MIN_DURATION_SECONDS} seconds long.`);
+      setErrorMessage(
+        `Selected clip must be at least ${MIN_DURATION_SECONDS} seconds long.`
+      );
       return;
     }
 
     if (subscription.credit <= 0) {
-      setErrorMessage("You ran out of credits. Please upgrade your plan to continue creating videos.");
+      setErrorMessage(
+        "You ran out of credits. Please upgrade your plan to continue creating videos."
+      );
       return;
     }
 
@@ -126,22 +142,22 @@ export function Effects({ user }: AuthState) {
 
       // Subtract 1 credit and add to history - removed videoName
       await CreditsService.updateCredits(
-        user.uid, 
+        user.uid,
         -1, // Subtract 1 credit
-        'credit_used',
+        "credit_used",
         {
           description: `Credit used for project: ${projectId}`,
-          projectId: projectId
+          projectId: projectId,
         }
       );
 
       await createAndProcessProject(projectId);
-      
+
       // Add status update
       await ProjectService.updateProjectStatus(
         projectId,
-        'progress',
-        'Added to the processing queue'
+        "progress",
+        "Added to the processing queue"
       );
 
       router.push("/studio/projects");
@@ -154,144 +170,155 @@ export function Effects({ user }: AuthState) {
   };
 
   return (
-    <main className="mx-auto px-7 sm:px-4 py-16 sm:py-6 mt-4 sm:mt-0 min-h-screen bg-background">
-      {!videoUrl ? (
-        <>
-          <div className="mb-8 text-center">
-  <h1 className="text-2xl md:text-3xl font-semibold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-    Speech to Visuals
-  </h1>
-  <p className="text-base text-muted-text px-1 mb-4">
-  Upload a video with clear speech, and our AI will add stunning visuals, B-Roll, transitions, and more to make your content pop for TikTok, Reels & Shorts!  </p>
-  
-</div>
-<button
-  onClick={() => setIsFileManagerOpen(true)}
-  className="relative w-full border border-primary/20 rounded-xl p-6 md:p-8 text-center cursor-pointer bg-gradient-to-br from-white to-primary/5 hover:from-primary/10 hover:to-primary/20 transition-all duration-300 flex flex-col items-center justify-center min-h-[150px] shadow-md hover:shadow-lg"
-  aria-label="Upload or select a video"
->
-  <MdAdd className="h-8 w-8 md:h-10 md:w-10 text-primary mb-2 animate-bounce" />
-  <p className="text-base md:text-lg font-medium text-gray-800">
-    Click to Upload or Select
-  </p>
-  <p className="text-sm text-muted-text mt-1">
-    Supports vertical videos up to 90 Seconds with ease
-  </p>
-  {/* Subtle Hover Overlay */}
-  <div className="absolute inset-0 rounded-xl bg-primary/0 hover:bg-primary/5 transition-opacity duration-300"></div>
-</button>
-<Demo />
-        </>
-      ) : (
-        <div className="space-y-3 md:space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Left side - Video */}
-            <div className="w-full md:w-1/2">
-              <div className="rounded-lg">
-                <VideoPlayer
-                  source={videoUrl}
-                  onDuration={handleLoadedMetadata}
-                />
-              </div>
+    <div className=" max-w-4xl mx-auto">
+      <Logo />
+
+      <main className=" px-7 sm:px-4 py-12 sm:py-12  min-h-screen bg-background">
+        {!videoUrl ? (
+          <>
+            <div className="mb-8 text-center">
+              <h1 className="text-2xl md:text-3xl font-semibold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                Speech to Visuals
+              </h1>
+              <p className="text-base text-muted-text px-1 mb-4">
+                Upload a video with clear speech, and our AI will add stunning
+                visuals, B-Roll, transitions, and more to make your content pop
+                for TikTok, Reels & Shorts!{" "}
+              </p>
             </div>
-
-            {/* Right side - Controls */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center">
-              <div className="space-y-4">
-                <div className="flex justify-end">
-                  <Button
-                    onClick={handleCancel}
-                    variant="outline"
-                    size="sm"
-                    icon={MdClose}
-                    className="text-sm md:text-base"
-                  >
-                    Change Video
-                  </Button>
+            <button
+              onClick={() => setIsFileManagerOpen(true)}
+              className="relative w-full border border-primary/20 rounded-xl p-6 md:p-8 text-center cursor-pointer bg-gradient-to-br from-white to-primary/5 hover:from-primary/10 hover:to-primary/20 transition-all duration-300 flex flex-col items-center justify-center min-h-[150px] shadow-md hover:shadow-lg"
+              aria-label="Upload or select a video"
+            >
+              <MdAdd className="h-8 w-8 md:h-10 md:w-10 text-primary mb-2 animate-bounce" />
+              <p className="text-base md:text-lg font-medium text-gray-800">
+                Click to Upload or Select
+              </p>
+              <p className="text-sm text-muted-text mt-1">
+                Supports vertical videos up to 90 Seconds with ease
+              </p>
+              {/* Subtle Hover Overlay */}
+              <div className="absolute inset-0 rounded-xl bg-primary/0 hover:bg-primary/5 transition-opacity duration-300"></div>
+            </button>
+            <Demo />
+          </>
+        ) : (
+          <div className="space-y-3 md:space-y-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Left side - Video */}
+              <div className="w-full md:w-1/2">
+                <div className="rounded-lg">
+                  <VideoPlayer
+                    source={videoUrl}
+                    onDuration={handleLoadedMetadata}
+                  />
                 </div>
+              </div>
 
-                {duration > 0 && (
-                  <div className="space-y-4">
-                    <RangeSeeker
-                      min={0}
-                      max={duration}
-                      values={[timeRange.start, timeRange.end]}
-                      onChange={handleRangeChange}
-                      formatValue={formatTime}
-                    />
-
-                    {isInvalidDuration && (
-                      <p className="text-xs md:text-sm text-primary text-center">
-                        {(timeRange.end - timeRange.start) < 20
-                          ? `Clip duration must be at least ${MIN_DURATION_SECONDS} seconds`
-                          : `Clip duration cannot exceed ${MAX_DURATION_SECONDS} seconds`}
-                      </p>
-                    )}
-
-                  {!isVerticalVideo && (
-                      <p className="text-xs md:text-sm text-primary text-center">
-                        Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok
-                      </p>
-                    )}
-
-                    {errorMessage && (
-                      <div className="text-sm text-primary text-center mb-2">
-                        {errorMessage}
-                      </div>
-                    )}
-
+              {/* Right side - Controls */}
+              <div className="w-full md:w-1/2 flex flex-col justify-center">
+                <div className="space-y-4">
+                  <div className="flex justify-end">
                     <Button
-                      onClick={handleApplyEffects}
-                      isLoading={isLoading}
-                      size="lg"
-                      customLoadingText="Applying Effects..."
-                      icon={FiPlayCircle}
-                      className="w-full text-sm md:text-base relative"
-                      disabled={isInvalidDuration || !user || isLoading || !isVerticalVideo}
+                      onClick={handleCancel}
+                      variant="outline"
+                      size="sm"
+                      icon={MdClose}
+                      className="text-sm md:text-base"
                     >
-                      <span className="flex items-center justify-center gap-2">
-                        Apply Effects
-                        <span className="flex items-center gap-1 text-xs bg-white/20 px-2 py-1 rounded">
-                          <BiCoinStack className="w-4 h-4" />
-                          1
-                        </span>
-                      </span>
+                      Change Video
                     </Button>
                   </div>
-                )}
+
+                  {duration > 0 && (
+                    <div className="space-y-4">
+                      <RangeSeeker
+                        min={0}
+                        max={duration}
+                        values={[timeRange.start, timeRange.end]}
+                        onChange={handleRangeChange}
+                        formatValue={formatTime}
+                      />
+
+                      {isInvalidDuration && (
+                        <p className="text-xs md:text-sm text-primary text-center">
+                          {timeRange.end - timeRange.start < 20
+                            ? `Clip duration must be at least ${MIN_DURATION_SECONDS} seconds`
+                            : `Clip duration cannot exceed ${MAX_DURATION_SECONDS} seconds`}
+                        </p>
+                      )}
+
+                      {!isVerticalVideo && (
+                        <p className="text-xs md:text-sm text-primary text-center">
+                          Please upload a vertical video (9:16 aspect ratio)
+                          suitable for Reels/Shorts/TikTok
+                        </p>
+                      )}
+
+                      {errorMessage && (
+                        <div className="text-sm text-primary text-center mb-2">
+                          {errorMessage}
+                        </div>
+                      )}
+
+                      <Button
+                        onClick={handleApplyEffects}
+                        isLoading={isLoading}
+                        size="lg"
+                        customLoadingText="Applying Effects..."
+                        icon={FiPlayCircle}
+                        className="w-full text-sm md:text-base relative"
+                        disabled={
+                          isInvalidDuration ||
+                          !user ||
+                          isLoading ||
+                          !isVerticalVideo
+                        }
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          Apply Effects
+                          <span className="flex items-center gap-1 text-xs bg-white/20 px-2 py-1 rounded">
+                            <BiCoinStack className="w-4 h-4" />1
+                          </span>
+                        </span>
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <Modal
-        isOpen={isFileManagerOpen}
-        onClose={() => setIsFileManagerOpen(false)}
-      >
-        <div className="p-3 md:p-6">
-          <h2 className="text-xl md:text-2xl font-semibold mb-3 md:mb-4">
-            Select Video File
-          </h2>
-          {user ? (
-            <FileManager user={user} onSelect={handleFileSelect} />
-          ) : (
-            <div className="text-red-500 text-center text-sm md:text-base">
-              Please sign in to manage files
-            </div>
-          )}
-        </div>
-      </Modal>
+        <Modal
+          isOpen={isFileManagerOpen}
+          onClose={() => setIsFileManagerOpen(false)}
+        >
+          <div className="p-3 md:p-6">
+            <h2 className="text-xl md:text-2xl font-semibold mb-3 md:mb-4">
+              Select Video File
+            </h2>
+            {user ? (
+              <FileManager user={user} onSelect={handleFileSelect} />
+            ) : (
+              <div className="text-red-500 text-center text-sm md:text-base">
+                Please sign in to manage files
+              </div>
+            )}
+          </div>
+        </Modal>
 
-      <Modal
-        isOpen={syncTask.isOpen}
-        onClose={syncTask.closeTask}
-        isLoader={syncTask.state === "loading"}
-      >
-        <div className="p-3 md:p-6">
-          <LoadingSyncTask state={syncTask.state} text={syncTask.text} />
-        </div>
-      </Modal>
-    </main>
+        <Modal
+          isOpen={syncTask.isOpen}
+          onClose={syncTask.closeTask}
+          isLoader={syncTask.state === "loading"}
+        >
+          <div className="p-3 md:p-6">
+            <LoadingSyncTask state={syncTask.state} text={syncTask.text} />
+          </div>
+        </Modal>
+      </main>
+    </div>
   );
 }
