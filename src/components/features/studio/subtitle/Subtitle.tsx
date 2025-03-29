@@ -60,7 +60,7 @@ export function Subtitle({ user }: AuthState) {
 
     const intervalId = setInterval(() => {
       setDummyProgress(prev => Math.min(prev + 1, 80));
-    }, 750);
+    }, 300);
 
     return () => clearInterval(intervalId);
   }, [status, progress, dummyProgress]); // Add dummyProgress to dependencies

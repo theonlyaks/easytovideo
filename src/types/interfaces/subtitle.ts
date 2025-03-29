@@ -1,3 +1,4 @@
+import { Language } from "@/constants";
 import { User } from "./auth";
 
 export interface PositionSelectorProps {
@@ -112,6 +113,7 @@ export interface SubtitleThemePreviewProps {
       size?: string;
       color?: string;
     };
+    targetLanguage?: Language;
   }
 
 export interface ThemeConfig {
