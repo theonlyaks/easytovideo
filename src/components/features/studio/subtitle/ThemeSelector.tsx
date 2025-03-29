@@ -52,7 +52,7 @@ export function ThemeSelector({
             }`}
             onClick={() => setSelectedTheme(theme)}
           >
-            <SubtitleThemePreview theme={theme} customization={customization} />
+            <SubtitleThemePreview theme={theme} customization={customization}  targetLanguage={currentLanguage}/>
             <div className="mt-3">
               <h3 className="font-semibold text-lg text-background-text">
                 {theme.name}

@@ -1,7 +1,27 @@
 import { Preset, DisplayMode, Option } from '@/types/interfaces/subtitle';
 import { Roboto, Open_Sans, Lato, Montserrat, Poppins, Noto_Sans } from 'next/font/google';
 import { DM_Sans, Inter } from 'next/font/google';
-import { Noto_Sans_Devanagari } from 'next/font/google';
+import { 
+  Noto_Sans_Devanagari, 
+  Baloo_Thambi_2, 
+  Hind_Guntur, 
+  Noto_Sans_Arabic,
+  // Noto_Sans_SC, 
+  Noto_Sans_JP, 
+  Noto_Sans_KR, 
+  Noto_Sans_Bengali, 
+  Noto_Nastaliq_Urdu, 
+  Noto_Sans_Gurmukhi,
+  Dancing_Script,
+  Oswald,
+  Playfair_Display,
+  Rubik,
+  Ubuntu,
+  Kanit,
+  Bebas_Neue,
+  Anton,
+  Gravitas_One
+} from 'next/font/google';
 
 // Define Google Fonts with weights
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] });
@@ -13,6 +33,26 @@ const notoSans = Noto_Sans({ subsets: ['latin'], weight: ['400', '700'] });
 const dmSans = DM_Sans({ subsets: ['latin'], weight: ['400', '700'] });
 const inter = Inter({ subsets: ['latin'], weight: ['400', '700'] });
 const notoSansDevanagari = Noto_Sans_Devanagari({ subsets: ['devanagari'], weight: ['400', '700'] });
+const balooThambi = Baloo_Thambi_2({ subsets: ['tamil'], weight: ['400', '700'] });
+const hindGuntur = Hind_Guntur({ subsets: ['telugu'], weight: ['400', '700'] });
+const notoSansArabic = Noto_Sans_Arabic({ subsets: ['arabic'], weight: ['400', '700'] });
+// const notoSansSC = Noto_Sans_SC({ subsets: ['latin'], weight: ['400', '700'] });
+const notoSansJP = Noto_Sans_JP({ subsets: ['latin'], weight: ['400', '700'] });
+const notoSansKR = Noto_Sans_KR({ subsets: ['latin'], weight: ['400', '700'] });
+const notoSansBengali = Noto_Sans_Bengali({ subsets: ['bengali'], weight: ['400', '700'] });
+const notoNastaliqUrdu = Noto_Nastaliq_Urdu({ subsets: ['arabic'], weight: ['400', '700'] });
+const notoSansGurmukhi = Noto_Sans_Gurmukhi({ subsets: ['gurmukhi'], weight: ['400', '700'] });
+
+// New English fonts
+const dancingScript = Dancing_Script({ subsets: ['latin'], weight: ['400', '700'] });
+const oswald = Oswald({ subsets: ['latin'], weight: ['400', '700'] });
+const playfairDisplay = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
+const rubik = Rubik({ subsets: ['latin'], weight: ['400', '700'] });
+const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['400', '700'] });
+const kanit = Kanit({ subsets: ['latin'], weight: ['400', '700'] });
+const bebasNeue = Bebas_Neue({ subsets: ['latin'], weight: ['400'] });
+const anton = Anton({ subsets: ['latin'], weight: ['400'] });
+const gravitasOne = Gravitas_One({ subsets: ['latin'], weight: ['400'] });
 
 export const MAX_SUBTITLE_DURATION = 300; // 5 minutes in seconds
 export const MIN_SUBTITLE_DURATION = 3; // minimum 3 seconds
@@ -99,6 +139,24 @@ export const FONTS = {
   'dm-sans': dmSans,
   inter,
   'noto-sans-devanagari': notoSansDevanagari,
+  'baloo-thambi': balooThambi,
+  'hind-guntur': hindGuntur,
+  'noto-sans-arabic': notoSansArabic,
+  // 'noto-sans-sc': notoSansSC,
+  'noto-sans-jp': notoSansJP,
+  'noto-sans-kr': notoSansKR,
+  'noto-sans-bengali': notoSansBengali,
+  'noto-nastaliq-urdu': notoNastaliqUrdu,
+  'noto-sans-gurmukhi': notoSansGurmukhi,
+  'dancing-script': dancingScript,
+  'oswald': oswald,
+  'playfair-display': playfairDisplay,
+  'rubik': rubik,
+  'ubuntu': ubuntu,
+  'kanit': kanit,
+  'bebas-neue': bebasNeue,
+  'anton': anton,
+  'gravitas-one': gravitasOne
 };
 
 export const CUSTOMIZATION_OPTIONS = {
@@ -106,7 +164,26 @@ export const CUSTOMIZATION_OPTIONS = {
     { label: 'Poppins Regular', value: 'poppins-regular', className: 'font-normal' },
     { label: 'Poppins Bold', value: 'poppins-bold', className: 'font-bold' },
     { label: 'Poppins Bold Italic', value: 'poppins-bold-italic', className: 'font-bold italic' },
-    { label: 'Noto Sans Devanagari', value: 'noto-sans-devanagari', className: 'font-normal' }
+    { label: 'Noto Sans', value: 'noto-sans', className: 'font-normal' },
+    { label: 'Noto Sans Devanagari', value: 'noto-sans-devanagari', className: 'font-normal' },
+    { label: 'Baloo Thambi', value: 'baloo-thambi', className: 'font-normal' },
+    { label: 'Hind Guntur', value: 'hind-guntur', className: 'font-normal' },
+    { label: 'Noto Sans Arabic', value: 'noto-sans-arabic', className: 'font-normal' },
+    { label: 'Noto Sans Chinese', value: 'noto-sans-sc', className: 'font-normal' },
+    { label: 'Noto Sans Japanese', value: 'noto-sans-jp', className: 'font-normal' },
+    { label: 'Noto Sans Korean', value: 'noto-sans-kr', className: 'font-normal' },
+    { label: 'Noto Sans Bengali', value: 'noto-sans-bengali', className: 'font-normal' },
+    { label: 'Noto Nastaliq Urdu', value: 'noto-nastaliq-urdu', className: 'font-normal' },
+    { label: 'Noto Sans Gurmukhi', value: 'noto-sans-gurmukhi', className: 'font-normal' },
+    { label: 'Dancing Script', value: 'dancing-script', className: 'font-normal' },
+    { label: 'Oswald', value: 'oswald', className: 'font-normal' },
+    { label: 'Playfair Display', value: 'playfair-display', className: 'font-normal' },
+    { label: 'Rubik', value: 'rubik', className: 'font-normal' },
+    { label: 'Ubuntu', value: 'ubuntu', className: 'font-normal' },
+    { label: 'Kanit', value: 'kanit', className: 'font-normal' },
+    { label: 'Bebas Neue', value: 'bebas-neue', className: 'font-normal' },
+    { label: 'Anton', value: 'anton', className: 'font-normal' },
+    { label: 'Gravitas One', value: 'gravitas-one', className: 'font-normal' }
   ],
   sizes: [
     { label: 'Small', value: '24' },     // Removed px
@@ -205,12 +282,37 @@ export const SUBTITLE_THEMES: SubtitleTheme[] = [
   is_different_language_support: theme.is_different_language_support || false
 }));
 
-export const SAMPLE_SENTENCES = [
-  "I You Me"
-];
+export const SAMPLE_SENTENCES: Record<string, string> = {
+  default: "I You Me",
+  en: "I You Me",
+  hi: "मैं कौन हूँ", // Hindi: "Who am I"
+  ta: "நான் யார்", // Tamil: "Who am I"
+  te: "నేను ఎవరు", // Telugu: "Who am I"
+  ar: "أنا من أنا", // Arabic: "Who am I"
+  es: "Yo Tú Él", // Spanish: "I You He"
+  fr: "Je Tu Nous", // French: "I You We"
+  de: "Ich Du Wir", // German: "I You We"
+  zh: "我 你 他", // Chinese: "I You He"
+  ja: "私 あなた 彼", // Japanese: "I You He"
+  ko: "나 너 우리", // Korean: "I You We"
+  ru: "Я Ты Мы", // Russian: "I You We"
+  bn: "আমি তুমি আমরা", // Bengali: "I You We"
+  pt: "Eu Tu Nós", // Portuguese: "I You We"
+  id: "Saya Anda Kita", // Indonesian: "I You We"
+  ms: "Saya Anda Kita", // Malay: "I You We"
+  ur: "میں تم ہم", // Urdu: "I You We"
+  pa: "ਮੈਂ ਤੂੰ ਅਸੀਂ" // Punjabi: "I You We"
+};
 
-export const getSampleWords = (sentenceIndex: number) => 
-  SAMPLE_SENTENCES[sentenceIndex].split(' ');
+export const getSampleWords = (sentenceIndex: number = 0, languageCode?: string): string[] => {
+  // If language code is provided and exists in the mapping, use that language's sample
+  if (languageCode && SAMPLE_SENTENCES[languageCode]) {
+    return SAMPLE_SENTENCES[languageCode].split(' ');
+  }
+  
+  // Fall back to default English sample
+  return SAMPLE_SENTENCES.default.split(' ');
+};
 
 export const THEME_CONFIG = {
   containerSize: {
