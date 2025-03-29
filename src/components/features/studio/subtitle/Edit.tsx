@@ -141,7 +141,7 @@ export function Edit({ projectId, user }: EditProps) {
         <main className="mx-auto py-6 md:py-0 px-2 md:px-0">
           <ProjectNameEditor projectId={projectId} initialTitle={project?.title} />
           {/* Add ProgressBar here */}
-          {!isProcessing && project && isSubtitleEditing && (
+          {((!isProcessing && project && isSubtitleEditing)|| (!project?.outputFileName))&& (
             <div className="max-w-5xl mx-auto px-2">
               <ProgressBar currentStep={currentStep} totalSteps={3} />
             </div>
