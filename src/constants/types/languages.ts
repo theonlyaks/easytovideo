@@ -32,6 +32,25 @@ export const VIDEO_LANGUAGES: Language[] = [
     supported_fonts: ['noto-sans-devanagari']
   },
   { 
+    code: 'bn', 
+    name: 'Bengali', 
+    flag: '🇮🇳', 
+    hasTranslation: true, 
+    isNative: true, 
+    whisper_language: 'bengali',
+    supported_fonts: ['noto-sans-bengali']
+  },
+  
+  { 
+    code: 'pa', 
+    name: 'Punjabi', 
+    flag: '🇮🇳', 
+    hasTranslation: true, 
+    isNative: true, 
+    whisper_language: 'punjabi',
+    supported_fonts: ['noto-sans-gurmukhi']
+  },
+  { 
     code: 'ta', 
     name: 'Tamil', 
     flag: '🇮🇳', 
@@ -49,6 +68,7 @@ export const VIDEO_LANGUAGES: Language[] = [
     whisper_language: 'telugu',
     supported_fonts: ['hind-guntur']
   },
+  
   { 
     code: 'ar', 
     name: 'Arabic', 
@@ -57,6 +77,15 @@ export const VIDEO_LANGUAGES: Language[] = [
     isNative: true, 
     whisper_language: 'arabic',
     supported_fonts: ['noto-sans-arabic']
+  },
+  { 
+    code: 'ur', 
+    name: 'Urdu', 
+    flag: '🇮🇳', 
+    hasTranslation: true, 
+    isNative: true, 
+    whisper_language: 'urdu',
+    supported_fonts: ['noto-nastaliq-urdu']
   },
   { 
     code: 'es', 
@@ -134,15 +163,6 @@ export const VIDEO_LANGUAGES: Language[] = [
     supported_fonts: ['noto-sans']
   },
   { 
-    code: 'bn', 
-    name: 'Bengali', 
-    flag: '🇧🇩', 
-    hasTranslation: true, 
-    isNative: true, 
-    whisper_language: 'bengali',
-    supported_fonts: ['noto-sans-bengali']
-  },
-  { 
     code: 'pt', 
     name: 'Portuguese', 
     flag: '🇵🇹', 
@@ -181,24 +201,7 @@ export const VIDEO_LANGUAGES: Language[] = [
       'ubuntu', 'kanit', 'bebas-neue', 'anton', 'gravitas-one'
     ]
   },
-  { 
-    code: 'ur', 
-    name: 'Urdu', 
-    flag: '🇮🇳', 
-    hasTranslation: true, 
-    isNative: true, 
-    whisper_language: 'urdu',
-    supported_fonts: ['noto-nastaliq-urdu']
-  },
-  { 
-    code: 'pa', 
-    name: 'Punjabi', 
-    flag: '🇮🇳', 
-    hasTranslation: true, 
-    isNative: true, 
-    whisper_language: 'punjabi',
-    supported_fonts: ['noto-sans-gurmukhi']
-  }
+ 
 ].map(lang => ({
   ...lang,
   supported_fonts: lang.supported_fonts || ['poppins-regular', 'poppins-bold', 'poppins-bold-italic'] // Default fonts for all languages
