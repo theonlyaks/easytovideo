@@ -3,20 +3,22 @@ import { useStorageUrl } from '@/store/hooks/useStorageUrl';
 import { Project } from '@/types';
 import { VideoPlayer } from '@/components/common/VideoPlayer';
 import Button from '@/components/common/Button';
-import { FiDownload, FiCheckCircle, FiEdit3 } from 'react-icons/fi';
+import { FiDownload, FiCheckCircle, FiEdit3, FiShare2 } from 'react-icons/fi';
 import { useFileDownload } from '@/store/hooks/useFileDownload';
 import { getFilenamePartByIndex } from '@/lib/common/file';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import { FirebaseDocumentService } from '@/services/firebase/document';
-import { serverTimestamp } from 'firebase/firestore';
 import { FeedbackEffect } from '@/components/features/studio/effects/FeedbackEffect';
 import { SubtitleOutputProps } from '@/types';
+import { useShare } from '@/store/hooks/useShare';
+import { useState } from 'react';
 
 export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) {
   const { data: project, loading, error } = useDocument<Project>('projects', effectId);
   const storagePath = project && user ? `user_files/${user.uid}/${project.outputFileName}` : null;
   const { url: videoUrl, loading: urlLoading } = useStorageUrl(storagePath);
   const { downloadFile, isDownloading } = useFileDownload();
+  const { shareContent, isSharing, shareUrl } = useShare();
+  const [showShareUrl, setShowShareUrl] = useState(false);
 
   const handleDownload = () => {
     if (!videoUrl || !project?.outputFileName) return;
@@ -28,7 +30,25 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.click();
+  };
+
+  const handleShare = async () => {
+    if (!videoUrl || !user) return;
     
+    const url = await shareContent({
+      type: 'subtitle',
+      videoUrl: videoUrl,
+      userName: user.name || user.email || 'Anonymous User',
+      thumbnailUrl: project?.thumbnailUrl
+    });
+    
+    if (url) {
+      setShowShareUrl(true);
+      // Copy to clipboard without toast
+      navigator.clipboard.writeText(url)
+        .then(() => console.log('URL copied to clipboard'))
+        .catch(err => console.error('Failed to copy URL', err));
+    }
   };
 
   if (loading) {
@@ -104,11 +124,30 @@ export function SubtitleOutput({ effectId, user, onEdit }: SubtitleOutputProps) 
                 variant="primary"
                 isLoading={isDownloading}
                 disabled={isDownloading}
-                className="w-full  bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                 size='md'
               >
                 {isDownloading ? 'Downloading...' : 'Download Video'}
               </Button>
+              
+              <Button
+                onClick={handleShare}
+                icon={FiShare2}
+                variant="secondary"
+                isLoading={isSharing}
+                disabled={isSharing}
+                className="w-full"
+                size='md'
+              >
+                {isSharing ? 'Sharing...' : 'Share Video'}
+              </Button>
+              
+              {showShareUrl && shareUrl && (
+                <div className="bg-background-light p-3 rounded-lg break-all">
+                  <p className="text-xs text-background-text mb-1">Share URL (copied to clipboard):</p>
+                  <a href={shareUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">{shareUrl}</a>
+                </div>
+              )}
               
               <Button
                 onClick={onEdit}

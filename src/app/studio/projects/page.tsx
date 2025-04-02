@@ -3,6 +3,7 @@ import { ProjectListComponent } from "@/components/features/studio/projects/Proj
 import { useSession } from 'next-auth/react';
 import { User, AuthProps} from '@/types';
 import { useState, useEffect } from 'react';
+import { useSubscriptionListener } from '@/store/hooks/useSubscriptionListener';
 
 export default function ProjectsPage() {
   const { data: session, status } = useSession();
@@ -13,6 +14,8 @@ export default function ProjectsPage() {
     id: session.user.id || '',
     uid: session.user.uid || ''
   } : null;
+  
+  useSubscriptionListener(); 
 
   useEffect(() => {
     if (status !== "loading") {

@@ -10,19 +10,19 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
 }) => {
   return (
     <div className="mb-8">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <QuickActionButton
           icon={<FiAlignCenter className="h-6 w-6" />}
           label="Add Subtitle"
           description=""
           onClick={onCreateSubtitle}
         />
-         <QuickActionButton
+         {/* <QuickActionButton
           icon={<MdAdd className="h-6 w-6" />}
           label="Speech To Visuals"
           description=""
           onClick={onCreateAiEffect}
-        />
+        /> */}
         {/* <QuickActionButton
           icon={<MdContentCopy className="h-6 w-6" />}
           label="Duplicate"

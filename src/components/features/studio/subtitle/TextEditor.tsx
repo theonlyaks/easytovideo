@@ -4,6 +4,11 @@ import { MdArrowBack, MdCheck, MdClose } from "react-icons/md";
 import { BiExport } from "react-icons/bi";
 import { TextEditorProps, SubtitleData } from "@/types";
 import { Switch } from "@/components/common/Switch"; // Import the existing Switch component
+import { Modal } from "@/components/common/Modal";
+import { useAtomValue } from "jotai";
+import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
+import { SubscriptionPrompt } from "@/components/common/ExportPromoBanner";
+import { useRouter } from "next/navigation";
 
 // Memoized EditableWord component
 const EditableWord = React.memo(
@@ -195,6 +200,10 @@ export function TextEditor({
   const [editedWord, setEditedWord] = useState("");
   const [subtitleData, setSubtitleData] = useState<SubtitleData | null>(null);
   const [capitalizeAll, setCapitalizeAll] = useState(isCapital); // Initialize from props
+  const [showPromoModal, setShowPromoModal] = useState(false);
+  const [noCreditsLeft, setNoCreditsLeft] = useState(false);
+  const subscription = useAtomValue(subscriptionAtom);
+  const router = useRouter();
 
   // Sync local state with props
   useEffect(() => {
@@ -341,6 +350,28 @@ export function TextEditor({
     capitalizeAll,
   ]);
 
+  const handleExportClick = () => {
+    // Check if user has active subscription
+    if (
+      subscription.status === "active" ||
+      subscription.status === "authenticated"
+    ) {
+      // Check if user has enough credits
+      if (subscription.credit < 1) {
+        // No credits left, show modal with credit message
+        setNoCreditsLeft(true);
+        setShowPromoModal(true);
+      } else {
+        // User is subscribed and has credits, proceed with export
+        onNext();
+      }
+    } else {
+      // User is not subscribed, show promotional modal
+      setNoCreditsLeft(false);
+      setShowPromoModal(true);
+    }
+  };
+
   if (!subtitleData) {
     return (
       <div className="w-full max-w-4xl mx-auto py-6 text-center">
@@ -352,27 +383,27 @@ export function TextEditor({
   return (
     <div className="w-full max-w-4xl mx-auto  px-2">
       <div className="flex flex-col sm:flex-row justify-between mb-4">
-  <div className="text-left">
-    <p className="text-xl lg:text-2xl font-semibold text-background-text mb-2">
-      {isDifferentLanguage ? "Text Editor" : "Text Editor"}
-    </p>
-    <p className="text-muted-text">
-      {isDifferentLanguage
-        ? "Click on any segment to edit the translated subtitle"
-        : "Click on any word to edit the subtitle text"}
-    </p>
-  </div>
-  <div className="flex items-center space-x-2 self-end mt-2 sm:mt-0">
-    <span className="text-xs sm:text-sm text-muted-text font-bold">
-      CAPITALIZE
-    </span>
-    <Switch
-      checked={capitalizeAll}
-      onChange={handleCapitalChange}
-      size="lg"
-    />
-  </div>
-</div>
+        <div className="text-left">
+          <p className="text-xl lg:text-2xl font-semibold text-background-text mb-2">
+            {isDifferentLanguage ? "Text Editor" : "Text Editor"}
+          </p>
+          <p className="text-muted-text">
+            {isDifferentLanguage
+              ? "Click on any segment to edit the translated subtitle"
+              : "Click on any word to edit the subtitle text"}
+          </p>
+        </div>
+        <div className="flex items-center space-x-2 self-end mt-2 sm:mt-0">
+          <span className="text-xs sm:text-sm text-muted-text font-bold">
+            CAPITALIZE
+          </span>
+          <Switch
+            checked={capitalizeAll}
+            onChange={handleCapitalChange}
+            size="lg"
+          />
+        </div>
+      </div>
 
       <div className="bg-white border border-muted shadow-sm">
         <div className="p-6">
@@ -396,7 +427,7 @@ export function TextEditor({
             Back{" "}
           </Button>
           <Button
-            onClick={onNext}
+            onClick={handleExportClick}
             icon={BiExport}
             iconPosition="right"
             className=" py-2 sm:py-3 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
@@ -405,6 +436,36 @@ export function TextEditor({
           </Button>
         </div>
       </div>
+
+      {/* Subscription Promo Modal */}
+      <Modal isOpen={showPromoModal} onClose={() => setShowPromoModal(false)}>
+        <div className="p-6">
+          <SubscriptionPrompt isCreditsExhausted={noCreditsLeft} />
+
+          <div className="mt-6 flex flex-col sm:flex-row justify-end sm:space-x-4 space-y-2 sm:space-y-0">
+            {!noCreditsLeft && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowPromoModal(false);
+                  // Proceed with export with watermark
+                  onNext();
+                }}
+                icon={BiExport}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              >
+                Export with Watermark
+              </Button>
+            )}
+            <Button
+              onClick={() => router.push("/studio/plans")}
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+            >
+              Subscribe Now
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

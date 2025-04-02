@@ -3,6 +3,7 @@ import { Project, EditProps, ThemeConfig } from '@/types';
 import { useDocument,useStorageUrl } from '@/store';
 import { FirebaseDocumentService } from '@/services/firebase/document';
 import { useRouter } from 'next/navigation';
+import { CreditsService } from '@/services/studio/credits'; // Add this import
 
 interface UseSubtitleEditReturn {
   isLoading: boolean;
@@ -68,14 +69,7 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
   const handleSubtitleCreate = useCallback(async () => {
     setIsProcessing(true);
     try {
-      // console.log("ASdasdasd",{
-      //   transcription: project?.transcription,
-      //   subTitlePosition: customPosition,
-      //   selectedThemeId: selectedThemeId,
-      //   themeCustomization: themeCustomization,
-      //   isCapital: isCapital
-      // });
-      // return
+      // Update project document with subtitle settings
       await FirebaseDocumentService.updateDocument('projects', projectId, {
         transcription: project?.transcription,
         subTitlePosition: customPosition,
@@ -84,6 +78,20 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
         isCapital: isCapital
       });
 
+      // Deduct one credit from user's account
+      if (user && user.uid) {
+        await CreditsService.updateCredits(
+          user.uid,
+          -1, // Subtract 1 credit
+          "credit_used",
+          {
+            description: `Credit used for subtitle project: ${projectId}`,
+            projectId: projectId,
+          }
+        );
+      }
+
+      // Create subtitle via API
       const response = await fetch('/api/subtitle/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,6 +100,7 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
 
       if (!response.ok) throw new Error('Failed to create subtitle');
       
+      // Update project status
       await FirebaseDocumentService.updateDocument('projects', projectId, {
         progress: 0,
         statusMessage: 'Added to queue',
@@ -104,7 +113,7 @@ export function useSubtitleEdit({ projectId, user }: EditProps): UseSubtitleEdit
       setErrorMessage('Failed to create subtitle');
       setIsProcessing(false);
     }
-  }, [projectId, project?.transcription, customPosition, selectedThemeId, router,isCapital]);
+  }, [projectId, project?.transcription, customPosition, selectedThemeId, router, isCapital, themeCustomization, user]);
 
   const handleTranscriptionUpdate = useCallback((newTranscription: any) => {
     if (project) {
