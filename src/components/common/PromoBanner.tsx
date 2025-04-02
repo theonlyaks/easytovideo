@@ -36,32 +36,49 @@ export default function PromoBanner({ overrideCheck = false }: PromoBannerProps)
   }
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-4 py-3 text-white shadow-md">
-      <div className="container mx-auto flex flex-col items-center justify-between gap-2 text-center sm:flex-row">
-        <div className="flex-1" />
-        <div className="flex flex-col items-center justify-center gap-1 sm:flex-row sm:gap-2">
-          <span className="text-lg font-extrabold sm:text-xl">90% OFF:</span>
-          <span className="font-medium">$2/month Subtitles for First 1000 Spots Only!</span>
-          <button 
-            className="mt-1 whitespace-nowrap rounded-md bg-white px-3 py-1 font-semibold text-pink-600 transition-colors hover:bg-gray-100 hover:text-pink-700 sm:mt-0"
-            onClick={handleJoinNowClick}
-          >
-            Join Now!
-          </button>
-        </div>
-        <div className="flex-1 text-right">
-          <button
-            className="flex h-6 w-6 items-center justify-center rounded-full text-white hover:bg-white/20 hover:text-white"
-            onClick={() => setIsVisible(false)}
-            aria-label="Close promotion"
-          >
-            ×
-          </button>
-        </div>
+<div className="relative overflow-hidden bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-3 py-2 text-white shadow-md sm:px-4 sm:py-3">
+  <div className="container mx-auto flex flex-col items-center justify-between gap-1 text-center sm:flex-row sm:gap-2">
+    <div className="flex-1 sm:flex-1" />
+    <div className="flex flex-col items-center justify-center gap-1 sm:flex-row sm:gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-1">
+        <span className="text-base font-extrabold sm:text-lg">90% OFF</span>
+        <span className="text-sm font-medium sm:text-base sm:font-medium">
+          $2/month Subtitles<span className="hidden sm:inline"> for First 1000 Spots Only!</span>
+        </span>
       </div>
-      <div className="absolute -left-10 top-1/2 h-40 w-40 -translate-y-1/2 transform rounded-full bg-white/10 blur-2xl" />
-      <div className="absolute -right-10 top-1/2 h-40 w-40 -translate-y-1/2 transform rounded-full bg-white/10 blur-2xl" />
+      <div className="flex items-center justify-center gap-2 sm:hidden">
+        <button 
+          className="whitespace-nowrap rounded-md bg-white px-2 py-0.5 text-xs font-semibold text-pink-600 transition-colors hover:bg-gray-100 hover:text-pink-700 sm:px-3 sm:py-1 sm:text-base sm:mt-1"
+          onClick={handleJoinNowClick}
+        >
+          Join Now!
+        </button>
+        <button
+          className="flex h-5 w-5 items-center justify-center rounded-full text-white hover:bg-white/20 hover:text-white sm:h-6 sm:w-6 sm:mt-1"
+          onClick={() => setIsVisible(false)}
+          aria-label="Close promotion"
+        >
+          ×
+        </button>
+      </div>
     </div>
+    <div className="hidden sm:flex sm:flex-1 sm:text-right sm:items-center sm:justify-end sm:gap-2">
+      <button 
+        className="whitespace-nowrap rounded-md bg-white px-2 py-0.5 text-xs font-semibold text-pink-600 transition-colors hover:bg-gray-100 hover:text-pink-700 sm:px-3 sm:py-1 sm:text-base sm:mt-1"
+        onClick={handleJoinNowClick}
+      >
+        Join Now!
+      </button>
+      <button
+        className="flex h-5 w-5 items-center justify-center rounded-full text-white hover:bg-white/20 hover:text-white sm:h-6 sm:w-6 sm:mt-1"
+        onClick={() => setIsVisible(false)}
+        aria-label="Close promotion"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+</div>
   )
 }
 
