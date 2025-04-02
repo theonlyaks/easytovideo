@@ -12,7 +12,7 @@ export function SubscriptionPrompt({ isCreditsExhausted = false }: SubscriptionP
         <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary via-red-500 to-primary">
           {isCreditsExhausted 
             ? "You've Run Out of Credits" 
-            : "Export Your Video - Subscribe for Just $2/month!"}
+            : "Subscribe for Just $2/month!"}
         </h2>
         {isCreditsExhausted && (
           <p className="mt-2 text-gray-600">
@@ -24,7 +24,7 @@ export function SubscriptionPrompt({ isCreditsExhausted = false }: SubscriptionP
       {/* Options Comparison */}
       <div className="mt-8 grid gap-8 md:grid-cols-2">
         {/* Subscription Option */}
-        <div className="rounded-lg border-2 border-primary bg-primary/5 p-6">
+        <div className="rounded-lg border border-pink-500 bg-primary/5 p-6">
           <h3 className="text-xl font-bold text-primary">Unlock with Subscription:</h3>
           <ul className="mt-4 space-y-3">
             <li className="flex items-start">
@@ -33,7 +33,7 @@ export function SubscriptionPrompt({ isCreditsExhausted = false }: SubscriptionP
             </li>
             <li className="flex items-start">
               <span className="mr-2 text-primary">✔</span>
-              <span>Translate to English (or Any Language)</span>
+              <span>Translate to English</span>
             </li>
             <li className="flex items-start">
               <span className="mr-2 text-primary">✔</span>
@@ -63,11 +63,11 @@ export function SubscriptionPrompt({ isCreditsExhausted = false }: SubscriptionP
       </div>
 
       {/* Promotional Deal */}
-      <div className="mt-8 rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-4 text-center text-white">
-        <p className="text-lg font-bold">
+      <div className="mt-8 rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-2 text-center text-white">
+        <p className="text-lg font-semibold">
           {isCreditsExhausted
-            ? "Launch Deal: 90% OFF – $2/month for First 100K Subscribers!"
-            : "Launch Deal: 90% OFF – $2/month for First 100K Subscribers!"}
+            ? "Launch Deal: 90% OFF – $2/month for limited time!"
+            : "90% OFF – $2/month"}
         </p>
       </div>
     </div>
