@@ -62,8 +62,8 @@ export const PlanCard: React.FC<PlanProps> = ({
   // });
 
   const convertToINR = (usdCents: number) => {
-    const conversionRate = 86.63; // USD to INR approximate rate
-    return Math.round(usdCents * conversionRate / 100);
+    const conversionRate = 84.6; // USD to INR approximate rate
+    return Math.round((usdCents * conversionRate) / 100);
   };
 
   const handlePayment = (data: SubscriptionRazorpay) => {
@@ -212,15 +212,28 @@ export const PlanCard: React.FC<PlanProps> = ({
         {isPopular && <PopularBadge />}
         <PlanHeader displayName={displayName} description={description} />
         <div className="mt-6 mb-8">
-          <div className="flex flex-col">
-            <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-bold text-background-text">
-                ${(price.amount / 100).toFixed(2)}
+          <div className="flex flex-col items-center">
+            <div className="flex items-baseline gap-2">
+              {/* Calculated "Original" Price with Strikethrough */}
+              <span className="text-xl text-neutral line-through">
+                ${(price.amount / 100 / 0.1).toFixed(2)}{" "}
+                {/* Reverse calc: 90% off */}
+              </span>
+              {/* "Discounted" Price from Variable */}
+              <span className="text-4xl font-bold text-primary">
+                ${price.amount / 100}
               </span>
               <span className="text-neutral">/{price.interval}</span>
             </div>
-            <div className="text-sm text-muted-text mt-1">
-              (₹{convertToINR(price.amount)} INR)
+            <div className="flex items-center gap-2 mt-2">
+              {/* INR Conversion for "Discounted" Price */}
+              <span className="text-sm text-muted-text">
+                (₹{convertToINR(price.amount)} INR)
+              </span>
+              {/* Discount Badge */}
+              <div className="bg-accent text-secondary-text text-xs font-semibold px-2 py-1 rounded-full">
+                90% OFF
+              </div>
             </div>
           </div>
           <button
@@ -247,7 +260,7 @@ export const PlanCard: React.FC<PlanProps> = ({
         <div className="space-y-6">
           <FeatureList title="Core Features" features={features.core} />
           <FeatureList title="Advanced Features" features={features.advanced} />
-          <FeatureList title="Support" features={features.support} />
+          {/* <FeatureList title="Support" features={features.support} /> */}
         </div>
       </div>
       <PaymentModal

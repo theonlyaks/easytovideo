@@ -1,6 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/features/studio/Sidebar";
+import PromoBanner from "@/components/common/PromoBanner";
 import { PropsWithChildren, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -19,9 +20,12 @@ export default function StudioLayout({ children }: PropsWithChildren) {
       <div className="fixed inset-y-0 left-0 z-[2]">
         <Sidebar />
       </div>
-      <main className="flex-1 py-4 lg:p-8 lg:pl-[280px] overflow-auto">
-        {children}
-      </main>
+      <div className="flex-1 flex flex-col lg:pl-[256px]">
+        <PromoBanner />
+        <main className="py-4 lg:p-8 overflow-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
