@@ -21,6 +21,25 @@ export class CreditsService {
         }]
       };
       await setDoc(docRef, newCredit);
+      
+      // Safe check for browser environment before accessing localStorage
+      if (typeof window !== 'undefined') {
+        const referralCode = localStorage.getItem('referralCode');
+        if (referralCode) {
+          try {
+            await setDoc(doc(db, 'refer', userId), {
+              userId: userId,
+              referralCode: referralCode,
+              createdAt: new Date(),
+              processed: false
+            });
+            localStorage.removeItem('referralCode');
+          } catch (error) {
+            // console.error('Failed to record referral:', error);
+          }
+        }
+      }
+      
       return newCredit;
     }
 

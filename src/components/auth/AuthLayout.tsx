@@ -6,17 +6,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AUTH_PROMOTION_ITEMS } from "@/constants";
+import { useSearchParams } from "next/navigation";
 
 export function AuthLayout() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % AUTH_PROMOTION_ITEMS.length);
     }, 5000);
-
+    const referralCode = searchParams.get("refer");
+    if (referralCode) {
+      localStorage.setItem("referralCode", referralCode);
+    }
     return () => clearInterval(timer);
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen bg-background">
