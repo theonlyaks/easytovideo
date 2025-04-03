@@ -101,3 +101,8 @@ export const unixToLocalTime = (unixTimestamp: number | null): string => {
     hour12: true
   });
 };
+
+export function toUnixTimestamp(date?: Date | string | number): number {
+  return Math.floor(new Date(date ?? Date.now()).getTime() / 1000);
+}
+

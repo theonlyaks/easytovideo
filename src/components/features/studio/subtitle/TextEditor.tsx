@@ -212,7 +212,7 @@ export function TextEditor({
 
   // Notify parent component when capitalization changes
   const handleCapitalChange = (value: boolean) => {
-    console.log("Capitalization changed:", value);
+    // console.log("Capitalization changed:", value);
     setCapitalizeAll(value);
     if (onCapitalChange) {
       onCapitalChange(value);
@@ -421,7 +421,7 @@ export function TextEditor({
             onClick={onPrevious}
             variant="outline"
             icon={MdArrowBack}
-            className="py-2 bg-red sm:py-3 px-4  rounded-lg hover:bg-white/5 transition-all duration-300 text-xs sm:text-sm flex items-center  gap-2"
+            className="py-2 bg-red sm:py-3 px-4  rounded-lg hover:bg-white/5 transition-all duration-300 flex items-center  gap-2"
           >
             {" "}
             Back{" "}
@@ -430,7 +430,7 @@ export function TextEditor({
             onClick={handleExportClick}
             icon={BiExport}
             iconPosition="right"
-            className=" py-2 sm:py-3 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
+            className=" py-2 sm:py-3 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
           >
             Export
           </Button>

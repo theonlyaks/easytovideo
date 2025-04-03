@@ -41,21 +41,22 @@ export const useRazorpaySubscription = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/razorpay/cancel-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subscriptionId,status })
-      });
+      // const response = await fetch('/api/razorpay/cancel-subscription', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ subscriptionId,status })
+      // });
 
-      const data = await response.json();
-      if (!response.ok || typeof data?.subscription?.ended_at === 'undefined') {
-        throw new Error(data.error || 'Failed to cancel subscription');
-      }
+      // const data = await response.json();
+      // if (!response.ok || typeof data?.subscription?.ended_at === 'undefined') {
+      //   throw new Error(data.error || 'Failed to cancel subscription');
+      // } UNCOMMENT THIS WHEN ENABLING SUBSCRIPTION 
 
       // Update subscription status in Firestore
       await PlansService.updateSubscriptionStatus(subscriptionId, 'cancelled');
+      return {};
 
-      return data;
+      // return data;  UNCOMMENT THIS WHEN ENABLING SUBSCRIPTION 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to cancel subscription');
       throw err;

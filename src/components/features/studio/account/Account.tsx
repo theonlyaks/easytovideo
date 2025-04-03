@@ -156,7 +156,7 @@ export function Account() {
                         <div className="flex items-center gap-4">
                             <FiClock className="w-5 h-5 text-neutral" />
                             <span className="font-medium text-background-text">
-                                {isCancelled ? "Plan Expires On" : "Next Billing Date"}
+                                {isCancelled ? "Plan Expires On" : "Plan Expires On"}
                             </span>
                         </div>
                         <span className="text-neutral-text ml-9 sm:ml-0">{endDate}</span>
@@ -164,7 +164,7 @@ export function Account() {
                 )}
 
                 {/* Payment History - Updated redirect path */}
-                <button 
+                {/* <button 
                     onClick={() => router.push('/studio/invoices')}
                     className="w-full p-6 flex items-center justify-between border-b hover:bg-background transition-colors"
                 >
@@ -174,7 +174,7 @@ export function Account() {
                             Payment History
                         </span>
                     </div>
-                </button>
+                </button> */}
 
                 {/* Support - Add this new button */}
                 <button 
@@ -190,7 +190,7 @@ export function Account() {
                 </button>
 
                 {/* Cancel Membership */}
-                {hasActivePlan && !isCancelled && (
+                {/* {hasActivePlan && !isCancelled && (
                     <>
                         <button 
                             onClick={() => setShowCancelModal(true)}
@@ -209,7 +209,7 @@ export function Account() {
                             </div>
                         )}
                     </>
-                )}
+                )} */}
 
                 {/* Sign Out */}
                 <div className="p-6">

@@ -32,6 +32,14 @@ export interface SubscriptionRazorpay {
     created_at: number;
   };
 }
+export interface OrderRazorpay {
+  order_id: string;
+  status: string;
+  keyId: string;
+  amount: number;
+  currency: string;
+  planName: string;
+}
 
 
 export interface Invoice {

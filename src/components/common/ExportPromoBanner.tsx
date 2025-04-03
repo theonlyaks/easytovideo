@@ -12,7 +12,7 @@ export function SubscriptionPrompt({ isCreditsExhausted = false }: SubscriptionP
         <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary via-red-500 to-primary">
           {isCreditsExhausted 
             ? "You've Run Out of Credits" 
-            : "Subscribe for Just $2/month!"}
+            : "Get 3 Months for Only $5"}
         </h2>
         {isCreditsExhausted && (
           <p className="mt-2 text-gray-600">
@@ -66,8 +66,8 @@ export function SubscriptionPrompt({ isCreditsExhausted = false }: SubscriptionP
       <div className="mt-8 rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-2 text-center text-white">
         <p className="text-lg font-semibold">
           {isCreditsExhausted
-            ? "Launch Deal: 90% OFF – $2/month for limited time!"
-            : "90% OFF – $2/month"}
+            ? "Get 3 Months for $5!"
+            : "Get 3 Months for $5!"}
         </p>
       </div>
     </div>
