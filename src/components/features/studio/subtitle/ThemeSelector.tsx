@@ -95,7 +95,7 @@ export function ThemeSelector({
           onClick={() => onPrevious(getConfig())}
           variant="outline"
           icon={MdArrowBack}
-          className="w-full sm:w-auto py-2 sm:py-3 px-4 rounded-lg border-primary text-primary hover:bg-primary/10 transition-all duration-300 text-sm flex items-center justify-center gap-2"
+          className="w-full sm:w-auto py-2 sm:py-3 px-4 rounded-lg border-primary text-primary hover:bg-primary/10 transition-all duration-300  flex items-center justify-center gap-2"
         >
           Back
         </Button>
@@ -103,7 +103,7 @@ export function ThemeSelector({
           onClick={() => onNext(getConfig())}
           icon={MdArrowForward}
           iconPosition="right"
-          className="w-full sm:w-auto py-2 sm:py-3 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
+          className="w-full sm:w-auto py-2 sm:py-3 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300  flex items-center justify-center gap-2"
         >
           Next (Step 2 of 3)
         </Button>

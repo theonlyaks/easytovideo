@@ -41,9 +41,9 @@ export default function PromoBanner({ overrideCheck = false }: PromoBannerProps)
     <div className="flex-1 sm:flex-1" />
     <div className="flex flex-col items-center justify-center gap-1 sm:flex-row sm:gap-2">
       <div className="flex flex-wrap items-center justify-center gap-1">
-        <span className="text-base font-extrabold sm:text-lg">90% OFF</span>
+        <span className="text-base font-extrabold sm:text-lg">Get 3 Months for $5</span>
         <span className="text-sm font-medium sm:text-base sm:font-medium">
-          $2/month Subtitles<span className="hidden sm:inline"> for First 1000 Spots Only!</span>
+         <span className="hidden sm:inline"> Subtitles for Limited Time!</span>
         </span>
       </div>
       <div className="flex items-center justify-center gap-2 sm:hidden">

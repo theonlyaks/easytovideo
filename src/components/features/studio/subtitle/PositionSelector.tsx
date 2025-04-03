@@ -35,7 +35,7 @@ const Controls = memo(
          size='md'
 
                 iconPosition='right'
-        className="w-full  bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
+        className="w-full  bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
       >
         Next (Step 1 of 3)
       </Button>
@@ -45,7 +45,7 @@ const Controls = memo(
         size='md'
 
         variant="outline"
-        className="w-full rounded-lg hover:bg-white/5 transition-all duration-300 text-xs sm:text-sm flex items-center justify-center gap-2"
+        className="w-full rounded-lg hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2"
       >
         Back
       </Button>
@@ -123,7 +123,7 @@ export const PositionSelector = memo(function PositionSelector({
         frontend_video_height: positionData.frontend_video_height,
         y_position: positionData.y_position,
       });
-      console.log("Position data", positionData);
+      // console.log("Position data", positionData);
       onNext();
     }
   }, [getPositionData, onNext, onPositionUpdate]);

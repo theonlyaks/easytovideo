@@ -157,10 +157,10 @@ export function Share({ shareId, videoUrl, userName, type }: ShareProps) {
                 </ul>
                 <div className="flex flex-col sm:flex-row items-center justify-center mb-4">
                   <div className="text-sm bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500  text-white px-2 py-1 rounded font-medium mb-2 sm:mb-0 sm:mr-3">
-                    Limited Time: 90% OFF
+                    Get 3 Months for $5!
                   </div>
                   <p className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-red-500   font-bold">
-                    Only $2/month
+                    Limited Offer!
                   </p>
                 </div>
               </div>
@@ -182,7 +182,7 @@ export function Share({ shareId, videoUrl, userName, type }: ShareProps) {
           {/* Testimonials */}
           <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
             <h3 className="text-lg font-bold text-background-text mb-4 text-center">
-              Trusted by 100,000+ Creators Worldwide
+              Trusted by Creators Worldwide
             </h3>
             <div className="space-y-3">
               <div className="p-4 border border-muted/30 rounded-lg">

@@ -242,7 +242,7 @@ export const SUBTITLE_THEMES: SubtitleTheme[] = [
   },
   {
     id: 'group_with_background',
-    name: 'Minimal',
+    name: 'Background',
     backgroundColor: 'linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.8))',
     textBackgroundColor: 'rgba(255, 255, 255, 0.85)',
     textColor: '#000000',
@@ -350,4 +350,4 @@ export const DEMO_STEPS = [
   }
 ] as const;
 
-export const BACKGROUND_IMAGE = '/subtitle_preview.jpg';
+export const BACKGROUND_IMAGE = '/subtitle_preview.png';

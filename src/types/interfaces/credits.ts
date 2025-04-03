@@ -1,5 +1,5 @@
 export interface CreditHistoryEntry {
-  type?: 'trial' | 'plan_subscription' | 'plan_upgrade' | 'plan_downgrade' | 'credit_used';
+  type?: 'trial' | 'plan_subscription' | 'plan_upgrade' | 'plan_downgrade' | 'credit_used' | 'order_mode';
   amount?: number;
   timestamp?: number;
   description?: string;

@@ -1,4 +1,4 @@
-import { OrderRazorpay, PlanProps } from "@/types";
+import { PlanProps, SubscriptionRazorpay } from "@/types";
 import { FeatureList } from "@/components/features/studio/plans/FeatureList";
 import { useRazorpayCustomer } from "@/store/hooks/useRazorapyCustomer";
 import { useSession } from "next-auth/react";
@@ -10,13 +10,12 @@ import { PaymentModal } from "@/components/features/studio/plans/PaymentModal";
 import { useAtomValue } from "jotai";
 import { subscriptionAtom } from "@/store/atoms/subscriptionAtom";
 import { unixToLocalTime } from "@/lib/common/time";
+import { calculatePlanSwitch } from "@/lib/common/plan";
 import { PlanChangeModal } from "@/components/features/studio/plans/PlanChangeModal";
 import {
   PopularBadge,
   PlanHeader,
 } from "@/components/features/studio/plans/PlanUtils";
-import { useRazorpayOrder } from "@/store/hooks/useRazorpayOrder";
-import { PLAN_TOP_UP } from "@/constants";
 
 export const PlanCard: React.FC<PlanProps> = ({
   id,
@@ -43,10 +42,6 @@ export const PlanCard: React.FC<PlanProps> = ({
   const scriptLoaded = useRazorpayScript();
   const { getOrCreateCustomer, loading: customerLoading } =
     useRazorpayCustomer();
-
-    const { createOrder, verifyPayment, loading: orderLoading } = useRazorpayOrder();
-    const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
-
   const {
     createSubscription,
     verifySubscription, // Add this
@@ -55,32 +50,34 @@ export const PlanCard: React.FC<PlanProps> = ({
   const subscription = useAtomValue(subscriptionAtom);
   const isCurrentPlan =
     (subscription.status === "active" ||
-      subscription.status === "authenticated") 
-      // && subscription.planId === price.pgPlanId; uncomment this when enabling subscription
+      subscription.status === "authenticated") &&
+    subscription.planId === price.pgPlanId;
   const isProcessing = subscription.status === "loading";
   const loading = customerLoading || subscriptionLoading;
+  // console.log("Subscription details:", {
+  //   price: price.dayPrice,
+  //   amount: subscription.amount,
+  //   startTime: unixToLocalTime(subscription.currentStart),
+  //   endTime: unixToLocalTime(subscription.currentEnd),
+  // });
 
   const convertToINR = (usdCents: number) => {
     const conversionRate = 84.6; // USD to INR approximate rate
     return Math.round((usdCents * conversionRate) / 100);
   };
 
-  const handlePayment = (data: OrderRazorpay) => {
+  const handlePayment = (data: SubscriptionRazorpay) => {
     if (!scriptLoaded) {
       alert("Payment system is loading. Please try again.");
-      setIsPaymentProcessing(false);
       return;
     }
-    setCurrentSubscriptionId(data.order_id);
+    setCurrentSubscriptionId(data.subscription.id);
     setIsPaymentModalOpen(true);
-    const planDetails = PLAN_TOP_UP[data.planName];
+
     const options = {
-      key: data.keyId,
-      amount: data.amount,
-      currency: data.currency || "INR",
+      key: data.razorpayKeyId,
+      subscription_id: data.subscription.id,
       name: "EasytoVideo",
-      description: `Launch Offer`,
-      order_id: data.order_id,
       handler: async () => {
         let attempts = 0;
         const maxAttempts = 12; // 1 minute (12 * 5 seconds)
@@ -90,18 +87,16 @@ export const PlanCard: React.FC<PlanProps> = ({
             alert("Payment verification timed out. Please contact support.");
             return;
           }
-          const verified = await verifyPayment(
+
+          const verified = await verifySubscription(
+            data.subscription.id, 
             session!.user.id,
-            data.order_id, 
-            planDetails.credits,
-            subscription.credit,
-            planDetails.name,
-            data.amount,
-            planDetails.durationInDays
+            subscription.planId,
+            subscription.status === 'active' || subscription.status === 'authenticated',
+            subscription.credit
           );
           
           if (verified) {
-            setIsPaymentProcessing(false);
             // setIsPaymentModalOpen(false);
             return;
           }
@@ -123,7 +118,6 @@ export const PlanCard: React.FC<PlanProps> = ({
         ondismiss: () => {
           setIsPaymentModalOpen(false);
           setCurrentSubscriptionId(null);
-          setIsPaymentProcessing(false);
         },
       },
     };
@@ -137,24 +131,48 @@ export const PlanCard: React.FC<PlanProps> = ({
       alert("Please sign in to subscribe");
       return;
     }
-    setIsPaymentProcessing(true);
+
     try {
+      // console.log("subscription new", subscription);
+      // If user has an active subscription, show plan change modal
+      if (
+        subscription.status === "active" ||
+        subscription.status === "authenticated"
+      ) {
+        const details = calculatePlanSwitch({
+          currentPrice: subscription.amount || 0,
+          newPrice: price.amount || 0,
+          billingCycleDays: 30,
+          currentStartDate: subscription.currentStart || 0,
+          currentEndDate: subscription.currentEnd || 0,
+        });
+        setSwitchDetails(details);
+        setIsPlanChangeModalOpen(true);
+        return;
+      }
+
+      // For new subscriptions, proceed directly
       await processSubscription();
     } catch (error) {
       //console.error("Subscription failed:", error);
       alert("Failed to initialize subscription process");
-      setIsPaymentProcessing(false);
-
     }
   };
 
   const processSubscription = async (switchDate?: number) => {
     try {
-      const planIdentifier='launchOffer';
-      const data = await createOrder(planIdentifier,session!.user.id);
+      const customerId = await getOrCreateCustomer(session!.user.id);
+      const data = await createSubscription(
+        session!.user.id,
+        customerId,
+        price.pgPlanId,
+        subscription.subscriptionId,
+        switchDate || null,
+        price.amount,
+        displayName
+      );
       handlePayment(data);
     } catch (error) {
-      setIsPaymentProcessing(false);
       //console.error("Subscription processing failed:", error);
       alert("Failed to process subscription");
     }
@@ -205,7 +223,7 @@ export const PlanCard: React.FC<PlanProps> = ({
               <span className="text-4xl font-bold text-primary">
                 ${price.amount / 100}
               </span>
-              <span className="text-neutral">3 months</span>
+              <span className="text-neutral">/{price.interval}</span>
             </div>
             <div className="flex items-center gap-2 mt-2">
               {/* INR Conversion for "Discounted" Price */}
@@ -220,7 +238,7 @@ export const PlanCard: React.FC<PlanProps> = ({
           </div>
           <button
             onClick={handleSubscribe}
-            disabled={isCurrentPlan || isProcessing || loading || isPaymentProcessing}
+            disabled={isCurrentPlan || isProcessing || loading}
             className={`w-full mt-6 py-3 px-4 rounded-xl font-medium text-sm transition-all
               ${isProcessing ? "opacity-75 cursor-wait" : ""}
               ${
@@ -231,7 +249,7 @@ export const PlanCard: React.FC<PlanProps> = ({
                   : "bg-primary hover:bg-primary/90 text-primary-text border border-neutral/20"
               }`}
           >
-            {isProcessing || loading ||isPaymentProcessing
+            {isProcessing || loading
               ? "Processing..."
               : isCurrentPlan
               ? "Current Plan"

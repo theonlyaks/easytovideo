@@ -98,6 +98,33 @@ export class PlansService {
     }
   }
 
+  static async saveOrder(userId: string, razorpayData: any): Promise<void> {
+    try {
+      const order = {
+        subscriptionId: razorpayData.order_id,
+        amount: razorpayData.amount,
+        currency: razorpayData.currency,
+        credits: razorpayData.credits,
+        userId: userId,
+        planId: 'launchOffer',
+        status: razorpayData.order.status,
+      };
+
+      const subscriptionData = {
+        ...order,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+
+      // Use collection reference and addDoc for auto-generated ID
+      const subscriptionsRef = collection(db, "razorpay_subscriptions");
+      await addDoc(subscriptionsRef, subscriptionData);
+    } catch (error) {
+      //console.error('Error saving subscription:', error);
+      throw error;
+    }
+  }
+
   static async getSubscriptionById(userId: string) {
     try {
       const docRef = doc(db, "subscriptions", userId);
@@ -268,7 +295,7 @@ export class PlansService {
 
   static async updateSubscriptionAfterPayment(subscriptionId: string, data: {
     status: string;
-    planId: string | null;
+    planId?: string | null;
     currentStart: number;
     chargeAt: number | null;
     amount: number;
