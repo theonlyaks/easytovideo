@@ -74,7 +74,7 @@ export const plansData = [
 
 export const PLAN_TOP_UP:any= {
     'launchOffer': {
-        amount: 100,
+        amount: 500,
         credits: 60,
         name: 'Creator Plan',
         durationInDays: 90,
