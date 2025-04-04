@@ -78,6 +78,6 @@ export const PLAN_TOP_UP:any= {
         credits: 60,
         name: 'Creator Plan',
         durationInDays: 90,
-        currenct:'INR'
+        currenct:'USD'
     }
 };
