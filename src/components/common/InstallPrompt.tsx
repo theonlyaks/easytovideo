@@ -1,9 +1,15 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+
+// Define proper type for beforeinstallprompt event
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 
 export default function InstallPrompt() {
   const [showInstall, setShowInstall] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
@@ -20,25 +26,28 @@ export default function InstallPrompt() {
         setShowInstall(true);
       } else {
         // For Android and other devices that support beforeinstallprompt
-        window.addEventListener('beforeinstallprompt', (e) => {
+        const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
           // Prevent Chrome 67 and earlier from automatically showing the prompt
           e.preventDefault();
           // Stash the event so it can be triggered later
           setDeferredPrompt(e);
           // Show the install button
           setShowInstall(true);
-        });
+        };
+        
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+        
+        // Proper cleanup
+        return () => {
+          window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+        };
       }
     }
-
-    return () => {
-      if (!isIOSDevice) {
-        window.removeEventListener('beforeinstallprompt', () => {});
-      }
-    };
+    // For iOS devices or already installed apps, no cleanup needed
+    return undefined;
   }, []);
 
-  const handleInstallClick = () => {
+  const handleInstallClick = useCallback(() => {
     if (isIOS) {
       // For iOS, we can't programmatically trigger install
       // Just show instructions
@@ -51,19 +60,22 @@ export default function InstallPrompt() {
     deferredPrompt.prompt();
     
     // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult: {outcome: string}) => {
+    deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
+        // Remove console.log in production or use a logger
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('User accepted the install prompt');
+        }
         setShowInstall(false);
       }
       // Clear the saved prompt as it can't be used again
       setDeferredPrompt(null);
     });
-  };
+  }, [deferredPrompt, isIOS]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setShowInstall(false);
-  };
+  }, []);
 
   // Uncomment this to make the prompt conditional
   if (!showInstall) return null;
@@ -75,7 +87,7 @@ export default function InstallPrompt() {
         {isIOS ? (
           <p>Tap the share icon and then "Add to Home Screen"</p>
         ) : (
-          <p>Get quick access and work offline</p>
+          <p>Takes Only 3 Seconds!</p>
         )}
       </div>
       <div className="flex gap-3">

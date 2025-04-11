@@ -9,7 +9,7 @@ export function FileSelector({ onOpenFileManager }: FileSelectorProps) {
       {/* Header Section */}
       <div className="mb-10 text-center">
         <h1 className="text-2xl md:text-3xl font-semibold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-          Free Auto Subtitles
+          Auto Subtitles
         </h1>
         <p className="text-base text-muted-text px-1 mb-2">
           Boost Your TikTok, Reels & Shorts – Try Free Now!
