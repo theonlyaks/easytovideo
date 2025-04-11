@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/SessionProvider";
+import InstallPrompt from "@/components/common/InstallPrompt"; // You'll need to create this component
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,8 +17,15 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "AI Video Solution - EasytoVideo ",
+  title: "AI Video Solution - EasytoVideo",
   description: "All in one AI video solution for your business",
+  manifest: "/manifest.json",
+  themeColor: "#ffffff",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "EasytoVideo"
+  },
   icons: {
     icon: [
       {
@@ -39,8 +47,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+      </head>
       <body className={`${dmSans.variable} ${inter.variable} antialiased`}>
         <Providers>{children}</Providers>
+        <InstallPrompt />
       </body>
     </html>
   );
