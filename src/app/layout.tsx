@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "AI Video Solution - EasytoVideo",
   description: "All in one AI video solution for your business",
   manifest: "/manifest.json",
-  themeColor: "#ffffff",
+  themeColor: "#f3f4f6",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
