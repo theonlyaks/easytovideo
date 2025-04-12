@@ -17,14 +17,14 @@ export default function InstallPrompt() {
     const isAppInstalled = window.matchMedia('(display-mode: standalone)').matches;
     
     // Check if iOS device
-    const isIOSDevice =false;
-    // setIsIOS(isIOSDevice);
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    setIsIOS(isIOSDevice);
     
     if (!isAppInstalled) {
       // For iOS devices, show install prompt directly since beforeinstallprompt isn't supported
-      if (isIOSDevice) {
-        setShowInstall(true);
-      } else {
+    //   if (isIOSDevice) {
+    //     setShowInstall(true);
+    //   } else {
         // For Android and other devices that support beforeinstallprompt
         const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
           // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -42,9 +42,9 @@ export default function InstallPrompt() {
           window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
         };
       }
-    }
-    // For iOS devices or already installed apps, no cleanup needed
-    return undefined;
+    // }
+    // // For iOS devices or already installed apps, no cleanup needed
+    // return undefined;
   }, []);
 
   const handleInstallClick = useCallback(() => {
@@ -85,20 +85,20 @@ export default function InstallPrompt() {
       <div>
         <h3 className="font-bold text-lg">Install EasytoVideo</h3>
         {isIOS ? (
-          <p>Tap the share icon and then "Add to Home Screen"</p>
+          <p>Takes Only 3 Seconds!</p>
         ) : (
           <p>Takes Only 3 Seconds!</p>
         )}
       </div>
       <div className="flex gap-3">
-        {!isIOS && (
+        
           <button 
             onClick={handleInstallClick}
             className="bg-pink-500 px-4 py-2 rounded-md font-medium"
           >
             Install
           </button>
-        )}
+        
         <button onClick={handleClose} className="text-xl">×</button>
       </div>
     </div>
