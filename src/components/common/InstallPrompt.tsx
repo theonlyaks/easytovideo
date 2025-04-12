@@ -22,9 +22,9 @@ export default function InstallPrompt() {
     
     if (!isAppInstalled) {
       // For iOS devices, show install prompt directly since beforeinstallprompt isn't supported
-    //   if (isIOSDevice) {
-    //     setShowInstall(true);
-    //   } else {
+      if (isIOSDevice) {
+        setShowInstall(true);
+      } else {
         // For Android and other devices that support beforeinstallprompt
         const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
           // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -42,9 +42,9 @@ export default function InstallPrompt() {
           window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
         };
       }
-    // }
-    // // For iOS devices or already installed apps, no cleanup needed
-    // return undefined;
+    }
+    // For iOS devices or already installed apps, no cleanup needed
+    return undefined;
   }, []);
 
   const handleInstallClick = useCallback(() => {
@@ -84,14 +84,13 @@ export default function InstallPrompt() {
     <div className="fixed bottom-0 left-0 right-0 bg-purple-700 text-white p-4 flex justify-between items-center z-50">
       <div>
         <h3 className="font-bold text-lg">Install EasytoVideo</h3>
-        {isIOS ? (
+        
+      
           <p>Takes Only 3 Seconds!</p>
-        ) : (
-          <p>Takes Only 3 Seconds!</p>
-        )}
+        
       </div>
       <div className="flex gap-3">
-        
+      
           <button 
             onClick={handleInstallClick}
             className="bg-pink-500 px-4 py-2 rounded-md font-medium"
