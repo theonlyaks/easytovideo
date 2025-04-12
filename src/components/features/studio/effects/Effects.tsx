@@ -103,12 +103,12 @@ export function Effects({ user }: AuthState) {
   const handleApplyEffects = async () => {
     if (!user || !selectedFile) return;
 
-    if (!isVerticalVideo) {
-      setErrorMessage(
-        "Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok"
-      );
-      return;
-    }
+    // if (!isVerticalVideo) {
+    //   setErrorMessage(
+    //     "Please upload a vertical video (9:16 aspect ratio) suitable for Reels/Shorts/TikTok"
+    //   );
+    //   return;
+    // }
 
     const clipDuration = timeRange.end - timeRange.start;
     if (clipDuration < MIN_DURATION_SECONDS) {
@@ -249,12 +249,12 @@ export function Effects({ user }: AuthState) {
                         </p>
                       )}
 
-                      {!isVerticalVideo && (
+                      {/* {!isVerticalVideo && (
                         <p className="text-xs md:text-sm text-primary text-center">
                           Please upload a vertical video (9:16 aspect ratio)
                           suitable for Reels/Shorts/TikTok
                         </p>
-                      )}
+                      )} */}
 
                       {errorMessage && (
                         <div className="text-sm text-primary text-center mb-2">
@@ -272,8 +272,8 @@ export function Effects({ user }: AuthState) {
                         disabled={
                           isInvalidDuration ||
                           !user ||
-                          isLoading ||
-                          !isVerticalVideo
+                          isLoading 
+                          // || !isVerticalVideo
                         }
                       >
                         <span className="flex items-center justify-center gap-2">
