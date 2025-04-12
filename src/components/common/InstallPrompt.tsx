@@ -84,20 +84,21 @@ export default function InstallPrompt() {
     <div className="fixed bottom-0 left-0 right-0 bg-purple-700 text-white p-4 flex justify-between items-center z-50">
       <div>
         <h3 className="font-bold text-lg">Install EasytoVideo</h3>
-        
-      
+        {isIOS ? (
+          <p>Tap the share icon and then "Add to Home Screen"</p>
+        ) : (
           <p>Takes Only 3 Seconds!</p>
-        
+        )}
       </div>
       <div className="flex gap-3">
-      
+        {!isIOS && (
           <button 
             onClick={handleInstallClick}
             className="bg-pink-500 px-4 py-2 rounded-md font-medium"
           >
             Install
           </button>
-        
+        )}
         <button onClick={handleClose} className="text-xl">×</button>
       </div>
     </div>
