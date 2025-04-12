@@ -17,8 +17,8 @@ export default function InstallPrompt() {
     const isAppInstalled = window.matchMedia('(display-mode: standalone)').matches;
     
     // Check if iOS device
-    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    setIsIOS(isIOSDevice);
+    const isIOSDevice =false;
+    // setIsIOS(isIOSDevice);
     
     if (!isAppInstalled) {
       // For iOS devices, show install prompt directly since beforeinstallprompt isn't supported
