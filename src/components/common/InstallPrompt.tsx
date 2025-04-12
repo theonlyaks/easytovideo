@@ -20,12 +20,17 @@ export default function InstallPrompt() {
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
     setIsIOS(isIOSDevice);
     
+    // Check if user has previously closed the prompt (only matters for iOS)
+    const hasClosedPrompt = localStorage.getItem('installPromptClosed') === 'true';
+    
     if (!isAppInstalled) {
       // For iOS devices, show install prompt directly since beforeinstallprompt isn't supported
-      if (isIOSDevice) {
+      // But only if they haven't closed it before
+      if (isIOSDevice && !hasClosedPrompt) {
         setShowInstall(true);
-      } else {
+      } else if (!isIOSDevice) {
         // For Android and other devices that support beforeinstallprompt
+        // Always show regardless of previous close actions
         const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
           // Prevent Chrome 67 and earlier from automatically showing the prompt
           e.preventDefault();
@@ -43,8 +48,6 @@ export default function InstallPrompt() {
         };
       }
     }
-    // For iOS devices or already installed apps, no cleanup needed
-    return undefined;
   }, []);
 
   const handleInstallClick = useCallback(() => {
@@ -74,10 +77,12 @@ export default function InstallPrompt() {
   }, [deferredPrompt, isIOS]);
 
   const handleClose = useCallback(() => {
+    // Save to localStorage that user has closed the prompt
+    localStorage.setItem('installPromptClosed', 'true');
     setShowInstall(false);
   }, []);
 
-  // Uncomment this to make the prompt conditional
+  // Don't show if showInstall is false
   if (!showInstall) return null;
 
   return (
@@ -91,14 +96,14 @@ export default function InstallPrompt() {
         )}
       </div>
       <div className="flex gap-3">
-        {!isIOS && (
+        
           <button 
             onClick={handleInstallClick}
             className="bg-pink-500 px-4 py-2 rounded-md font-medium"
           >
             Install
           </button>
-        )}
+        
         <button onClick={handleClose} className="text-xl">×</button>
       </div>
     </div>
