@@ -11,10 +11,10 @@ export function GoogleSignInButton() {
   const router = useRouter();
 
   const onGoogleLogin = async () => {
-    const success = await handleGoogleLogin(setLoading);
-    if (success) {
-      router.push('/app');
-    }
+    // const success = await handleGoogleLogin(setLoading);
+    // if (success) {
+    //   router.push('/app');
+    // }
   };
 
   return (

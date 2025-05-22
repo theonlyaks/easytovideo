@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/SessionProvider";
-import InstallPrompt from "@/components/common/InstallPrompt"; // You'll need to create this component
+// import InstallPrompt from "@/components/common/InstallPrompt"; // You'll need to create this component
 
 const inter = Inter({
   subsets: ["latin"],
@@ -51,7 +51,7 @@ export default function RootLayout({
       </head>
       <body className={`${dmSans.variable} ${inter.variable} antialiased`}>
         <Providers>{children}</Providers>
-        <InstallPrompt />
+        {/* <InstallPrompt /> */}
       </body>
     </html>
   );

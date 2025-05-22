@@ -10,34 +10,56 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Background colors
-        // background: "#f6f4f1",
-        background: "#f3f4f6",
-        "background-text": "#2a2522",
-        
-        // Primary colors
-        primary: "#e07a5f",
-        "primary-text": "#ffffff",
-        
-        // Secondary colors
-        secondary: "#3d405b",
-        "secondary-text": "#ffffff",
-        
-        // Accent colors
-        accent: "#81b29a",
-        "accent-text": "#ffffff",
-        
-        // Neutral colors
-        neutral: "#9ca3af",
-        "neutral-text": "#2a2522",
-        
-        // Muted colors
-        muted: "#d7cec7",
-        "muted-text": "#4a4541",
+        primary: {
+          DEFAULT: "#7C3AED", // Vibrant purple
+          dark: "#5B21B6", // Darker purple
+          light: "#A78BFA", // Lighter purple
+        },
+        secondary: {
+          DEFAULT: "#111827", // Dark gray
+          light: "#F9FAFB", 
+        },
+        background: {
+          DEFAULT: "#FFFFFF",
+          dark: "#111827",
+        },
+        "muted-text": "#6B7280", // Gray-500
+        // Success, error, warning colors
+        success: "#10b981",
+        error: "#ef4444",
+        warning: "#f59e0b",
       },
       fontFamily: {
         inter: ['var(--font-inter)'],
         'dm-sans': ['var(--font-dm-sans)'],
+      },
+      animation: {
+        'gradient-slow': 'gradient 15s ease infinite',
+        'float-slow': 'float 20s ease-in-out infinite',
+        'float-medium': 'float 15s ease-in-out infinite',
+        'float-fast': 'float 10s ease-in-out infinite',
+        'float-slow-reverse': 'floatReverse 20s ease-in-out infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        floatReverse: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(20px)' },
+        },
+      },
+      backgroundSize: {
+        'super': '400% 400%',
+      },
+      backdropBlur: {
+        'md': '12px',
       },
     },
   },
