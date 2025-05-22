@@ -17,14 +17,14 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "AI Video Solution - EasytoVideo",
-  description: "All in one AI video solution for your business",
+  title: "- Itiner - AI Socal Media Companion",
+  description: "All in one AI solution for your social media",
   manifest: "/manifest.json",
   themeColor: "#f3f4f6",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "EasytoVideo"
+    title: "Itiner"
   },
   icons: {
     icon: [
