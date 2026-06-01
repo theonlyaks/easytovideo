@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EasyToVideo — AI Video Production Studio
+
+A full-stack AI-powered video production platform that lets creators generate subtitles, text-to-speech voiceovers, sound effects, and video effects — all from a browser-based studio.
+
+## Features
+
+- **AI Subtitle Generation** — Whisper transcription produces accurate subtitles automatically from audio/video
+- **Text-to-Speech** — Convert scripts to natural-sounding voiceovers
+- **Text-to-SFX** — Generate custom sound effects from text prompts
+- **AI Video Effects** — Apply AI-powered visual effects to projects
+- **Project Management** — Full project lifecycle: create, manage, share, and export
+- **Subscription & Billing** — Razorpay-powered plans with invoice history
+- **PWA** — Installable as a desktop/mobile app via next-pwa
+- **Auth** — Email + OAuth via NextAuth, session-protected API routes
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 15 (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| State | Jotai |
+| Auth | NextAuth v4 + Firebase |
+| Payments | Razorpay |
+| AI Processing | Beam Cloud (Whisper, TTS, SFX, Effects) |
+| Database | Firebase Firestore |
+| Deployment | Vercel |
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/          # API routes (subtitle, effects, auth, payments)
+│   ├── studio/       # Studio pages (text-to-speech, text-to-sfx, effects, subtitle)
+│   ├── projects/     # Project management
+│   ├── plans/        # Subscription plans
+│   └── invoices/     # Billing history
+├── services/         # Business logic (studio effects, Firebase, auth)
+├── store/            # Jotai atoms and hooks
+├── components/       # Shared UI components
+└── types/            # TypeScript interfaces
+```
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env.local
+# fill in .env.local values
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+BACKEND_URL=          # Internal backend base URL
+BEAM_CLOUD_TOKEN=     # Beam Cloud API token for AI processing
+# NextAuth, Firebase, Razorpay keys also required — see .env.example
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev      # Start dev server (Turbopack)
+npm run build    # Production build
+npm run start    # Start production server
+npm run lint     # ESLint
+```
