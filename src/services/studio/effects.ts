@@ -16,7 +16,7 @@ export class EffectsService {
       headers: {
         'Content-Type': 'application/json',
         "Connection": "keep-alive",
-        "Authorization": "Bearer REDACTED_BEAM_TOKEN==",
+        "Authorization": `Bearer ${process.env.BEAM_CLOUD_TOKEN}`,
       },
       body: JSON.stringify({ projectId }),
     });

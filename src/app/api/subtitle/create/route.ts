@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     // const response = await fetch(`${process.env.BACKEND_URL}api/v1/subtitle/process`, {
       method: 'POST',
       headers: {
-        "Authorization": "Bearer REDACTED_BEAM_TOKEN==",
+        "Authorization": `Bearer ${process.env.BEAM_CLOUD_TOKEN}`,
         "Connection": "keep-alive",
         'Content-Type': 'application/json',
       },
